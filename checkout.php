@@ -116,6 +116,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'pay')
 
 		if ($paymentMethod == 1) // paypal
 		{
+			//$invoiceId = '#'.$plan->id.'-'.$customerID.'-'.time();
 			$invoiceId = '#'.time();
 
 			$productGateway = new ProductGateway();
@@ -134,7 +135,8 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'pay')
 			
 			//exit($redirectTo);
 			$gateway->setReturnUrl($redirectTo);
-			$gateway->setCancelUrl(BASE_URL.'pay.php?success=false');
+			// pay.php?success=false
+			$gateway->setCancelUrl(BASE_URL.'checkout.php?pl='.$plan->id);
 			$gateway->createPayment();
 		}
 	}
@@ -146,6 +148,7 @@ $data['total'] = $total;
 $data['msg'] = $msg;
 $data['paymentMethods'] = $paymentMethods;
 
+$data['title'] = 'Checkout';
 View::render('header', $data);
 View::render('checkout', $data);
 View::render('footer', $data);

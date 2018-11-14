@@ -2,6 +2,7 @@
 
 use MR4Web\Configs\Config;
 use MR4Web\Utils\Hooks;
+use MR4Web\Models\Setting;
 
 function _addslashes ($str)
 {
@@ -36,6 +37,88 @@ function logger($string)
 {
     if (DEBUG_SHOW_OPERATIONS)
         echo $string;
+}
+
+function getConfig($key)
+{
+    return Setting::get($key);
+}
+
+function getAllConfigs()
+{
+    return Setting::getSettings();
+}
+
+function sendEmail($to, $subject, $body, $from = [], $isHTML=true)
+{
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+
+    try {
+
+        if (strtolower(getConfig('email_method')) == 'smtp')
+        {
+            $mail->IsSMTP();
+            $mail->Host = getConfig('SMTP_Host');
+            $mail->Port = getConfig('SMTP_Port');
+            $mail->Username = getConfig('SMTP_User');
+            $mail->Password = getConfig('SMTP_Pass');
+            $mail->SMTPAuth = TRUE;
+            $mail->SMTPSecure = getConfig('mail_encription'); // ssl or tls
+            //$mail->SMTPSecure = 'none';
+            $mail->SMTPAutoTLS = false;
+
+            if (getConfig('allow_SSL_Insecure_mode') == 1)
+            {
+                $mail->SMTPOptions = array(
+                        'ssl' => [
+                            'verify_peer'       => false,
+                            'verify_peer_name'  => false,
+                            'allow_self_signed' => true
+                        ]
+                    );
+            }
+
+        }
+        else
+        {
+            //$mail->IsMail();
+            $mail->IsSendmail();
+        }
+
+        if(count($from) == 2)
+            $mail->SetFrom($from[0], $from[1]);
+        else
+            $mail->SetFrom(getConfig('email_from'), getConfig('site_name'));
+        
+        
+        if ($isHTML)        
+        {
+            $mail->IsHTML(TRUE);
+            $mail->Body = $body;
+        }   
+        else
+        {
+            $mail->IsHTML(FALSE);
+            $mail->AltBody = $body;
+        }
+
+        if (is_string($to))
+            $mail->AddAddress($to);
+        else if (count($to) == 2)
+            $mail->AddAddress($to[0], $to[1]);
+        
+        //$mail->addReplyTo("test@moaks.ws");
+
+        $mail->Subject = $subject;
+        if ($mail->Send())
+            return true;
+
+
+    } catch (PHPMailer\PHPMailer\Exception $e) {
+        if (DEBUG_SHOW_ERRORS)
+            die("PHPMailer Error: ".$mail->ErrorInfo);
+        return false;
+    }
 }
 
 function get_client_ip() {

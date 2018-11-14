@@ -16,12 +16,13 @@ use MR4Web\Models\Transaction;
 if (!isset($_GET['cu'], $_GET['pl']) || $_GET['cu'] == '' || $_GET['pl'] == '')
 {
 	// redirect the page
+	header('location: failed.php');
 	exit;
 }
 if (!isset($_GET['success'], $_GET['paymentId'], $_GET['PayerID'], $_GET['pm']) or $_GET['success'] == false)
 {
 	// redirect to somewhere else.
-	echo 'the payment wasn\'t complated!';
+	header('location: failed.php');
 	exit;
 }
 
@@ -123,7 +124,7 @@ if ($payment->getState() === 'approved')
 		$tr->save();
 
 		$invoice = new Invoice();
-		$invoice->invoice_id = _addslashes(strip_tages($_SESSION['invoiceId']));
+		$invoice->invoice_id = _addslashes(strip_tags($_SESSION['invoiceId']));
 		$invoice->transactions_id = $tr::getLastInsertId();
 		$invoice->customers_id = $customer->id;
 		$invoice->plans_id = $plan->id;
@@ -135,13 +136,13 @@ if ($payment->getState() === 'approved')
 		$invoice->save();
 
 		PDOModel::getPDO()->commit();
+	
 	} catch (\PDOException $e) {
 		//die($e->getMessage());
 		PDOModel::getPDO()->rollBack();
 	}
 
 	do_action('after_payment_done_successfully', $invoice);
-
 	$_SESSION['invoice_id'] = $invoice::getLastInsertId();
 
 	// redirect to "thank you" page.
@@ -154,6 +155,8 @@ else
 	do_action('after_payment_failed');
 	// Payment not done.
 	// redirect
+	header('location: failed.php');
+	exit;
 }
 
 

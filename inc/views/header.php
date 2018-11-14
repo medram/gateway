@@ -7,7 +7,7 @@
 	<meta name="author" content="">
 	<link rel="icon" href="">
 
-	<title>Checkout</title>
+	<title><?php echo $title ?></title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
