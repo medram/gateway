@@ -14,6 +14,7 @@ define('ROOT', str_replace('\\', '/', dirname(__FILE__)).'/');
 define('INC', ROOT.'inc/');
 define('CLASS_DIR', INC.'classes/');
 define('VIEWS_DIR', INC.'views/');
+define('UPLOADS_DIR', INC.'uploads/');
 
 // default timezone.
 date_default_timezone_set("Etc/GMT+0");

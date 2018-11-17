@@ -10,9 +10,20 @@ class EmailTpl {
 
 	public static function Render($content, array &$data)
 	{
+		// set some necessary variables to the email tamplate.
+		$data['SITE_NAME'] = getConfig('site_name');
+		$data['SITE_EMAIL_SUPPORT'] = getConfig('site_name');
+		$data['SITE_EMAIL_SALES'] = getConfig('site_name');
+		$data['FOOTER'] = '&copy; '.date('Y')." ".getConfig('site_name');
+
 		$body = View::render(self::$_emailFolder.'tpls/header', $data, true);
 		$body .= View::render(self::$_emailFolder.$content, $data, true);
 		$body .= View::render(self::$_emailFolder.'tpls/footer', $data, true);
+
+		foreach ($data as $key => $value)
+		{
+			$body = str_replace('{{'.$key.'}}', $value, $body);
+		}
 		return $body;
 	}
 }

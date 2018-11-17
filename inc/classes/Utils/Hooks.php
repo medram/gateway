@@ -85,7 +85,7 @@ class Hooks
 	 * @param mixed $arguments
 	 * @return mixed
 	 */
-	public static function do_action($name, &$arguments = [])
+	public static function do_action($name, &$arguments = NULL)
 	{
 		// Oh, no you didn't. Are you trying to run an action hook that doesn't exist?
 		if (!isset(self::$actions[$name])) {
@@ -100,14 +100,14 @@ class Hooks
 			if (is_array($names)) {
 				foreach ($names as $name) {
 					if (isset($name['function'])) {
-						$return = call_user_func_array($name['function'], $arguments);
+						$return = call_user_func_array($name['function'], [&$arguments]);
 						if ($return) {
 							$arguments = $return;
 						}
 						//self::$run_actions[$name][$priority];
 					} else {
 						if (method_exists($name['class'], $name['method'])) {
-							$return = call_user_func_array([&$name['class'], $name['method']], $arguments);
+							$return = call_user_func_array([&$name['class'], $name['method']], [&$arguments]);
 
 							if ($return) {
 								$arguments = $return;

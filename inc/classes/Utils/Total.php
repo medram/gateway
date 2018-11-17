@@ -33,15 +33,26 @@ class Total {
 		return $this->_plan;
 	}
 
-	public function setCoupon(Coupon &$coupon)
+	public function setCoupon(Coupon &$coupon, $force = false)
 	{
-		if (!$coupon->isValidToUse() || !$this->_plan->supportCoupon($coupon))
+		if (!$force)
+		{
+			if (!$coupon->isValidToUse() || !$this->_plan->supportCoupon($coupon))
+				return false;
+		} else if (!$this->_plan->supportCoupon($coupon))
 			return false;
+		
 		$this->_coupon = $coupon;
 		$this->_usedCoupon = TRUE;
 		$this->_dicount['value'] = $coupon->value;
 		$this->_dicount['type'] = $coupon->type;
 		return true;
+	}
+
+	public function forceApplyCoupon(Coupon $coupon)
+	{
+		// we set true to force the plan to use the coupon, even was expired.
+		return $this->setCoupon($coupon, true);
 	}
 
 	public function calculate()

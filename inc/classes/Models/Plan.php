@@ -65,11 +65,24 @@ class Plan extends PDOModel {
 	{
 		$plan = Plan::get($id);
 		if ($plan instanceof Plan)
-			if (Plans_Coupon::deleteBy(['plans_id' => $plan->id]) && $plan->delete())
+			if (Plans_Coupon::deleteBy(['plans_id' => $plan->id]) && 
+				Plans_has_file::deleteBy(['plans_id' => $plan->id]) && 
+				$plan->delete())
 				return true;
 
 		return false;
-	} 
+	}
+
+	public function getFiles()
+	{
+		$plans_has_file = Plans_has_file::getAllBy(['plans_id' => $this->id]);
+		$result = [];
+		foreach ($plans_has_file as $pf)
+		{
+			$result[] = File::get($pf->files_id);
+		}
+		return $result;
+	}
 }
 
 ?>

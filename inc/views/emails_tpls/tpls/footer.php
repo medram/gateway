@@ -1,6 +1,6 @@
-			<footer>
-				&copy; <?php echo date('Y')." ".getConfig('site_name') ?>.
-			</footer>
+			<div id="footer" class="text-center">
+				{{FOOTER}}
+			</div>
 		</div> <!-- / container -->
 	</body>
 </html>

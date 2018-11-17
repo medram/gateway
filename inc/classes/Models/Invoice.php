@@ -3,6 +3,9 @@
 namespace MR4Web\Models;
 
 use MR4Web\Models\PDOModel;
+use MR4Web\Models\Coupon;
+use MR4Web\Models\Transaction;
+use MR4Web\Models\Plan;
 
 class Invoice extends PDOModel {
 

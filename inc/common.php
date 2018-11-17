@@ -53,6 +53,18 @@ function sendEmail($to, $subject, $body, $from = [], $isHTML=true)
 {
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
+/*
+    echo 'email_method: '.getConfig('email_method').'<br>';
+    echo 'SMTP_Host: '.getConfig('SMTP_Host').'<br>';
+    echo 'SMTP_Port: '.getConfig('SMTP_Port').'<br>';
+    echo 'SMTP_User: '.getConfig('SMTP_User').'<br>';
+    echo 'SMTP_Pass: '.getConfig('SMTP_Pass').'<br>';
+    echo 'mail_encription: '.getConfig('mail_encription').'<br>';
+    echo 'allow_SSL_Insecure_mode: '.getConfig('allow_SSL_Insecure_mode').'<br>';
+    echo 'email_from: '.getConfig('email_from').'<br>';
+    echo 'site_name: '.getConfig('site_name').'<br>';
+*/
+
     try {
 
         if (strtolower(getConfig('email_method')) == 'smtp')
@@ -232,7 +244,7 @@ function add_action($name, $function, $priority = 10)
  * @param mixed $arguments
  * @return mixed
  */
-function do_action($name, ...$arguments)
+function do_action($name, $arguments = NULL)
 {
     return Hooks::do_action($name, $arguments);
 }
@@ -253,6 +265,50 @@ function remove_action($name, $function, $priority = 10)
  * @param mixed $name
  */
 function action_exists($name)
+{
+    return Hooks::action_exists($name);
+}
+
+/**
+ * Add a new action hook
+ *
+ * @param mixed $name
+ * @param mixed $function
+ * @param mixed $priority
+ */
+
+function add_filter($name, $function, $priority = 10)
+{
+    return Hooks::add_action($name, $function, $priority);
+}
+/**
+ * Run an action
+ *
+ * @param mixed $name
+ * @param mixed $arguments
+ * @return mixed
+ */
+function apply_filter($name, $arguments)
+{
+    return Hooks::do_action($name, $arguments);
+}
+/**
+ * Remove an action
+ *
+ * @param mixed $name
+ * @param mixed $function
+ * @param mixed $priority
+ */
+function remove_filter($name, $function, $priority = 10)
+{
+    return Hooks::remove_action($name, $function, $priority);
+}
+/**
+ * Check if an action exists
+ *
+ * @param mixed $name
+ */
+function action_filter($name)
 {
     return Hooks::action_exists($name);
 }
