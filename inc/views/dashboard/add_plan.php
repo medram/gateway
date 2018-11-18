@@ -25,14 +25,17 @@ use MR4Web\Models\Plan;
 			<label for="old-price">Old Price (in USD) :</label>
 			<input type="number" id="old-price" name="old-price" class="form-control" value="<?php @show2input($plan->old_price) ?>" required><br>
 			
-			<label for="paymentType">Payment Type :</label>
-			<select name="payment-type" id="paymentType" class="form-control">
-				<option selected disabled>Choose the Payment type!</option>
-				<?php foreach (Plan::getPaymentsType() as $key => $type): ?>
+			<label for="max-licenses">Max Licenses :</label>
+			<input type="number" min="0" id="max-licenses" name="max-licenses" class="form-control" value="<?php @show2input($plan->max_licenses) ?>" required><br>
+
+			<label for="planType">Plan Type :</label>
+			<select name="plan-type" id="planType" class="form-control">
+				<option selected disabled>Choose the Plan type!</option>
+				<?php foreach (Plan::getPlanType() as $key => $type): ?>
 				<option value="<?php echo $key ?>" 
 				<?php
 					if (isset($plan))
-						if (@$plan->payment_type == $key)
+						if (@$plan->plan_type == $key)
 							echo 'selected';
 				?> 
 				><?php echo $type ?></option>
@@ -40,6 +43,8 @@ use MR4Web\Models\Plan;
 			</select><br>
 
 			<input type="submit" name="savePlan" class="btn btn-primary" value="Save">
+			<br>
+			<br>
 		</form>
 	</div>
 	<div class="col-md-6">

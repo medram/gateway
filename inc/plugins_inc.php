@@ -72,11 +72,11 @@ function purchaseNotification(Invoice $invoice)
 
 function sendProductToCustomer(Invoice $invoice, $createLicense = true)
 {
-	$plan = $invoice->getPlan();
+/*	$plan = $invoice->getPlan();
 	$product = $plan->getProduct();
 	$transaction = $invoice->getTransaction();
 	$customer = $transaction->getCustomer();
-	$file = $plan->getFiles()[0]; // we just are sending the first file.
+	$file = $plan->getFiles(); // we just are sending the first file.
 	$licenses = []; // licenses classes
 	$licenses_codes = [];
 
@@ -92,9 +92,12 @@ function sendProductToCustomer(Invoice $invoice, $createLicense = true)
 		$licenses = $customer->getLicenses();
 	}
 	
-	for ($licenses as $license)
+	if (count($licenses))
 	{
-		$licenses_codes[] = $license->license_code;
+		foreach ($licenses as $license)
+		{
+			$licenses_codes[] = $license->license_code;
+		}
 	}
 
 	$data['TITLE'] = getConfig('site_name').': [Download] {$product->name}.';
@@ -106,7 +109,7 @@ function sendProductToCustomer(Invoice $invoice, $createLicense = true)
 
 	$body = EmailTpl::render('download_product', $data);
 	
-	exit($body);
+	exit($body);*/
 
 
 	//return sendEmail($customer->email, $title, $body);

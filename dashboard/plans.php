@@ -38,21 +38,22 @@ if ($page == 'add')
 {
 	if (isset($_POST['savePlan']))
 	{
-		if ($_POST['name'] == '' || $_POST['desc'] == '' || $_POST['price'] == '' || $_POST['old-price'] == '' || $_POST['payment-type'] == '')
+		if ($_POST['name'] == '' || $_POST['desc'] == '' || $_POST['price'] == '' || $_POST['old-price'] == '' || $_POST['plan-type'] == '')
 		{
 			$msg['err'] = 'Please fill out all fields below!';
 		}
-		else if (!array_key_exists($_POST['payment-type'], Plan::getPaymentsType()))
+		else if (!array_key_exists($_POST['plan-type'], Plan::getPlanType()))
 		{
 			$msg['err'] = 'Oops! The payment type is invalid!';
 		}
 		else
 		{
-			$name 			= _addslashes(strip_tags($_POST['name']));
-			$desc 			= _addslashes(strip_tags($_POST['desc']));
-			$price 			= intval($_POST['price']);
-			$oldPrice 		= intval($_POST['old-price']);
-			$paymentType	= _addslashes(strip_tags($_POST['payment-type']));
+			$name 		= _addslashes(strip_tags($_POST['name']));
+			$desc 		= _addslashes(strip_tags($_POST['desc']));
+			$price 		= intval($_POST['price']);
+			$oldPrice 	= intval($_POST['old-price']);
+			$planType	= _addslashes(strip_tags($_POST['plan-type']));
+			$maxLicenses= intval($_POST['max-licenses']);
 
 			$plan = new Plan();
 			$plan->products_id = $p_id;
@@ -60,7 +61,9 @@ if ($page == 'add')
 			$plan->desc = $desc;
 			$plan->price = $price;
 			$plan->old_price = $oldPrice;
-			$plan->payment_type = $paymentType;
+			$plan->plan_type = $planType;
+			$plan->max_licenses = $maxLicenses;
+
 			if ($plan->save())
 			{
 				// redirect to plans list
@@ -90,21 +93,22 @@ else if ($page == 'edit')
 
 	if (isset($_POST['savePlan']))
 	{
-		if ($_POST['name'] == '' || $_POST['desc'] == '' || $_POST['price'] == '' || $_POST['old-price'] == '' || $_POST['payment-type'] == '')
+		if ($_POST['name'] == '' || $_POST['desc'] == '' || $_POST['price'] == '' || $_POST['old-price'] == '' || $_POST['plan-type'] == '')
 		{
 			$msg['err'] = 'Please fill out all fields below!';
 		}
-		else if (!array_key_exists($_POST['payment-type'], Plan::getPaymentsType()))
+		else if (!array_key_exists($_POST['plan-type'], Plan::getPlanType()))
 		{
 			$msg['err'] = 'Oops! The payment type is invalid!';
 		}
 		else
 		{
-			$name 			= _addslashes(strip_tags($_POST['name']));
-			$desc 			= _addslashes(strip_tags($_POST['desc']));
-			$price 			= intval($_POST['price']);
-			$oldPrice 		= intval($_POST['old-price']);
-			$paymentType	= _addslashes(strip_tags($_POST['payment-type']));
+			$name 		= _addslashes(strip_tags($_POST['name']));
+			$desc 		= _addslashes(strip_tags($_POST['desc']));
+			$price 		= intval($_POST['price']);
+			$oldPrice 	= intval($_POST['old-price']);
+			$planType	= _addslashes(strip_tags($_POST['plan-type']));
+			$maxLicenses= intval($_POST['max-licenses']);
 
 			$plan = Plan::get($plan_id);
 			$plan->products_id = $p_id;
@@ -112,8 +116,9 @@ else if ($page == 'edit')
 			$plan->desc = $desc;
 			$plan->price = $price;
 			$plan->old_price = $oldPrice;
-			$plan->payment_type = $paymentType;
-			
+			$plan->plan_type = $planType;
+			$plan->max_licenses = $maxLicenses;
+
 			if ($plan->save())
 			{
 				// redirect
@@ -123,7 +128,6 @@ else if ($page == 'edit')
 			else
 				$msg['err'] = 'Something was wrong, please try again!';
 		}
-		
 	}
 
 	$data['msg'] = $msg;

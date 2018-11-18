@@ -17,7 +17,8 @@ if (count($plans) == 0)
 			<th>Description</th>
 			<th>Price</th>
 			<th>Old Price</th>
-			<th>Payment Type</th>
+			<th>Plan Type</th>
+			<th>Max Licenses</th>
 			<th>Created</th>
 			<th>Actions</th>
 		</tr>
@@ -35,7 +36,8 @@ if (count($plans) == 0)
 			<td><?php echo $plan->desc ?></td>
 			<td><?php echo '$'.$plan->price ?></td>
 			<td><?php echo '<del>$'.$plan->old_price.'</del>' ?></td>
-			<td><?php echo $plan->paymentType() ?></td>
+			<td><?php echo $plan->planType() ?></td>
+			<td><?php echo $plan->max_licenses ?></td>
 			<td><?php echo $plan->created ?></td>
 			<td>
 				<a href="<?php echo '?page=edit&plan_id='.$plan->id.'&p_id='.$p_id ?>" class="btn btn-primary btn-sm" ><i class="fa fa-pencil"></i></a>

@@ -31,8 +31,8 @@ $saveBtn = $editMode ? 'Save' : 'Generate';
 
 			<label for="product">Product that License belongs to :</label>
 			<select name="product-id" id="product" class="form-control" style="font-family: consolas" required>
+				<option selected disabled>Selecte a Product!</option>
 				<?php foreach (Product::getAll(['id', 'DESC']) as $product): ?>
-					<option selected disabled>Selecte a Product!</option>
 					<?php
 					$selected = @$license->products_id == $product->id ? $selected = 'selected' : '' ;
 					?>

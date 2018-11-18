@@ -25,7 +25,7 @@ class Plan extends PDOModel {
 			'price'			=> \PDO::PARAM_STR,
 			'old_price'		=> \PDO::PARAM_STR,
 			'plan_type'		=> \PDO::PARAM_STR,
-			'max_license'	=> \PDO::PARAM_INT,
+			'max_licenses'	=> \PDO::PARAM_INT,
 			'created'		=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
@@ -57,7 +57,7 @@ class Plan extends PDOModel {
 		return $this->plan_type != ''? self::$_planType[$this->plan_type] : '' ;
 	}
 
-	public static function getPaymentsType()
+	public static function getPlanType()
 	{
 		return self::$_planType;
 	}
@@ -66,9 +66,7 @@ class Plan extends PDOModel {
 	{
 		$plan = Plan::get($id);
 		if ($plan instanceof Plan)
-			if (Plans_Coupon::deleteBy(['plans_id' => $plan->id]) && 
-				Plans_has_file::deleteBy(['plans_id' => $plan->id]) && 
-				$plan->delete())
+			if (Plans_Coupon::deleteBy(['plans_id' => $plan->id]) && $plan->delete())
 				return true;
 
 		return false;
@@ -78,9 +76,13 @@ class Plan extends PDOModel {
 	{
 		$plans_has_file = Plans_has_file::getAllBy(['plans_id' => $this->id]);
 		$result = [];
-		foreach ($plans_has_file as $pf)
+		
+		if (!is_null($plans_has_file))
 		{
-			$result[] = File::get($pf->files_id);
+			foreach ($plans_has_file as $pf)
+			{
+				$result[] = File::get($pf->files_id);
+			}
 		}
 		return $result;
 	}
