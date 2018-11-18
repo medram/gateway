@@ -11,5 +11,5 @@
 
 	For more transation information or support, Please feel free to contact us at (links or emails below).<br>
 	<br>
-	and Have a good day :D<br> 
+	and Have a good day :D<br>
 </div>

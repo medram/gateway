@@ -15,12 +15,14 @@
 				font-size: 14px;
 				color: #444;
 				line-height: 22px;
+				background-color: #EEE;
 			}
 
 			h1, h2, h3, h4, h5, h6 {
 				display: block;
 				padding: 3px 0px;
 				margin-bottom: 5px;
+				margin-top: 10px;
 				font-weight: lighter;
 			}
 
@@ -41,21 +43,53 @@
 			}
 
 			#footer {
-				font-size: 20px;
 				color: #FFF;
 				background-color: #8CC152;
 				padding: 20px;
 			}
 
 			.section {
-				padding: 40px 20px;
-				background-color: #F5F5F5;
+				padding: 20px 25px;
+				background-color: #FFF;
 			}
+
 
 			.container {
 				width: 600px;
 				max-width: 800px;
 				margin: 0px auto;
+			}
+
+			/*------------- Custom background colors ----------------*/
+
+			.bg-green {
+				color: #FFF;
+				background-color: #8CC152;
+			}
+
+			.bg-blue {
+				color: #FFF;
+				background-color: #4A89DC;
+			}
+
+			.bg-red {
+				color: #FFF;
+				background-color: #DA4453;
+			}
+
+			.bg-yellow {
+				color: #FFF;
+				background-color: #F6BB42;
+			}
+
+			.bg-purple {
+				color: #FFF;
+				background-color: #967ADC;
+			}
+
+			.bg-info {
+				color: #FFF;
+				background-color: #3BAFDA;
 			}
 
 			/*------------- Custom buttons ----------------*/
@@ -123,6 +157,31 @@
 			}
 
 			/*------------- Text directions ----------------*/
+			.color-blue {
+				color: #4A89DC;
+			}
+			
+			.color-green {
+				color: #8CC152;
+			}
+
+			.color-red {
+				color: #DA4453;
+			}
+
+			.color-yellow {
+				color: #F6BB42;
+			}
+
+			.color-info {
+				color: #3BAFDA;
+			}
+
+			.color-purple {
+				color: #967ADC;
+			}
+
+			/*------------- Text directions ----------------*/
 			.text-center {
 				text-align: center;
 			}
@@ -134,6 +193,46 @@
 			.text-right {
 				text-align: right;
 			}
+
+			.font-consolas {
+				font-family: consolas;
+			}
+
+			/*------------- Custome border radius ----------------*/
+			.radius-3x {
+				border-radius: 3px;
+			}
+
+			.radius-5x {
+				border-radius: 5px;
+			}
+
+			.radius-10x {
+				border-radius: 10px;
+			}
+
+			.radius-15x {
+				border-radius: 15px;
+			}
+
+			.radius-50p {
+				border-radius: 50%;
+			}			
+			
+			/*------------- Custome font sizes ----------------*/
+			.font-sm {
+				font-size: 12px;
+			}
+			.font-md {
+				font-size: 15px;
+			}
+			.font-lg {
+				font-size: 20px;
+			}
+			.font-super-lg {
+				font-size: 30px;
+			}
+
 		</style>
 	</head>
 	<body>

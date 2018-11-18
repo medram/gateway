@@ -49,6 +49,10 @@ function purchaseNotification(Invoice $invoice)
 	$data['transation'] = $transaction;
 	$data['customer'] = $customer;
 */
+
+	$title = getConfig('site_name').': Payment Has Successfully Done.';
+	
+	$data['TITLE'] = $title;
 	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
 	$data['PRODUCT_NAME'] = $product->name . " ({$product->version})";
 	$data['PLAN_NAME'] = $plan->name;
@@ -58,40 +62,61 @@ function purchaseNotification(Invoice $invoice)
 
 	$body = EmailTpl::render('purchase_notification', $data);
 	
-	echo $body;
+	/*
+	// for debug. 
+	exit($body);
+	*/
 
-	return sendEmail($customer->email,
-		getConfig('site_name').': Payment Has Successfully Done.', 
-		$body);
+	return sendEmail($customer->email, $title, $body);
 }
 
-function sendProductToCustomer(Invoice $invoice)
+function sendProductToCustomer(Invoice $invoice, $createLicense = true)
 {
 	$plan = $invoice->getPlan();
 	$product = $plan->getProduct();
 	$transaction = $invoice->getTransaction();
 	$customer = $transaction->getCustomer();
-	$data = [];
+	$file = $plan->getFiles()[0]; // we just are sending the first file.
+	$licenses = []; // licenses classes
+	$licenses_codes = [];
 
-/*	$data['invoice'] = $invoice;
-	$data['plan'] = $plan;
-	$data['file'] = $plan->getFiles()[0]; // get just the first file as an attachment
-	$data['product'] = $product;
-	$data['transation'] = $transaction;
-	$data['customer'] = $customer;*/
+	if ($createLicense)
+	{
+		for ($i = 0; $i < $plan->max_licenses; ++$i)
+		{
+			$licenses[] = License::createLicense($customer, $plan);
+		}
+	}
+	else
+	{
+		$licenses = $customer->getLicenses();
+	}
+	
+	for ($licenses as $license)
+	{
+		$licenses_codes[] = $license->license_code;
+	}
+
+	$data['TITLE'] = getConfig('site_name').': [Download] {$product->name}.';
+	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
+	$data['PRODUCT_NAME'] = $product->name . " ({$product->version})";
+	$data['PLAN_NAME'] = $plan->name;
+	$data['DOWNLOAD_LINK'] = $file->getDownloadLink($plan, $customer);
+	$data['LICENSES'] = implode('<br>', $licenses_codes); //sdf57df54gdf5g65df4g6sdf7g6d5f4gdf
 
 	$body = EmailTpl::render('download_product', $data);
 	
-	return sendEmail($customer->email,
-		getConfig('site_name').': [Download] {$product->name}.',
-		$body);
+	exit($body);
+
+
+	//return sendEmail($customer->email, $title, $body);
 }
 
-add_action('after_payment_done_successfully', 'purchaseNotification');
-//add_action('after_payment_done_successfully', 'sendProductToCustomer');
+//add_action('after_payment_done_successfully', 'purchaseNotification');
+add_action('after_payment_done_successfully', 'sendProductToCustomer');
 
 /*------ just for test -------*/
-$i = Invoice::get(37);
+$i = Invoice::get(34);
 do_action('after_payment_done_successfully', $i);
-exit;
+
 ?>

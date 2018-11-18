@@ -9,7 +9,7 @@ use MR4Web\Models\Plans_Coupon;
 
 class Plan extends PDOModel {
 
-	private static $_paypentTypes = [
+	private static $_planType = [
 		'M' => 'Monthly',
 		'Y'	=> 'Yearly',
 		'L'	=> 'Lifetime'
@@ -24,7 +24,8 @@ class Plan extends PDOModel {
 			'desc'			=> \PDO::PARAM_STR,
 			'price'			=> \PDO::PARAM_STR,
 			'old_price'		=> \PDO::PARAM_STR,
-			'payment_type'	=> \PDO::PARAM_STR,
+			'plan_type'		=> \PDO::PARAM_STR,
+			'max_license'	=> \PDO::PARAM_INT,
 			'created'		=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
@@ -51,14 +52,14 @@ class Plan extends PDOModel {
 		return false;
 	}
 
-	public function paymentType()
+	public function planType()
 	{
-		return $this->payment_type != ''? self::$_paypentTypes[$this->payment_type] : '' ;
+		return $this->plan_type != ''? self::$_planType[$this->plan_type] : '' ;
 	}
 
 	public static function getPaymentsType()
 	{
-		return self::$_paypentTypes;
+		return self::$_planType;
 	}
 
 	public static function deletePlan($id)

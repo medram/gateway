@@ -4,6 +4,7 @@ namespace MR4Web\Models;
 
 use MR4Web\Models\PDOModel;
 use MR4Web\Models\Transaction;
+use MR4Web\Models\License;
 
 class Customer extends PDOModel {
 
@@ -27,6 +28,10 @@ class Customer extends PDOModel {
 		return Transaction::getAllBy(['customers_id' => $this->id]);
 	}
 	
+	public function getLicenses()
+	{
+		return License::getAllBy(['customers_id' => $this->id]);
+	}
 }
 
 ?>
