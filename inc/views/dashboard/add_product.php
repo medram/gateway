@@ -7,7 +7,7 @@ else if (isset($msg['err']))
 ?>
 <div class="row">
 	<div class="col-sm-6">
-		<form action="" method="post">
+		<form action="" method="post" enctype="multipart/form-data">
 			
 			<label for="name">Product Name:</label>
 			<input type="text" id="name" name="name" class="form-control" value="<?php @show2input($product->name) ?>" required><br>
@@ -21,6 +21,9 @@ else if (isset($msg['err']))
 			<label for="email_support">Email Support:</label>
 			<input type="email" id="email_support" name="email_support" class="form-control" value="<?php @show2input($product->email_support) ?>" required><br>
 			
+			<label for="product-file">Product file <small>(allowed type: rar, zip)</small>:</label>
+			<input type="file" name="product-file[]" multiple id="product-file" class="form-control"><br>
+
 			<input type="submit" name="saveProduct" class="btn btn-primary" value="Save">
 		</form>
 	</div>

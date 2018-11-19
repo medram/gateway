@@ -10,6 +10,6 @@ if (!User::isLogin())
 	exit;
 }
 
-do_action('before_dashboard_start');
+do_action('before_dashboard_start', User::getUser());
 
 ?>

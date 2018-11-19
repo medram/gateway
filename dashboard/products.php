@@ -2,8 +2,10 @@
 require_once "dashboard_init.php";
 
 use MR4Web\Models\Product;
+use MR4Web\Models\User;
 
 use MR4Web\Utils\View;
+use MR4Web\Utils\Uploader;
 use MR4Web\Utils\Dashboard;
 
 $page = isset($_GET['page'])? $_GET['page'] : '';
@@ -43,10 +45,30 @@ if ($page == 'add')
 			$product->version = $p_version;
 			$product->small_desc = $p_desc;
 			$product->email_support = $email_support;
+			
+			try {
+				$uploader = new Uploader([
+					'fieldName'		=> 'product-file',
+					'uploadsDir'	=> User::getUser()->getUserProductsPath(),
+					'maxSize'		=> 200*1024, // 200MB.
+					'allowedTypes' 	=> ['jpg', 'rar', 'zip'],
+				]);
+				
+				if ($uploader->doUpload())
+				{
+					$info = $uploader->getInfo(); // array of info
+					echo '<pre>';
+					print_r($info);
+					echo '</pre>';
+				}
+			} catch (Uploader\Exception $e) {
+				die($e->getMessage());
+			}
+
 			if ($product->save())
 			{
 				// redirect to products list
-				header("location: products.php");
+				//header("location: products.php");
 				exit;
 			}
 			else
@@ -117,7 +139,7 @@ else
 	else
 		$data['products'] = [];
 
-	$data['dash_title'] = "Products <small>({$resultNumber})</small>";
+	$data['dash_title'] = "Products ({$resultNumber})";
 	Dashboard::Render('products', $data);
 }
 
