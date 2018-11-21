@@ -98,7 +98,7 @@ class Uploader
 		{
 			if (count($this->_configs['allowedTypes']) && !in_array($file->ext, $this->_configs['allowedTypes']))
 			{
-				throw new Exception("Invalide extension \"{$file->ext}\".");
+				throw new Exception("Invalide file extension \"{$file->ext}\".");
 				break;
 			}
 		}
@@ -137,8 +137,13 @@ class File {
 
 	public function __construct($name)
 	{
-		$this->name = $name;
+		$this->name = self::filterName($name);
 		$this->ext = end(explode('.', $this->name));
+	}
+
+	public static function filterName($str)
+	{
+		return preg_replace("/[^a-z0-9_\.\-\(\)]+/i", '_', $str);
 	}
 
 	public function doUpload($override = false)
@@ -158,6 +163,7 @@ class File {
 		else
 		{
 			$this->_fileDestination = preg_replace("/(\.{$this->ext})+$/i", "", $this->savePath.$this->name).'_'.time().'.'.$this->ext;
+			$this->name = basename($this->_fileDestination);
 			return move_uploaded_file($this->tmp_name, $this->_fileDestination);
 		}
 	}

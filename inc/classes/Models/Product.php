@@ -38,15 +38,48 @@ class Product extends PDOModel {
 
 		if ($product instanceof Product)
 		{
+			// delete Plans of this product.
 			foreach ($product->getPlans() as $plan)
 			{
 				Plan::deletePlan($plan->id);
 			}
+
+			// delete files.
+			self::deleteFiles($this->id);
+
+			// delete data product from database.
 			if ($product->delete())
 				return true;
 		}
 		
 		return false;
+	}
+
+	// delete old files from Database & HDD
+	public static function deleteFiles($id)
+	{
+		$id = intval($id);
+		$oldFiles = File::getAllBy(['products_id' => $id]);
+		$status = true;
+
+		if (count($oldFiles) && is_object($oldFiles[0]))
+		{
+			foreach ($oldFiles as $oFile)
+			{
+				// delete file from HDD & delete file from database
+				if (!$oFile->deleteFileHDD(User::getUser()) || !$oFile->delete())
+				{
+					$status = false;
+				}
+			}
+		}
+
+		return $status;
+	}
+
+	public function getFiles()
+	{
+		return File::getAllBy(['products_id' => $this->id]);
 	}
 }
 

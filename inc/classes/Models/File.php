@@ -8,14 +8,16 @@ use MR4Web\Models\Plan;
 
 class File extends PDOModel {
 
-	private static $_path = UPLOADS_DIR'products/';
+	private static $_uploadsPath = UPLOADS_DIR;
 
 	public function __construct($data = NULL)
 	{
 		$schema = [
 			'id'		=> \PDO::PARAM_INT,
 			'name'		=> \PDO::PARAM_STR,
+			'size'		=> \PDO::PARAM_INT,
 			'path'		=> \PDO::PARAM_STR,
+			'products_id'	=> \PDO::PARAM_INT,
 			'created'	=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
@@ -23,6 +25,7 @@ class File extends PDOModel {
 
 	public function getDownloadLink(Plan $plan, Customer $customer)
 	{
+		/*		
 		$exts = ['rar', 'zip'];
 		$found = false;
 		// generate a valid URL to download the file.
@@ -36,14 +39,27 @@ class File extends PDOModel {
 		}
 
 		return BASE_URL."download.php?p={$plan->id}&t={$customer->token}";
+		*/
 	}
 
 	public function getFileName()
 	{
 		static $name = '';
 		if ($name == '')
-			$name = preg_replace("/[^a-z0-9_\\.-]+/i", '_', $this->name);
+			$name = preg_replace("/[^a-z0-9_\.\-\(\)]+/i", '_', $this->name);
 		return $name;
+	}
+
+	public function deleteFileHDD(User $user)
+	{
+		$path = self::$_uploadsPath.'users/ID_'.$user->id.'/products/'.$this->name;
+		//die("Deleting... " . $path);
+		if (file_exists($path) && is_writable($path))
+		{
+			// delete the file.
+			return @unlink($path);
+		}
+		return false;
 	}
 }
 

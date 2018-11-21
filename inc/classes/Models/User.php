@@ -115,6 +115,11 @@ class User extends PDOModel {
 	{
 		return $this->_userFolder.'products/';
 	}
+
+	public function getUserFolder()
+	{
+		return $this->_userFolder;
+	}
 }
 
 ?>

@@ -8,11 +8,10 @@
 	- after_payment_done_successfully (Invoice)
 	- after_payment_failed
 	- before_user_logged_in (email, password)
-	- after_user_logged_in (email, password)
+	- after_user_logged_in (User class)
 	- before_user_logged_out
 	- after_user_logged_out
 	-
-
 */
 
 use MR4Web\Models\Invoice;
