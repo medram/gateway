@@ -5,6 +5,7 @@ namespace MR4Web\Models;
 use MR4Web\Models\PDOModel;
 use MR4Web\Models\License;
 use MR4Web\Models\Plan;
+use MR4Web\Models\User;
 
 class Product extends PDOModel {
 
@@ -12,6 +13,7 @@ class Product extends PDOModel {
 	{
 		$schema = [
 			'id'			=> \PDO::PARAM_INT,
+			'users_id'		=> \PDO::PARAM_INT,
 			'name'			=> \PDO::PARAM_STR,
 			'version'		=> \PDO::PARAM_STR,
 			'small_desc'	=> \PDO::PARAM_STR,
@@ -80,6 +82,11 @@ class Product extends PDOModel {
 	public function getFiles()
 	{
 		return File::getAllBy(['products_id' => $this->id]);
+	}
+
+	public function getUser()
+	{
+		return User::get($this->users_id);
 	}
 }
 

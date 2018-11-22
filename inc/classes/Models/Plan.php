@@ -71,21 +71,6 @@ class Plan extends PDOModel {
 
 		return false;
 	}
-
-	public function getFiles()
-	{
-		$plans_has_file = Plans_has_file::getAllBy(['plans_id' => $this->id]);
-		$result = [];
-		
-		if (!is_null($plans_has_file))
-		{
-			foreach ($plans_has_file as $pf)
-			{
-				$result[] = File::get($pf->files_id);
-			}
-		}
-		return $result;
-	}
 }
 
 ?>

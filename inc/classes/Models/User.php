@@ -3,6 +3,7 @@
 namespace MR4Web\Models;
 
 use MR4Web\Models\PDOModel;
+use MR4Web\Models\Product;
 use MR4Web\Models\Role;
 
 class User extends PDOModel {
@@ -15,12 +16,12 @@ class User extends PDOModel {
 	{
 		$schema = [
 			'id'		=> \PDO::PARAM_INT,
+			'roles_id'	=> \PDO::PARAM_INT,
 			'username'	=> \PDO::PARAM_STR,
 			'email'		=> \PDO::PARAM_STR,
 			'password'	=> \PDO::PARAM_STR,
 			'token'		=> \PDO::PARAM_STR,
-			'created'	=> \PDO::PARAM_STR,
-			'roles_id'	=> \PDO::PARAM_INT
+			'created'	=> \PDO::PARAM_STR
 		];
 
 		parent::__construct($schema, $data);
@@ -111,6 +112,20 @@ class User extends PDOModel {
 		return NULL;
 	}
 
+	public static function isAdmin()
+	{
+		if (self::$_currentUser->getRole() == 2) // 2 = Admin
+			return true;
+		return false;
+	}
+
+	public static function isRoot()
+	{
+		if (self::$_currentUser->getRole() == 1) // 2 = Admin
+			return true;
+		return false;
+	}
+
 	public function getUserProductsPath()
 	{
 		return $this->_userFolder.'products/';
@@ -120,6 +135,12 @@ class User extends PDOModel {
 	{
 		return $this->_userFolder;
 	}
+
+	public function getProducts()
+	{
+		return Product::getAllBy(['users_id' => $this->id]);
+	}
+
 }
 
 ?>

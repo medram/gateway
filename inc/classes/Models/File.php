@@ -25,29 +25,26 @@ class File extends PDOModel {
 
 	public function getDownloadLink(Plan $plan, Customer $customer)
 	{
-		/*		
-		$exts = ['rar', 'zip'];
-		$found = false;
+		$product = $plan->getProduct();
+		$user = $product->getUser();
+
+		$path = self::$_uploadsPath.'users/ID_'.$user->id.'/products/'.$this->getFileName();
 		// generate a valid URL to download the file.
-		foreach ($exts as $ext)
+		if (file_exists($path))
 		{
-			if (file_exists(self::$_path.$this->getFileName()))
-			{
-				$found = true;
-				break;
-			}
+			return BASE_URL."download.php?p={$plan->id}&t={$customer->token}";
 		}
 
-		return BASE_URL."download.php?p={$plan->id}&t={$customer->token}";
-		*/
+		return NULL;
 	}
 
 	public function getFileName()
 	{
-		static $name = '';
+		return $this->name;
+		/*static $name = '';
 		if ($name == '')
 			$name = preg_replace("/[^a-z0-9_\.\-\(\)]+/i", '_', $this->name);
-		return $name;
+		return $name;*/
 	}
 
 	public function deleteFileHDD(User $user)

@@ -15,6 +15,8 @@
 */
 
 use MR4Web\Models\Invoice;
+use MR4Web\Models\License;
+
 use MR4Web\Utils\EmailTpl;
 use MR4Web\Utils\Total;
 use MR4Web\Utils\Coupon;
@@ -22,12 +24,9 @@ use MR4Web\Utils\Coupon;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// send an invoice email.
 function purchaseNotification(Invoice $invoice)
 {
-	/*
-		get information.
-		send email.
-	*/
 	$plan = $invoice->getPlan();
 	$product = $plan->getProduct();
 	$transaction = $invoice->getTransaction();
@@ -41,13 +40,6 @@ function purchaseNotification(Invoice $invoice)
 		$total->forceApplyCoupon($coupon);
 	}
 	$total->calculate();
-
-/*	$data['invoice'] = $invoice;
-	$data['plan'] = $plan;
-	$data['product'] = $product;
-	$data['transation'] = $transaction;
-	$data['customer'] = $customer;
-*/
 
 	$title = getConfig('site_name').': Payment Has Successfully Done.';
 	
@@ -69,28 +61,30 @@ function purchaseNotification(Invoice $invoice)
 	return sendEmail($customer->email, $title, $body);
 }
 
-function sendProductToCustomer(Invoice $invoice, $createLicense = true)
+// send an product informations email.
+function sendProductToCustomer(Invoice $invoice)
 {
-/*	$plan = $invoice->getPlan();
+	$plan = $invoice->getPlan();
 	$product = $plan->getProduct();
+	$file = $product->getFiles()[0]; // we just send the first file.
 	$transaction = $invoice->getTransaction();
 	$customer = $transaction->getCustomer();
-	$file = $plan->getFiles(); // we just are sending the first file.
 	$licenses = []; // licenses classes
 	$licenses_codes = [];
 
-	if ($createLicense)
+	// create new licenses for the first time.
+	// get the licenses if it's found.
+	$licenses = $customer->getLicenses();
+
+	if (!count($licenses))
 	{
 		for ($i = 0; $i < $plan->max_licenses; ++$i)
 		{
 			$licenses[] = License::createLicense($customer, $plan);
 		}
 	}
-	else
-	{
-		$licenses = $customer->getLicenses();
-	}
 	
+	// collect licenses code in one array
 	if (count($licenses))
 	{
 		foreach ($licenses as $license)
@@ -101,24 +95,29 @@ function sendProductToCustomer(Invoice $invoice, $createLicense = true)
 
 	$data['TITLE'] = getConfig('site_name').': [Download] {$product->name}.';
 	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
-	$data['PRODUCT_NAME'] = $product->name . " ({$product->version})";
+	$data['PRODUCT_NAME'] = $product->name . " v{$product->version}";
 	$data['PLAN_NAME'] = $plan->name;
 	$data['DOWNLOAD_LINK'] = $file->getDownloadLink($plan, $customer);
-	$data['LICENSES'] = implode('<br>', $licenses_codes); //sdf57df54gdf5g65df4g6sdf7g6d5f4gdf
+	$data['LICENSES'] = implode('<br><br>', $licenses_codes); //sdf57df54gdf5g65df4g6sdf7g6d5f4gdf
+	$data['PRODUCT_EMAIL_SUPPORT'] = $product->email_support;
 
 	$body = EmailTpl::render('download_product', $data);
 	
-	exit($body);*/
+	//exit($body);
 
-
-	//return sendEmail($customer->email, $title, $body);
+	return sendEmail($customer->email, $title, $body);
 }
 
-//add_action('after_payment_done_successfully', 'purchaseNotification');
+// send an invoice email.
+add_action('after_payment_done_successfully', 'purchaseNotification');
+
+// send an product informations email.
 add_action('after_payment_done_successfully', 'sendProductToCustomer');
 
 /*------ just for test -------*/
+/*
 $i = Invoice::get(34);
 do_action('after_payment_done_successfully', $i);
+*/
 
 ?>

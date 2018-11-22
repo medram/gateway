@@ -46,7 +46,7 @@ class License extends PDOModel {
 		$product = $plan->getProduct();
 
 		$license = new License();
-		$license->license_code = self::generateLicenseCode($customer, $product);
+		$license->license_code = self::generateLicenseCode($product, $customer);
 		$license->activation_num = 0;
 		$license->activation_max = 1; // depends on Plan.
 		$license->banned = 0;

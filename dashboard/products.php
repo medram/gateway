@@ -27,6 +27,11 @@ if ($action == 'delete')
 // add a new product
 if ($page == 'add')
 {
+	/**
+	* @TODO :  this section will be available for edit just for the User or the Admin
+	*/
+
+
 	if (isset($_POST['saveProduct']))
 	{
 		if ($_POST['name'] == '' || $_POST['version'] == '' || $_POST['desc'] == '' || 
@@ -51,6 +56,7 @@ if ($page == 'add')
 			$email_support 	= strtolower(_addslashes(strip_tags($_POST['email_support'])));
 
 			$product = new Product();
+			$product->users_id = User::getUser()->id;
 			$product->name = $p_name;
 			$product->version = $p_version;
 			$product->small_desc = $p_desc;
@@ -62,8 +68,8 @@ if ($page == 'add')
 				$uploader = new Uploader([
 					'fieldName'		=> 'product-file',
 					'uploadsDir'	=> User::getUser()->getUserProductsPath(),
-					'maxSize'		=> 200*1024, // 200MB.
-					'allowedTypes' 	=> ['rar', 'zip'],
+					'maxSize'		=> getConfig('plan_files_max_size'), // Default size 200MB.
+					'allowedTypes' 	=> explode(',', getConfig('plan_files_allowed_type')),
 				]);
 				
 				if ($uploader->doUpload())
@@ -142,6 +148,7 @@ else if ($page == 'edit')
 			$email_support 	= strtolower(_addslashes(strip_tags($_POST['email_support'])));
 
 			$product->name = $p_name;
+			$product->users_id = User::getUser()->id;
 			$product->version = $p_version;
 			$product->small_desc = $p_desc;
 			$product->email_support = $email_support;
@@ -151,13 +158,14 @@ else if ($page == 'edit')
 					
 				if ($product->save())
 				{
-					if (isset($_FILES['product-file']['name']))
+					if (isset($_FILES['product-file']['name']) && 
+						((!is_array($_FILES['product-file']['name']) && $_FILES['product-file']['name'] != '') || $_FILES['product-file']['name'][0] != ''))
 					{
 						$uploader = new Uploader([
 							'fieldName'		=> 'product-file',
 							'uploadsDir'	=> User::getUser()->getUserProductsPath(),
-							'maxSize'		=> 200*1024, // 200MB.
-							'allowedTypes' 	=> ['rar', 'zip'],
+							'maxSize'		=> getConfig('plan_files_max_size'), // Default size 200MB.
+							'allowedTypes' 	=> explode(',', getConfig('plan_files_allowed_type')),
 						]);
 
 						if ($uploader->doUpload())
@@ -218,7 +226,7 @@ else if ($page == 'edit')
 }
 else
 {
-	$products = Product::getAll(['id', 'DESC']);
+	$products = Product::getAllBy(['users_id' => User::getUser()->id],['id', 'DESC']);
 	$resultNumber = count($products);
 
 	if (is_array($products))

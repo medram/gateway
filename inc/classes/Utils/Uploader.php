@@ -93,13 +93,18 @@ class Uploader
 			$this->_files[] = $file;
 		}
 
-		// check the allowed extensions
+		// check the allowed extensions & sizes
 		foreach ($this->_files as $file)
 		{
 			if (count($this->_configs['allowedTypes']) && !in_array($file->ext, $this->_configs['allowedTypes']))
 			{
 				throw new Exception("Invalide file extension \"{$file->ext}\".");
 				break;
+			}
+			else if ($file->size > $this->_configs['maxSize']*1024 || $file->size <= 0)
+			{
+				throw new Exception("Invalide file size, the max size is ".roundPrice($this->_configs['maxSize']/1024)."MB.");
+				break;	
 			}
 		}
 
