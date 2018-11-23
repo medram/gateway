@@ -41,11 +41,11 @@ function purchaseNotification(Invoice $invoice)
 	}
 	$total->calculate();
 
-	$title = getConfig('site_name').': Payment Has Successfully Done.';
+	$title = getConfig('site_name').": Payment Has Been Successfully Done.";
 	
 	$data['TITLE'] = $title;
 	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
-	$data['PRODUCT_NAME'] = $product->name . " ({$product->version})";
+	$data['PRODUCT_NAME'] = $product->name . " (".$product->version.")";
 	$data['PLAN_NAME'] = $plan->name;
 	$data['PRICE'] = $total->getTotalPrice();
 	$data['INVOICE_ID'] = $invoice->invoice_id;
@@ -58,7 +58,7 @@ function purchaseNotification(Invoice $invoice)
 	exit($body);
 	*/
 
-	return sendEmail($customer->email, $title, $body);
+	sendEmail($customer->email, $title, $body);
 }
 
 // send an product informations email.
@@ -93,7 +93,8 @@ function sendProductToCustomer(Invoice $invoice)
 		}
 	}
 
-	$data['TITLE'] = getConfig('site_name').': [Download] {$product->name}.';
+	$title = getConfig('site_name').": [Download] {$product->name} v{$product->version}.";
+	$data['TITLE'] = $title;
 	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
 	$data['PRODUCT_NAME'] = $product->name . " v{$product->version}";
 	$data['PLAN_NAME'] = $plan->name;
@@ -105,8 +106,9 @@ function sendProductToCustomer(Invoice $invoice)
 	
 	//exit($body);
 
-	return sendEmail($customer->email, $title, $body);
+	sendEmail($customer->email, $title, $body);
 }
+
 
 // send an invoice email.
 add_action('after_payment_done_successfully', 'purchaseNotification');
@@ -115,9 +117,11 @@ add_action('after_payment_done_successfully', 'purchaseNotification');
 add_action('after_payment_done_successfully', 'sendProductToCustomer');
 
 /*------ just for test -------*/
-/*
-$i = Invoice::get(34);
+
+/*$i = Invoice::get(40);
 do_action('after_payment_done_successfully', $i);
+exit;
 */
+
 
 ?>

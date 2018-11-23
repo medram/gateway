@@ -1,4 +1,4 @@
-			<div id="footer" class="text-center">
+			<div id="footer" class="bg-green text-center">
 				<b class="font-md">{{FOOTER}}</b><br>
 				For Contact:<br>
 				{{SITE_EMAIL_SUPPORT}}<br>

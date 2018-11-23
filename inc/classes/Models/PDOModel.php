@@ -56,7 +56,10 @@ abstract class PDOModel {
 	}
 	
 	public static function getBy($where = NULL, array $orderBy = [], $start = 0, $limit = 0) {
-		return self::getAllBy($where, $orderBy, 0, 1)[0];
+		$result = self::getAllBy($where, $orderBy, 0, 1);
+		if (count($result))
+			return $result[0];
+		return NULL;
 	}
 
 	public static function getAll(array $orderBy = [], $start = 0, $limit = 0) {

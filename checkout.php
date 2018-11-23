@@ -50,7 +50,7 @@ echo '</pre>';*/
 if (!$plan instanceof Plan)
 {
 	// redirecting to home page.
-	exit;
+	exit();
 }
 
 $total = new Total();

@@ -13,9 +13,9 @@
 			body {
 				font-family: arial, sans-serif;
 				font-size: 14px;
-				color: #444;
+				color: #444 !important;
 				line-height: 22px;
-				background-color: #EEE;
+				background-color: #EEE !important;
 			}
 
 			h1, h2, h3, h4, h5, h6 {
@@ -27,30 +27,28 @@
 			}
 
 			a {
-				color: #967ADC;
+				color: #15c !important;
 				text-decoration: underline;
 			}
 
 			a:hover {
-				color: #AC92EC;
+				color: #3473e1 !important;
 			}
 
 			#header {
 				font-size: 20px;
 				color: #FFF;
-				background-color: #8CC152;
 				padding: 20px;
 			}
 
 			#footer {
 				color: #FFF;
-				background-color: #8CC152;
 				padding: 20px;
 			}
 
 			.section {
 				padding: 20px 25px;
-				background-color: #FFF;
+				background-color: #FFF !important;
 			}
 
 
@@ -63,38 +61,38 @@
 			/*------------- Custom background colors ----------------*/
 
 			.bg-green {
-				color: #FFF;
-				background-color: #8CC152;
+				color: #FFF !important;
+				background-color: #8CC152 !important;
 			}
 
 			.bg-blue {
-				color: #FFF;
-				background-color: #4A89DC;
+				color: #FFF !important;
+				background-color: #4A89DC !important;
 			}
 
 			.bg-red {
-				color: #FFF;
-				background-color: #DA4453;
+				color: #FFF !important;
+				background-color: #DA4453 !important;
 			}
 
 			.bg-yellow {
-				color: #FFF;
-				background-color: #F6BB42;
+				color: #FFF !important;
+				background-color: #F6BB42 !important;
 			}
 
 			.bg-purple {
-				color: #FFF;
-				background-color: #967ADC;
+				color: #FFF !important;
+				background-color: #967ADC !important;
 			}
 
 			.bg-info {
 				color: #FFF;
-				background-color: #3BAFDA;
+				background-color: #3BAFDA !important;
 			}
 
 			/*------------- Custom buttons ----------------*/
 			.btn {
-				color: #FFF;
+				color: #FFF !important;
 				padding: 5px 10px;
 				margin-right: 3px;
 				margin-bottom: 5px;
@@ -107,43 +105,43 @@
 			}
 
 			.btn:hover {
-				color: #FFF;
+				color: #FFF !important;
 			}
 
 			.btn:active {
-				box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.3);
+				box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.3) !important;
 			}
 
 			.btn.btn-primary {
-				background-color: #4A89DC;
+				background-color: #4A89DC !important;
 			}
 
 			.btn.btn-primary:hover {
-				background-color: #5D9CEC;
+				background-color: #5D9CEC !important;
 			}
 
 			.btn.btn-success {
-				background-color: #8CC152;
+				background-color: #8CC152 !important;
 			}
 
 			.btn.btn-success:hover {
-				background-color: #A0D468;
+				background-color: #A0D468 !important;
 			}
 
 			.btn.btn-danger {
-				background-color: #DA4453;
+				background-color: #DA4453 !important;
 			}
 
 			.btn.btn-danger:hover {
-				background-color: #ED5565;
+				background-color: #ED5565 !important;
 			}
 
 			.btn.btn-warning {
-				background-color: #F6BB42;
+				background-color: #F6BB42 !important;
 			}
 
 			.btn.btn-warning:hover {
-				background-color: #FFCE54;
+				background-color: #FFCE54 !important;
 			}
 
 			.btn.btn-lg {
@@ -158,27 +156,27 @@
 
 			/*------------- Text directions ----------------*/
 			.color-blue {
-				color: #4A89DC;
+				color: #4A89DC !important;
 			}
 			
 			.color-green {
-				color: #8CC152;
+				color: #8CC152 !important;
 			}
 
 			.color-red {
-				color: #DA4453;
+				color: #DA4453 !important;
 			}
 
 			.color-yellow {
-				color: #F6BB42;
+				color: #F6BB42 !important;
 			}
 
 			.color-info {
-				color: #3BAFDA;
+				color: #3BAFDA !important;
 			}
 
 			.color-purple {
-				color: #967ADC;
+				color: #967ADC !important;
 			}
 
 			/*------------- Text directions ----------------*/
@@ -237,6 +235,6 @@
 	</head>
 	<body>
 		<div class="container">
-		<div id="header" class="text-center">
+		<div id="header" class="bg-green text-center">
 			<span>{{SITE_NAME}}</span>
 		</div>

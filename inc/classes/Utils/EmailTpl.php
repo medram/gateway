@@ -8,7 +8,7 @@ class EmailTpl {
 
 	private static $_emailFolder = './emails_tpls/';
 
-	public static function Render($content, array &$data)
+	public static function render($content, array &$data)
 	{
 		// set some necessary variables to the email tamplate.
 		$data['SITE_NAME'] = getConfig('site_name');

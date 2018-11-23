@@ -12,7 +12,7 @@ class View
 		//echo $path;
 		if (!file_exists($path))
 		{
-			exit("Error: The template view '{$filename}' not found in the views folder!");
+			exit("View Error: The template view '{$filename}' not found in the views folder!");
 			return false;
 		}
 
@@ -28,7 +28,7 @@ class View
 		{
 			ob_start();
 			//echo "START BUFFER:<br>";
-			include_once $path;
+			include $path;
 			//echo "END BUFFER<br>";
 			$buffer = ob_get_contents();
 			@ob_end_clean();
