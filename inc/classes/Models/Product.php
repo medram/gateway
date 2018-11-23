@@ -47,7 +47,7 @@ class Product extends PDOModel {
 			}
 
 			// delete files.
-			self::deleteFiles($this->id);
+			self::deleteFiles($id);
 
 			// delete data product from database.
 			if ($product->delete())

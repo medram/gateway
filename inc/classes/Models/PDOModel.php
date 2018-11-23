@@ -123,7 +123,7 @@ abstract class PDOModel {
 			}
 			return $models;
 		}
-		return null;
+		return [];
 	}
 	
 	public function __construct($schema, $data = false) {
