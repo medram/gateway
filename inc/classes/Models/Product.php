@@ -4,6 +4,7 @@ namespace MR4Web\Models;
 
 use MR4Web\Models\PDOModel;
 use MR4Web\Models\License;
+use MR4Web\Models\Customer;
 use MR4Web\Models\Plan;
 use MR4Web\Models\User;
 
@@ -22,14 +23,17 @@ class Product extends PDOModel {
 		];
 		parent::__construct($schema, $data);
 	}
-
+	
 	public function getPlans()
 	{
-		return Plan::getAllBy(['products_id' => $this->id]);
+		return Plan::getAllBy(['products_id' => $this->id]);		
 	}
-	
-	public function getLicenses()
+
+
+	public function getLicenses(Customer $customer = NULL)
 	{
+		if ($customer != NULL)
+			return License::getAllBy(['products_id' => $this->id, 'customers_id' => $customer->id]);
 		return License::getAllBy(['products_id' => $this->id]);
 	}
 

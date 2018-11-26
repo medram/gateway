@@ -11,6 +11,8 @@ $msg = [];
 
 $page = isset($_GET['page'])? $_GET['page'] : '';
 $action = isset($_GET['a'])? $_GET['a'] : '';
+$customerID = isset($_GET['cu'])? intval($_GET['cu']) : 0;
+
 
 if ($action == 'delete')
 {
@@ -116,7 +118,17 @@ else if ($page == 'edit')
 }
 else
 {
-	$licenses = License::getAll(['id', 'DESC']);
+	$licenses = [];
+	if ($customerID)
+	{
+		$licenses = License::getAllBy(['customers_id' => $customerID], ['id', 'DESC']);
+		if (!count($licenses))
+			$msg['err'] = "No licenses for this customer!";
+	}
+	else
+		$licenses = License::getAll(['id', 'DESC']);
+
+	
 	$resultNumber = count($licenses);
 
 	if (is_array($licenses))
@@ -124,6 +136,7 @@ else
 	else
 		$data['licenses'] = [];
 
+	$data['msg'] = $msg;
 	$data['dash_title'] = "Licenses ({$resultNumber})";
 	Dashboard::Render('licenses', $data);
 }

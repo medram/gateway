@@ -14,7 +14,7 @@ if (is_array($customers))
 else
 	$data['customers'] = [];
 
-$data['dash_title'] = "Customers <small>({$resultNumber})</small>";
+$data['dash_title'] = "Customers ({$resultNumber})";
 Dashboard::Render('customers', $data);
 
 ?>

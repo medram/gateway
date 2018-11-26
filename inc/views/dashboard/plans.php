@@ -1,9 +1,11 @@
+<?php if ($mode == 0): ?>
 <div class="row mb-3">
 	<div class="col-sm-12">
 		<a href="products.php" class="btn btn-primary pull-right"><i class="fa fa-fw fa-arrow-left"></i> Go Back</a>
 		<a href="?page=add&p_id=<?php echo $p_id ?>" class="btn btn-success pull-right mr-2"><i class="fa fa-fw fa-plus"></i> Add Plan</a>
 	</div>
 </div>
+<?php endif; ?>
 <?php
 if (count($plans) == 0)
 {
@@ -40,8 +42,13 @@ if (count($plans) == 0)
 			<td><?php echo $plan->max_licenses ?></td>
 			<td><?php echo $plan->created ?></td>
 			<td>
+				<?php if ($mode == 0): ?>
 				<a href="<?php echo '?page=edit&plan_id='.$plan->id.'&p_id='.$p_id ?>" class="btn btn-primary btn-sm" ><i class="fa fa-pencil"></i></a>
 				<a href="<?php echo '?a=delete&plan_id='.$plan->id.'&p_id='.$p_id ?>" class="btn btn-danger btn-sm action-delete"><i class="fa fa-trash-o"></i></a>
+				
+				<?php elseif ($mode == 1): ?>
+				---
+				<?php endif; ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

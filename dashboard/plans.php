@@ -3,6 +3,7 @@ require_once "dashboard_init.php";
 
 use MR4Web\Models\Plan;
 use MR4Web\Models\Product;
+use MR4Web\Models\Customer;
 
 use MR4Web\Utils\View;
 use MR4Web\Utils\Dashboard;
@@ -13,6 +14,7 @@ $page = isset($_GET['page'])? $_GET['page'] : '';
 $action = isset($_GET['a'])? $_GET['a'] : '';
 $p_id = isset($_GET['p_id'])? intval($_GET['p_id']) : 0;
 $plan_id = isset($_GET['plan_id'])? intval($_GET['plan_id']) : 0;
+$customerID = isset($_GET['cu'])? intval($_GET['cu']) : 0;
 
 $product = Product::get($p_id);
 
@@ -137,7 +139,21 @@ else if ($page == 'edit')
 }
 else
 {
-	$plans = Plan::getAllBy(['products_id' => $p_id]);
+	$mode = 0;
+	$plans = [];
+	$customer = Customer::get($customerID);
+	
+	if ($customerID && $customer instanceof Customer)
+	{
+		$mode = 1;
+		$data['customer'] = $customer;
+		$plans = Plan::getPlans($customer, $product);
+	}
+	else
+	{
+		$plans = Plan::getAllBy(['products_id' => $p_id]);
+	}
+
 	$resultNumber = count($plans);
 
 	if (is_array($plans))
@@ -145,7 +161,12 @@ else
 	else
 		$data['plans'] = [];
 
-	$data['dash_title'] = "Plans ({$resultNumber})";
+	$data['mode'] = $mode;
+	if ($mode == 0)
+		$data['dash_title'] = "Plans ({$resultNumber})";
+	else
+		$data['dash_title'] = "Customer's Plans ({$resultNumber})";
+	
 	Dashboard::Render('plans', $data);
 }
 

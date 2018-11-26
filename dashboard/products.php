@@ -2,6 +2,7 @@
 require_once "dashboard_init.php";
 
 use MR4Web\Models\Product;
+use MR4Web\Models\Customer;
 use MR4Web\Models\User;
 use MR4Web\Models\File;
 use MR4Web\Models\PDOModel;
@@ -13,6 +14,7 @@ use MR4Web\Utils\Dashboard;
 
 $page = isset($_GET['page'])? $_GET['page'] : '';
 $action = isset($_GET['a'])? $_GET['a'] : '';
+$customerID = isset($_GET['cu'])? $_GET['cu'] : '';
 $msg = [];
 
 if ($action == 'delete')
@@ -226,7 +228,21 @@ else if ($page == 'edit')
 }
 else
 {
-	$products = Product::getAllBy(['users_id' => User::getUser()->id],['id', 'DESC']);
+	$products = [];
+	$customer = Customer::get($customerID);
+	$mode = 0;
+
+	if ($customerID && $customer instanceof Customer)
+	{
+		$data['customer'] = $customer;
+		$products = $customer->getProducts();
+		$mode = 1;
+		if (!count($products))
+			$msg['err'] = "No products for this customer!";
+	}
+	else
+		$products = Product::getAllBy(['users_id' => User::getUser()->id], ['id', 'DESC']);
+
 	$resultNumber = count($products);
 
 	if (is_array($products))
@@ -234,7 +250,12 @@ else
 	else
 		$data['products'] = [];
 
-	$data['dash_title'] = "Products ({$resultNumber})";
+	$data['mode'] = $mode;
+	if ($mode == 0)
+		$data['dash_title'] = "Products ({$resultNumber})";
+	else
+		$data['dash_title'] = "Customer's Products ({$resultNumber})";
+
 	Dashboard::Render('products', $data);
 }
 

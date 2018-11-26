@@ -5,6 +5,7 @@ namespace MR4Web\Models;
 use MR4Web\Models\PDOModel;
 use MR4Web\Models\Transaction;
 use MR4Web\Models\Product;
+use MR4Web\Models\Customer;
 use MR4Web\Models\Plans_Coupon;
 
 class Plan extends PDOModel {
@@ -41,6 +42,20 @@ class Plan extends PDOModel {
 		return Product::get($this->products_id);
 	}
 
+	public function getInvoices()
+	{
+		return Invoice::getAllBy(['plans_id' => $this->id]);
+	}
+
+/*	public function getCustomerInvoices(Customer $customer)
+	{
+		return Invoice::getAllBy([
+			'customers_id' => $customer->id,
+			'transactions_id' => ,
+			'plans_id' => $this->id
+		]);
+	}*/
+
 	public function supportCoupon(Coupon &$coupon)
 	{
 		$couponsList = Plans_Coupon::getCouponsByPlan($this);
@@ -70,6 +85,25 @@ class Plan extends PDOModel {
 				return true;
 
 		return false;
+	}
+
+	public static function getPlans(Customer $customer, Product $product)
+	{
+		$plans = [];
+
+		foreach ($customer->getInvoices() as $invoice)
+		{
+			$currentPlan = $invoice->getPlan();
+			foreach ($product->getPlans() as $currentProductPlan)
+			{
+				if ($currentPlan->id == $currentProductPlan->id)
+				{
+					$plans[] = $currentPlan;
+				}
+			}
+		}
+		
+		return $plans;
 	}
 }
 

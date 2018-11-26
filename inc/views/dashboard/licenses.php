@@ -4,7 +4,11 @@
 	</div>
 </div>
 <?php
-if (count($licenses) == 0)
+if(isset($msg['err']) && $msg['err'] != '')
+{
+	echo "<div class='alert alert-primary'>{$msg['err']}</div>";
+}
+else if (count($licenses) == 0)
 {
 	echo "<div class='alert alert-primary'>No Licenses for Now (°-°)</div>";
 } else { ?>
