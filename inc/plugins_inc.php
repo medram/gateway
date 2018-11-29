@@ -75,7 +75,7 @@ function sendProductToCustomer(Invoice $invoice)
 	// get the licenses if it's found.
 	$licenses = $plan->getLicenses($customer);
 
-	// create new licenses for the first time.
+	// create new licenses for the first time & DON'T RECREATE LICENSES AGAIN.
 	if (!count($licenses))
 	{
 		for ($i = 0; $i < $plan->max_licenses; ++$i)
