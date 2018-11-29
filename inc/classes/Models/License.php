@@ -21,7 +21,8 @@ class License extends PDOModel {
 			'license_type'	=> \PDO::PARAM_STR,
 			'created'		=> \PDO::PARAM_STR,
 			'products_id'	=> \PDO::PARAM_INT,
-			'customers_id'	=> \PDO::PARAM_INT
+			'customers_id'	=> \PDO::PARAM_INT,
+			'plans_id'		=> \PDO::PARAM_INT
 		];
 		parent::__construct($schema, $data);
 	}
@@ -41,6 +42,11 @@ class License extends PDOModel {
 		return Customer::get($this->customers_id);
 	}
 
+	public function getPlan()
+	{
+		return Plan::get($this->plans_id);
+	}
+
 	public static function createLicense(Customer $customer, Plan $plan)
 	{
 		$product = $plan->getProduct();
@@ -53,6 +59,7 @@ class License extends PDOModel {
 		$license->license_type = $plan->plan_type; // depends on Plan.
 		$license->products_id = $product->id;
 		$license->customers_id = $customer->id;
+		$license->plans_id = $plan->id;
 
 		$license->save();
 		

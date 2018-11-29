@@ -29,7 +29,7 @@ $saveBtn = $editMode ? 'Save' : 'Generate';
 				<option value="1" <?php echo ($editMode && $license->banned == 1) ? 'selected' : '' ?> >Banned</option>
 			</select><br>
 
-			<label for="product">Product that License belongs to :</label>
+<!-- 			<label for="product">Product that License belongs to :</label>
 			<select name="product-id" id="product" class="form-control" style="font-family: consolas" required>
 				<option selected disabled>Selecte a Product!</option>
 				<?php foreach (Product::getAll(['id', 'DESC']) as $product): ?>
@@ -37,6 +37,26 @@ $saveBtn = $editMode ? 'Save' : 'Generate';
 					$selected = @$license->products_id == $product->id ? $selected = 'selected' : '' ;
 					?>
 					<option value="<?php echo $product->id ?>" <?php echo $selected ?> ><?php echo $product->name ?></option>
+				<?php endforeach; ?>
+			</select><br> -->
+
+			<label for="plan">Choose Plans that License belongs to :</label>
+			<select name="plan-id" id="plan" class="form-control" style="font-family: consolas" required>
+				<option selected disabled>Selecte a Plan</option>
+				<?php
+				if (isset($license) && $license instanceof License)
+					$currentPlanID = $license->getPlan()->id;
+				foreach (Product::getAll(['id', 'DESC']) as $product):
+				?>
+					<option disabled><?php echo $product->name ?></option>
+				<?php foreach ($product->getPlans() as $plan): ?>
+						<?php
+							$selected = '';	
+							if ($currentPlanID == $plan->id)
+								$selected = 'selected';
+						?>
+						<option value="<?php echo $plan->id ?>" <?php echo $selected ?> ><?php echo "|_ ".$plan->name ?></option>
+				<?php endforeach; ?>
 				<?php endforeach; ?>
 			</select><br>
 

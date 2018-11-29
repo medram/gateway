@@ -3,6 +3,7 @@ require_once "dashboard_init.php";
 
 use MR4Web\Models\License;
 use MR4Web\Models\Customer;
+use MR4Web\Models\Plan;
 
 use MR4Web\Utils\View;
 use MR4Web\Utils\Dashboard;
@@ -12,6 +13,7 @@ $msg = [];
 $page = isset($_GET['page'])? $_GET['page'] : '';
 $action = isset($_GET['a'])? $_GET['a'] : '';
 $customerID = isset($_GET['cu'])? intval($_GET['cu']) : 0;
+$productID = isset($_GET['pr'])? intval($_GET['pr']) : 0;
 
 
 if ($action == 'delete')
@@ -28,7 +30,9 @@ if ($page == 'add')
 {
 	if (isset($_POST['saveLicense']))
 	{
-		if ($_POST['max'] == '' || $_POST['customer-id'] == '' || $_POST['product-id'] == '')
+		$plan = Plan::get(intval($_POST['plan-id']));
+
+		if ($_POST['max'] == '' || $_POST['customer-id'] == '' || $_POST['plan-id'] == '')
 		{
 			$msg['err'] = 'Please fill out all fields below!';
 		}
@@ -36,18 +40,27 @@ if ($page == 'add')
 		{
 			$msg['err'] = 'Oops! There is no customer with this ID : '.intval($_POST['customer-id']);
 		}
+		else if (!Plan::get(intval($_POST['plan-id'])) instanceof Plan)
+		{
+			$msg['err'] = 'Oops! There is no plan with this ID : '.intval($_POST['plan-id']);
+		}
+		else if (!$plan instanceof Plan)
+		{
+			$msg['err'] = 'Oops! The plan that you choosed is not valid';
+		}
 		else
 		{
 			$max 			= intval($_POST['max']);
 			$customer_id	= intval($_POST['customer-id']);
-			$product_id		= intval($_POST['product-id']);
 
 			$license = new License();
-			$license->license_code = sha1($product_id.'-'.$customer_id.'-'.time());
+			$license->license_code = sha1($plan->id.'-'.$customer_id.'-'.time());
 			$license->activation_max = $max;
 			$license->banned = 0;
-			$license->products_id = $product_id;
+			$license->products_id = $plan->getProduct()->id;
 			$license->customers_id = $customer_id;
+			$license->plans_id = $plan->id;
+			$license->license_type = $plan->plan_type;
 
 			if ($license->save())
 			{
@@ -71,6 +84,8 @@ else if ($page == 'edit')
 
 	if (isset($_POST['saveLicense']))
 	{
+		$plan = Plan::get(intval($_POST['plan-id']));
+
 		if (!$license instanceof License)
 		{
 			// redirect
@@ -78,7 +93,7 @@ else if ($page == 'edit')
 			exit;
 		}
 		
-		if ($_POST['max'] == '' || $_POST['customer-id'] == '' || $_POST['product-id'] == '')
+		if ($_POST['max'] == '' || $_POST['customer-id'] == '' || $_POST['status'] == '')
 		{
 			$msg['err'] = 'Please fill out all fields below!';
 		}
@@ -86,20 +101,23 @@ else if ($page == 'edit')
 		{
 			$msg['err'] = 'Oops! There is no customer with this ID : '.intval($_POST['customer-id']);
 		}
+		else if (!$plan instanceof Plan)
+		{
+			$msg['err'] = 'Oops! The plan that you choosed is not valid';
+		}
 		else
 		{
 			$max 			= intval($_POST['max']);
 			$customer_id	= intval($_POST['customer-id']);
-			$product_id		= intval($_POST['product-id']);
 			$banned			= (string)intval($_POST['status']);
-
-			echo $banned;
 
 			$license->activation_max = $max;
 			$license->banned = $banned;
 			$license->products_id = $product_id;
 			$license->customers_id = $customer_id;
-		
+			$license->plans_id = $plan->id;
+			$license->license_type = $plan->plan_type;
+
 			if ($license->save())
 			{
 				// redirect
@@ -119,7 +137,14 @@ else if ($page == 'edit')
 else
 {
 	$licenses = [];
-	if ($customerID)
+
+	if ($customerID && $productID)
+	{
+		$licenses = License::getAllBy(['customers_id' => $customerID, 'products_id' => $productID], ['id', 'DESC']);
+		if (!count($licenses))
+			$msg['err'] = "No licenses for this customer & product!";
+	}
+	else if ($customerID)
 	{
 		$licenses = License::getAllBy(['customers_id' => $customerID], ['id', 'DESC']);
 		if (!count($licenses))

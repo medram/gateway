@@ -72,10 +72,10 @@ function sendProductToCustomer(Invoice $invoice)
 	$licenses = []; // licenses classes
 	$licenses_codes = [];
 
-	// create new licenses for the first time.
 	// get the licenses if it's found.
-	$licenses = $customer->getLicenses();
+	$licenses = $plan->getLicenses($customer);
 
+	// create new licenses for the first time.
 	if (!count($licenses))
 	{
 		for ($i = 0; $i < $plan->max_licenses; ++$i)

@@ -14,7 +14,7 @@ if (is_array($transactions))
 else
 	$data['transactions'] = [];
 
-$data['dash_title'] = "Transactions <small>({$tr_result})</small>";
+$data['dash_title'] = "Transactions ({$tr_result})";
 Dashboard::Render('transactions', $data);
 
 ?>

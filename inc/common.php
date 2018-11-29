@@ -33,6 +33,11 @@ function checkParams($keys)
     return true;
 }
 
+function isAjaxRequest()
+{
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+}
+
 function logger($string)
 {
     if (DEBUG_SHOW_OPERATIONS)

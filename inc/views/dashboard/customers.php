@@ -28,7 +28,6 @@ if (count($customers) == 0)
 			$products = $customer->getProducts();
 			$pDisabled = count($products)? '' : 'disabled' ;
 			
-			
 			$licenses = $customer->getLicenses();
 			$disabled = count($licenses)? '' : 'disabled' ;
 			?>

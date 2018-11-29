@@ -1,5 +1,6 @@
 window.onload = function (){
 	delateBtn();
+	resendEmail();
 };
 
 function delateBtn()
@@ -15,6 +16,53 @@ function delateBtn()
 	            window.location = this.href;
 	        }
 	    });
+	}
+}
+
+function resendEmail()
+{
+	// ajax.php?a=sendEmail&cu=<?php echo $customer->id ?>&incoice=<?php echo $invoice->id
+	let table = document.querySelector('table.resendEmail');
+	if (table != null)
+	{
+		let customerID = table.getAttribute('data-customer');
+		
+		table.addEventListener('click', function (e){
+			e.preventDefault();
+			let invoiceID = e.target.getAttribute('data-invoice');
+			let lastValue = e.target.value;
+
+			if (e.target.nodeName == "BUTTON" && e.target.classList.contains('send'))
+			{
+				// send Ajax request to the server to resend email to customer.
+				$.ajax({
+					type: 'GET',
+					url: 'ajax.php?a=resendEmail&cu='+customerID+'&invoice='+invoiceID,
+					dataType: 'json',
+					beforeSend: function (){
+						lastValue = e.target.innerHTML;
+						e.target.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Resending product to this customer...';
+					},
+					success: function (result, status, xhr){
+						if (xhr.status == 200)
+						{
+							//result = JSON.parse(result);
+							alert(result.message);
+						}
+						else
+						{
+							alert('Oops, Something went wrong\nError '+xhr.status+": "+xhr.statusText);
+						}
+					},
+					error: function (xhr, status, statusText){
+						alert('Oops, Something went wrong\nError '+xhr.status+": "+xhr.statusText);
+					},
+					complete: function (){
+						e.target.innerHTML = lastValue;
+					},
+				});
+			}
+		});
 	}
 }
 

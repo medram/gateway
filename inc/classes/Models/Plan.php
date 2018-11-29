@@ -6,6 +6,7 @@ use MR4Web\Models\PDOModel;
 use MR4Web\Models\Transaction;
 use MR4Web\Models\Product;
 use MR4Web\Models\Customer;
+use MR4Web\Models\License;
 use MR4Web\Models\Plans_Coupon;
 
 class Plan extends PDOModel {
@@ -47,14 +48,12 @@ class Plan extends PDOModel {
 		return Invoice::getAllBy(['plans_id' => $this->id]);
 	}
 
-/*	public function getCustomerInvoices(Customer $customer)
+	public function getLicenses(Customer $customer = NULL)
 	{
-		return Invoice::getAllBy([
-			'customers_id' => $customer->id,
-			'transactions_id' => ,
-			'plans_id' => $this->id
-		]);
-	}*/
+		if ($customer != NULL && $customer instanceof Customer)
+			return License::getAllBy(['customers_id' => $customer->id, 'plans_id' => $this->id]);
+		return License::getAllBy(['plans_id' => $this->id]);
+	}
 
 	public function supportCoupon(Coupon &$coupon)
 	{
