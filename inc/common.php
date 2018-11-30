@@ -318,6 +318,32 @@ function action_filter($name)
     return Hooks::action_exists($name);
 }
 
+function isHttpsOn()
+{
+    return isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on';
+}
+
+function useSSL($turnOn = TRUE)
+{
+    $url = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    if ($turnOn)
+    {
+        if (!isHttpsOn() && $_SERVER['HTTP_HOST'] != 'localhost')
+        {
+            header('location: https://'.$url, true, 301);
+            exit;
+        }
+    }
+    else
+    {
+        if (isHttpsOn())
+        {
+            header("location: http://".$url, true, 301);
+            exit;
+        }
+    }
+}
+
 function get_country_menu ($name='',$class='',$select=0,$l='')
 {
     $lang = 'en';

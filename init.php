@@ -22,6 +22,8 @@ date_default_timezone_set("Etc/GMT+0");
 require_once "vendor/autoload.php";
 require_once INC.'common.php';
 
+// force to use https.
+useSSL(true);
 
 /*
 * autoload classes.
