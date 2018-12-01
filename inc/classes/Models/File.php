@@ -32,7 +32,7 @@ class File extends PDOModel {
 		// generate a valid URL to download the file.
 		if (file_exists($path))
 		{
-			return BASE_URL."download.php?p={$plan->id}&t={$customer->token}";
+			return BASE_URL."download.php?pl={$plan->id}&t={$customer->token}";
 		}
 
 		return NULL;
