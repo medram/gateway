@@ -77,6 +77,36 @@ class License extends PDOModel {
 
 		return $code;
 	}
+
+	public function isBanned()
+	{
+		return (bool)$this->banned;
+	}
+
+	public function isValidToUsed()
+	{
+		return $this->activation_num < $this->activation_max;
+	}
+
+	public function activate(Domain& $domain)
+	{
+		if ($this->isValidToUsed())
+		{
+			$this->activation_num++;
+			return ($domain->activate() && $this->save());
+		}
+		return FALSE;
+	}
+
+	public function deactivate(Domain& $domain)
+	{
+		if ($this->activation_num > 0)
+		{
+			$this->activation_num = (string)((int)$this->activation_num - 1);
+			return ($domain->deactivate() && $this->save());
+		}
+		return FALSE;
+	}
 }
 
 ?>

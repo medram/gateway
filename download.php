@@ -31,6 +31,7 @@ if (!$file instanceof File || !file_exists($file->path))
 	exit;
 }
 
+// start streaming a file (product) to a client.
 streamFile($file->path);
 
 ?>

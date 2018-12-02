@@ -22,10 +22,11 @@ function show2input(&$value)
 		echo htmlentities($value, ENT_QUOTES);
 }
 
-function checkParams($keys)
+function checkParams(array $keys)
 {
 	foreach ($keys as $key)
 	{
+		//echo '$_POST['.$key.'] = '.$_POST[$key].'<br>';
 		if (!isset($_POST[$key]) || empty($_POST[$key]))
 			return false;
 	}
@@ -40,7 +41,7 @@ function isAjaxRequest()
 
 function logger($string)
 {
-	if (DEBUG_SHOW_OPERATIONS)
+	if (DEBUG_SHOW_ERRORS)
 		echo $string;
 }
 
@@ -370,9 +371,9 @@ function logFile($data)
 */
 function streamFile($filePath, array $config = [])
 {
-	// for debug
-	logFile("----------------------------------\n\r");
-	logFile(getHeaders());
+	// just for debug
+	//logFile("----------------------------------\n\r");
+	//logFile(getHeaders());
 	
 	$stream = new MR4Web\Utils\FileStream($filePath, $config);
 	$stream->start();

@@ -1,5 +1,15 @@
 <?php
 
+/**
+* 	@author: Mohammed Ramouchy (MR4Web)
+*	@copyright: 2018 MR4Web
+* 	@start: 30/11/2018
+* 	@end: 01/12/2018
+* 	@Description: streaming big files via HTTP protocol easily
+*	@link: http://www.mr4web.com
+*	@version: 1.0
+*/
+
 namespace MR4Web\Utils;
 
 class FileStream
