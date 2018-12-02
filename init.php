@@ -31,6 +31,7 @@ useSSL(true);
 */
 spl_autoload_register(function ($filename){
 
+	/*
 	$aliases = [
 		'MR4Web\\API\\' => API_DIR,
 		'MR4Web\\'	=> CLASS_DIR,
@@ -38,15 +39,16 @@ spl_autoload_register(function ($filename){
 
 	$path = '';
 
-	/*foreach ($aliases as $key => $value)
+	foreach ($aliases as $key => $value)
 	{
 		print_r($path);
 		if ($path != '')
 			break;
-	}*/
+	}
 	$path = preg_replace("/^MR4Web/", CLASS_DIR, $filename);
-
-	//$path = str_ireplace('MR4Web\\', CLASS_DIR, $filename);
+	*/
+	
+	$path = str_ireplace('MR4Web\\', CLASS_DIR, $filename);
 	$path = $path.'.php';
 	$path = str_ireplace(['\\', '//'], '/', $path);
 
