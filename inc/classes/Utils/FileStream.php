@@ -233,7 +233,7 @@ class FileStream
 		// set header here
 		header('Content-Disposition: attachment; filename="'.urlencode($this->_name).'"');
 		header('Content-Type: '.$this->getContentType());
-		//header('Content-Type: application/force-download');		
+		//header('Content-Type: application/force-download');
 
 		if ($this->_config['chunked'])
 			header("Accept-Ranges: bytes");
@@ -291,6 +291,7 @@ class FileStream
 		else
 		{
 			header("Content-Length: {$this->_filesize}");
+			header('Etag: "'.md5_file($this->_path).'"');
 		}
 	}
 
