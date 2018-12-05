@@ -7,6 +7,7 @@ use MR4Web\Models\License;
 use MR4Web\Models\Customer;
 use MR4Web\Models\Plan;
 use MR4Web\Models\User;
+use MR4Web\Models\Update;
 
 class Product extends PDOModel {
 
@@ -91,6 +92,22 @@ class Product extends PDOModel {
 	public function getUser()
 	{
 		return User::get($this->users_id);
+	}
+
+	public function getUpdates()
+	{
+		return Update::getAllBy(['products_id' => $this->id], ['id', 'DESC']);
+	}
+
+	public function getLastUpdate()
+	{
+		$updates = $this->getUpdates();
+		return count($updates)? $updates[0] : NULL;
+	}
+
+	public function getNews()
+	{
+		return News::getAllBy(['products_id' => $this->id]);
 	}
 }
 

@@ -25,7 +25,7 @@ class Res {
 	public function appendSuccessPurchase($productName = '')
 	{
 		self::add('activate', 1);
-		self::add('message', 'Successfully Activated, Thank you for Purchasing '.$productName.'.');
+		self::add('message', 'Activated Successfully, Thank you for Purchasing '.$productName.'.');
 	}
 
 	public function appendValidParams()

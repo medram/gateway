@@ -7,6 +7,7 @@ use MR4Web\Models\Transaction;
 use MR4Web\Models\Product;
 use MR4Web\Models\Customer;
 use MR4Web\Models\License;
+use MR4Web\Models\Update;
 use MR4Web\Models\Plans_Coupon;
 
 class Plan extends PDOModel {
@@ -103,6 +104,11 @@ class Plan extends PDOModel {
 		}
 		
 		return $plans;
+	}
+
+	public function getUpdates()
+	{
+		return Update::getAllBy(['plans_id' => $this->id]);
 	}
 }
 

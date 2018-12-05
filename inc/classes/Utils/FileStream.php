@@ -306,7 +306,7 @@ class FileStream
 		$bytesToRead = $this->_config['bufferSize'];
 		while (!feof($this->_stream) && $offset <= $this->_end)
 		{
-			// we added +1 to get the last tirm which is 13 in this case.
+			// we added +1 to get the last tirm.
 			if ($offset + $bytesToRead > $this->_end)
 				$bytesToRead = $this->_end - $offset + 1;
 

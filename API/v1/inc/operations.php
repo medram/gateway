@@ -33,7 +33,7 @@ function activate_operation()
 		$listener = strip_tags(_addslashes($_POST['listener']));
 
 		if (!filter_var($ip, FILTER_VALIDATE_IP) || 
-			//!filter_var($c_domain, FILTER_VALIDATE_URL) ||
+			!filter_var($c_domain, FILTER_VALIDATE_URL) ||
 			!filter_var($listener, FILTER_VALIDATE_URL))
 		{
 			Res::appendInvalidParams();
@@ -63,7 +63,6 @@ function activate_operation()
 				{
 					logger("license code found on the database!\n");
 				
-
 					$domain = Domain::getBy(['IP' => $ip, 'domain_name' => $c_domain]);
 					$product = $license->getProduct();
 					//$customer = $license->getCustomer();
@@ -76,8 +75,12 @@ function activate_operation()
 							- 
 					*/
 
+					if ($ip == "127.0.0.1" || $ip == '::1' || $c_domain == 'localhost')
+					{
+						Res::appendSuccessPurchase($product->name);
+					}
 					// check if client license is valid for this domain
-					if (!$domain instanceof Domain)
+					else if (!$domain instanceof Domain)
 					{
 						logger("new IP/Domain!\n");
 						
@@ -181,7 +184,12 @@ function deactivate_operation()
 
 		$license = License::getBy(['license_code' => $code]);
 
-		if (!$license instanceof License)
+		if (!filter_var($ip, FILTER_VALIDATE_IP) || 
+			!filter_var($c_domain, FILTER_VALIDATE_URL))
+		{
+			Res::appendInvalidParams();
+		}
+		else if (!$license instanceof License)
 		{
 			Res::add('deactivate', 0);
 			Res::add('message', 'This License code is not valid');
@@ -191,12 +199,20 @@ function deactivate_operation()
 			try {
 				PDOModel::getPDO()->beginTransaction();
 
+				// check the domain using IP & Domain name.
 				$domain = Domain::getBy(['IP' => $ip, 'domain_name' => $c_domain]);
+				// check domain using just IP.
+				//$domain = Domain::getBy(['IP' => $ip]);
 
 				if ($license->isBanned())
 				{
 					Res::add('deactivate', 0);
 					Res::add('message', 'This License code has been banned!');
+				}
+				else if ($ip == "127.0.0.1" || $ip == '::1' || $c_domain == 'localhost')
+				{
+					Res::add('deactivate', 1);
+					Res::add('message', 'The License code has been deactivated successfully for this IP/domain.');
 				}
 				else if (!$domain instanceof Domain)
 				{
