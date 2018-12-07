@@ -20,13 +20,19 @@ use MR4Web\Models\Plan;
 			<input type="text" id="desc" name="desc" class="form-control" value="<?php @show2input($plan->desc) ?>" required><br>
 			
 			<label for="price">Price (in USD) :</label>
-			<input type="number" min="0" id="price" name="price" class="form-control" value="<?php @show2input($plan->price) ?>" required><br>
+			<input type="number" id="price" min="0" step=".01" name="price" class="form-control" value="<?php @show2input($plan->price) ?>" required><br>
 			
 			<label for="old-price">Old Price (in USD) :</label>
-			<input type="number" min="0" id="old-price" name="old-price" class="form-control" value="<?php @show2input($plan->old_price) ?>" required><br>
+			<input type="number" min="0" step=".01" id="old-price" name="old-price" class="form-control" value="<?php @show2input($plan->old_price) ?>" required><br>
 			
 			<label for="max-licenses">Max Licenses :</label>
 			<input type="number" min="0" id="max-licenses" name="max-licenses" class="form-control" value="<?php @show2input($plan->max_licenses) ?>" required><br>
+
+			<label for="planStatus">Plan Status :</label>
+			<select id="planStatus" name="status" class="form-control">
+				<option value="1" <?php echo (@$plan->status == 1)? 'selected' : '' ?> >active</option>
+				<option value="0" <?php echo (@$plan->status == 0)? 'selected' : '' ?> >inactive</option>
+			</select><br>
 
 			<label for="planType">Plan Type :</label>
 			<select name="plan-type" id="planType" class="form-control">

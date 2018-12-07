@@ -21,6 +21,7 @@ if (count($plans) == 0)
 			<th>Old Price</th>
 			<th>Plan Type</th>
 			<th>Max Licenses</th>
+			<th>Status</th>
 			<th>Created</th>
 			<th>Actions</th>
 		</tr>
@@ -40,6 +41,14 @@ if (count($plans) == 0)
 			<td><?php echo '<del>$'.$plan->old_price.'</del>' ?></td>
 			<td><?php echo $plan->planType() ?></td>
 			<td><?php echo $plan->max_licenses ?></td>
+			<td>
+				<?php
+				if ($plan->status == 1)
+					echo '<span class="badge badge-success">active</span>';
+				else
+					echo '<span class="badge badge-warning">inactive</span>';
+				?>
+			</td>
 			<td><?php echo $plan->created ?></td>
 			<td>
 				<?php if ($mode == 0): ?>

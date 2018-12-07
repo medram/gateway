@@ -14,7 +14,7 @@
 			<ul class="list-group mb-3">
 				<li class="list-group-item d-flex justify-content-between lh-condensed">
 					<div>
-						<h6 class="my-0"><?php echo $plan->getProduct()->name.' - '.$plan->name ?></h6>
+						<h6 class="my-0"><?php echo $product->name.' v'.$product->version.' - '.$plan->name ?></h6>
 						<small class="text-muted"><?php echo $plan->desc ?></small>
 					</div>
 					<span class="text-muted">

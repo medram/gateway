@@ -28,6 +28,7 @@ class Plan extends PDOModel {
 			'price'			=> \PDO::PARAM_STR,
 			'old_price'		=> \PDO::PARAM_STR,
 			'plan_type'		=> \PDO::PARAM_STR,
+			'status'		=> \PDO::PARAM_INT,
 			'max_licenses'	=> \PDO::PARAM_INT,
 			'created'		=> \PDO::PARAM_STR
 		];

@@ -52,10 +52,11 @@ if ($page == 'add')
 		{
 			$name 		= _addslashes(strip_tags($_POST['name']));
 			$desc 		= _addslashes(strip_tags($_POST['desc']));
-			$price 		= intval($_POST['price']);
-			$oldPrice 	= intval($_POST['old-price']);
+			$price 		= (float)($_POST['price']);
+			$oldPrice 	= (float)($_POST['old-price']);
 			$planType	= _addslashes(strip_tags($_POST['plan-type']));
 			$maxLicenses= intval($_POST['max-licenses']);
+			$status 	= intval($_POST['status']);
 
 			$plan = new Plan();
 			$plan->products_id = $p_id;
@@ -65,6 +66,7 @@ if ($page == 'add')
 			$plan->old_price = $oldPrice;
 			$plan->plan_type = $planType;
 			$plan->max_licenses = $maxLicenses;
+			$plan->status = (string)$status;
 
 			if ($plan->save())
 			{
@@ -107,10 +109,11 @@ else if ($page == 'edit')
 		{
 			$name 		= _addslashes(strip_tags($_POST['name']));
 			$desc 		= _addslashes(strip_tags($_POST['desc']));
-			$price 		= intval($_POST['price']);
-			$oldPrice 	= intval($_POST['old-price']);
+			$price 		= (float)($_POST['price']);
+			$oldPrice 	= (float)($_POST['old-price']);
 			$planType	= _addslashes(strip_tags($_POST['plan-type']));
 			$maxLicenses= intval($_POST['max-licenses']);
+			$status 	= intval($_POST['status']);
 
 			$plan = Plan::get($plan_id);
 			$plan->products_id = $p_id;
@@ -120,6 +123,7 @@ else if ($page == 'edit')
 			$plan->old_price = $oldPrice;
 			$plan->plan_type = $planType;
 			$plan->max_licenses = $maxLicenses;
+			$plan->status = (string)$status;
 
 			if ($plan->save())
 			{

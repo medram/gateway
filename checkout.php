@@ -47,9 +47,14 @@ $coupon = Coupon::getBy(['code' => $couponCode, 'expired' => 0]);
 /*echo '<pre>';
 var_dump($coupon);
 echo '</pre>';*/
-if (!$plan instanceof Plan)
+if (!$plan instanceof Plan || $plan->status == 0)
 {
-	// redirecting to home page.
+	header('HTTP/1.1 404 Not Found');
+	
+	$data['title'] = 'Not Found';
+	View::render('header', $data);
+	View::render('errors', $data);
+	View::render('footer', $data);
 	exit();
 }
 
@@ -144,6 +149,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'pay')
 // --------------------- / send a request -------------------
 
 $data['plan'] = $plan;
+$data['product'] = $plan->getProduct();
 $data['total'] = $total;
 $data['msg'] = $msg;
 $data['paymentMethods'] = $paymentMethods;
