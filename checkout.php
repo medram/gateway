@@ -52,7 +52,7 @@ if (!$plan instanceof Plan || $plan->status == 0)
 	header('HTTP/1.1 404 Not Found');
 	
 	$data['title'] = 'Not Found';
-	$data['message'] = 'This product/offer not found or not available for now!';
+	$data['message'] = '<i class="fa fa-meh-o fa-5x"></i><br>This product/offer not found or not available for now!';
 	View::render('header', $data);
 	View::render('errors', $data);
 	View::render('footer', $data);

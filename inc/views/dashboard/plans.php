@@ -54,7 +54,9 @@ if (count($plans) == 0)
 				<?php if ($mode == 0): ?>
 				<a href="<?php echo '?page=edit&plan_id='.$plan->id.'&p_id='.$p_id ?>" class="btn btn-primary btn-sm" ><i class="fa fa-pencil"></i></a>
 				<a href="<?php echo '?a=delete&plan_id='.$plan->id.'&p_id='.$p_id ?>" class="btn btn-danger btn-sm action-delete"><i class="fa fa-trash-o"></i></a>
-				
+					<?php if ($plan->status): ?>
+						<a href="<?php echo BASE_URL.'checkout.php?pl='.$plan->id; ?>" target="_blank" class="btn btn-info btn-sm"><i class="fa fa-link"></i></a>
+					<?php endif; ?>
 				<?php elseif ($mode == 1): ?>
 				---
 				<?php endif; ?>
