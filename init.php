@@ -16,6 +16,7 @@ define('CLASS_DIR', INC.'classes/');
 define('VIEWS_DIR', INC.'views/');
 define('UPLOADS_DIR', INC.'uploads/');
 define('API_DIR', ROOT.'API/');
+define('PLUGINS_DIR', INC.'plugins/');
 
 // default timezone.
 date_default_timezone_set("Etc/GMT+0");
