@@ -1,6 +1,13 @@
 <div class="row">
 	<div class="col-md-8">
-		<h2 class="text-success"><i class="fa fa-fw fa-money"></i> Money:</h2>
+		<h2 class="text-success"><i class="fa fa-fw fa-money"></i> Revenue:
+		<select name="filter-time" class="form-control pull-right" style="display: inline-block; width: 150px;">
+			<option value="all">All</option>
+			<option value="today">Today</option>
+			<option value="last-week">Last week</option>
+			<option value="last-month">Last month</option>
+		</select>
+		</h2>
 		<table class="table table-sm table-striped table-hover">
 			<thead>
 				<tr>

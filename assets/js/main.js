@@ -1,6 +1,7 @@
 window.onload = function (){
 	delateBtn();
 	resendEmail();
+	applyFilter();
 };
 
 function delateBtn()
@@ -64,6 +65,20 @@ function resendEmail()
 			}
 		});
 	}
+}
+
+// filter statistic using time.
+function applyFilter()
+{
+	let select = document.querySelector('select[name=filter-time]');
+	let currentValue = window.location.search.slice(1).split('=')[1];
+
+	select.value = currentValue || 'all';
+
+	select.addEventListener('change', function (){
+		currentValue = select.value;
+		window.location = window.location.origin + window.location.pathname + "?time="+select.value;
+	});
 }
 
 /*function perPage()

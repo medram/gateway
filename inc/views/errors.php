@@ -5,6 +5,6 @@
 </div>
 <div class="row">
 	<div class="container text-center">
-		<span>This product/offer not found or not available for now!</span>
+		<span><?php echo $message != ''? $message : '' ?></span>
 	</div>
 </div>

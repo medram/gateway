@@ -8,8 +8,8 @@ if (count($transactions) == 0)
 		<tr>
 			<th>ID</th>
 			<th>Transaction ID</th>
-			<th>Fee</th>
 			<th>Amount</th>
+			<th>Fee</th>
 			<th>Quantity</th>
 			<th>Status</th>
 			<th>Created</th>
@@ -20,8 +20,8 @@ if (count($transactions) == 0)
 		<tr>
 			<td><?php echo $tr->id ?></td>
 			<td><?php echo $tr->Tr_ID ?></td>
-			<td><?php echo $tr->Tr_fee.' <small>'.$tr->currency.'</small>' ?></td>
 			<td><?php echo $tr->amount.' <small>'.$tr->currency.'</small>' ?></td>
+			<td><?php echo $tr->Tr_fee.' <small>'.$tr->currency.'</small>' ?></td>
 			<td><?php echo $tr->quantity ?></td>
 			<td><?php echo $tr->state ?></td>
 			<td><?php echo $tr->created ?></td>

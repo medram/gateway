@@ -30,12 +30,26 @@ class Product extends PDOModel {
 		return Plan::getAllBy(['products_id' => $this->id]);		
 	}
 
+	public function getPlansWhere($where)
+	{
+		if (is_string($where))
+			return Plan::getAllBy($where." AND `products_id`={$this->id}");
+		return [];
+	}
 
 	public function getLicenses(Customer $customer = NULL)
 	{
 		if ($customer != NULL)
 			return License::getAllBy(['products_id' => $this->id, 'customers_id' => $customer->id]);
 		return License::getAllBy(['products_id' => $this->id]);
+	}
+
+	public function getLicensesWhere($where)
+	{
+		if (is_string($where))
+			return License::getAllBy($where." AND `products_id`={$this->id}");
+		
+		return [];
 	}
 
 	public static function deleteProduct($id)
