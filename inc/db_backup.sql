@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2019 at 04:32 PM
+-- Generation Time: Feb 08, 2019 at 10:42 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -196,7 +196,8 @@ INSERT INTO `invoices` (`id`, `invoice_id`, `transactions_id`, `customers_id`, `
 (4, '#1543177775', 64, 14, 4, NULL, '2018-11-25 20:30:12'),
 (5, '#1543179624', 65, 14, 7, NULL, '2018-11-25 21:04:31'),
 (6, '#1549639067', 66, 6, 14, NULL, '2019-02-08 16:19:57'),
-(7, '#1549639628', 67, 15, 14, NULL, '2019-02-08 16:27:46');
+(7, '#1549639628', 67, 15, 14, NULL, '2019-02-08 16:27:46'),
+(8, '#1549658112', 68, 15, 14, NULL, '2019-02-08 21:36:45');
 
 -- --------------------------------------------------------
 
@@ -351,7 +352,7 @@ INSERT INTO `plans` (`id`, `products_id`, `name`, `desc`, `price`, `old_price`, 
 (9, 64, 'Extream', 'dsfsdfsdfgdhdfgh', 195, 299, 'L', 1, 1, NULL, NULL, '2018-11-25 20:53:27', '2018-11-25 20:53:27'),
 (10, 2, 'Super', '565sdfsdfsdf', 299, 399, 'Y', 1, 0, NULL, NULL, '2018-11-25 22:20:43', '2018-11-25 22:20:43'),
 (11, 2, 'Starter', '54dfgdflkdskj', 99, 199, 'L', 1, 1, NULL, NULL, '2018-11-25 22:21:16', '2018-11-25 22:21:16'),
-(14, 1, 'test plan', 'this is just a test plan', 45, 455, 'Y', 1, 1, '<script>\r\nconsole.log(\\''analytics Code!\\'');\r\n</script>', '<script>\r\nconsole.log(\\''thanks page analytics Code!\\'');\r\n</script>', '2019-02-08 16:07:59', '2019-02-08 16:07:59');
+(14, 1, 'test plan', 'this is just a test plan', 45, 455, 'Y', 1, 1, '<script>\r\nconsole.log(\\''plan Code!\\'');\r\n</script>', '<script>\r\nconsole.log(\\''thanks page plan Code!\\'');\r\n</script>', '2019-02-08 16:07:59', '2019-02-08 16:07:59');
 
 -- --------------------------------------------------------
 
@@ -451,11 +452,11 @@ CREATE TABLE `settings` (
 
 INSERT INTO `settings` (`id`, `name`, `value`, `autoload`) VALUES
 (1, 'site_name', 'MR4Web Checkout', 1),
-(2, 'site_desc', NULL, 1),
+(2, 'site_desc', 'small description', 1),
 (3, 'email_support', 'support@test.ws', 1),
 (4, 'email_sales_support', 'sales@test.ws', 0),
-(5, 'paypal_secret_key', 'AcgsfK2G5cFknbH4KUsFjf36OR_TKlZpOKDzk41-GehHNfyVhkRHADzd5UbNo09noCDByXRo1d8Omuj5', 0),
-(6, 'paypal_public_key', 'EP6fGV_QT4l8ZhHpEO2RmUb6SQOHH37OQkXoM9oGJoW31oJqyiOJDvwNs-pGDAz6nYmACAOPRNWkjrsW', 0),
+(5, 'paypal_public_key', '', 0),
+(6, 'paypal_secret_key', '', 0),
 (7, 'email_method', 'smtp', 0),
 (8, 'SMTP_Host', 'vps574737.ovh.net', 0),
 (9, 'SMTP_Port', '465', 0),
@@ -467,7 +468,10 @@ INSERT INTO `settings` (`id`, `name`, `value`, `autoload`) VALUES
 (15, 'plan_files_allowed_type', 'rar,zip', 0),
 (16, 'plan_files_max_size', '204800', 0),
 (17, 'site_version', '0.6.1 alfa', 1),
-(18, 'thanks_page_analytics_code', '<!-- this is analytics code --><script>console.log(''hello !'')</script>', 0);
+(18, 'thanks_page_analytics_code', '<!-- this is analytics cooooooooode -->\n<script>console.log(\\"general analytics code\\")</script>', 0),
+(19, 'sandbox', '1', 0),
+(20, 'paypal_sandbox_public_key', 'AcgsfK2G5cFknbH4KUsFjf36OR_TKlZpOKDzk41-GehHNfyVhkRHADzd5UbNo09noCDByXRo1d8Omuj5', 0),
+(21, 'paypal_sandbox_secret_key', 'EP6fGV_QT4l8ZhHpEO2RmUb6SQOHH37OQkXoM9oGJoW31oJqyiOJDvwNs-pGDAz6nYmACAOPRNWkjrsW', 0);
 
 -- --------------------------------------------------------
 
@@ -500,7 +504,8 @@ INSERT INTO `transactions` (`id`, `PM_id`, `customers_id`, `payers_id`, `Tr_ID`,
 (64, 1, 14, 6, 'PAY-9HH47114MY443372CLP5QMNI', 5.15, 99, 1, 'USD', 'completed', '2018-12-05 20:30:12'),
 (65, 1, 14, 6, 'PAY-9B52108122722660TLP5Q24A', 6.18, 120, 1, 'USD', 'completed', '2018-12-09 21:04:31'),
 (66, 1, 6, 6, 'PAYID-LROZ3JA653685896T0610228', 2.51, 45, 1, 'USD', 'completed', '2019-02-08 16:19:57'),
-(67, 1, 15, 6, 'PAYID-LROZ7VA1VC20128K2907315P', 2.51, 45, 1, 'USD', 'completed', '2019-02-08 16:27:46');
+(67, 1, 15, 6, 'PAYID-LROZ7VA1VC20128K2907315P', 2.51, 45, 1, 'USD', 'completed', '2019-02-08 16:27:46'),
+(68, 1, 15, 6, 'PAYID-LRO6QCI3N1226013C0912649', 2.51, 45, 1, 'USD', 'completed', '2019-02-08 21:36:45');
 
 -- --------------------------------------------------------
 
@@ -734,7 +739,7 @@ ALTER TABLE `files`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `licenses`
 --
@@ -784,12 +789,12 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 --
 -- AUTO_INCREMENT for table `updates`
 --
