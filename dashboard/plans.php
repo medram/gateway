@@ -57,6 +57,8 @@ if ($page == 'add')
 			$planType	= _addslashes(strip_tags($_POST['plan-type']));
 			$maxLicenses= intval($_POST['max-licenses']);
 			$status 	= intval($_POST['status']);
+			$analytics 	= _addslashes($_POST['analytics-code']);
+			$TP_analytics 	= _addslashes($_POST['tp-analytics-code']);
 
 			$plan = new Plan();
 			$plan->products_id = $p_id;
@@ -67,6 +69,8 @@ if ($page == 'add')
 			$plan->plan_type = $planType;
 			$plan->max_licenses = $maxLicenses;
 			$plan->status = (string)$status;
+			$plan->analytics_code = (string)$analytics;
+			$plan->thanks_page_analytics_code = (string)$TP_analytics;
 
 			if ($plan->save())
 			{
@@ -114,6 +118,8 @@ else if ($page == 'edit')
 			$planType	= _addslashes(strip_tags($_POST['plan-type']));
 			$maxLicenses= intval($_POST['max-licenses']);
 			$status 	= intval($_POST['status']);
+			$analytics 	= _addslashes($_POST['analytics-code']);
+			$TP_analytics 	= _addslashes($_POST['tp-analytics-code']);
 
 			$plan = Plan::get($plan_id);
 			$plan->products_id = $p_id;
@@ -124,6 +130,8 @@ else if ($page == 'edit')
 			$plan->plan_type = $planType;
 			$plan->max_licenses = $maxLicenses;
 			$plan->status = (string)$status;
+			$plan->analytics_code = (string)$analytics;
+			$plan->thanks_page_analytics_code = (string)$TP_analytics;
 
 			if ($plan->save())
 			{

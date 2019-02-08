@@ -1,3 +1,14 @@
+<?php
+use MR4Web\Models\Plan;
+
+echo "<!-- Analytics Code -->";
+echo getConfig('thanks_page_analytics_code');
+
+if (isset($plan) && $plan instanceof Plan)
+{
+	echo $plan->thanks_page_analytics_code;
+}
+?>
 <div class="row py-5">
 	<div class="col-md-12 text-center text-success">
 		<span><i class="fa fa-check fa-5x"></i></span>

@@ -48,6 +48,12 @@ use MR4Web\Models\Plan;
 			<?php endforeach; ?>
 			</select><br>
 
+			<label for="analytics">Analytics Code :</label>
+			<textarea id="analytics" name="analytics-code" class="form-control" rows="6"><?php @show2input($plan->analytics_code) ?></textarea><br>
+
+			<label for="tp-analytics">Thank you page analytics Code :</label>
+			<textarea id="tp-analytics" name="tp-analytics-code" class="form-control" rows="6"><?php @show2input($plan->thanks_page_analytics_code) ?></textarea><br>
+
 			<input type="submit" name="savePlan" class="btn btn-primary" value="Save">
 			<br>
 			<br>

@@ -1,4 +1,12 @@
+	<?php
+	use MR4Web\Models\Plan;
 
+	if (isset($plan) && $plan instanceof Plan)
+	{
+		echo "<!-- Plan Analytics Code -->";
+		echo $plan->analytics_code;
+	}
+	?>
 	<div class="py-5 text-center">
 		<!-- <img class="d-block mx-auto mb-4" src="" alt="" width="72" height="72"> -->
 		<h2 class='text-success'><i class='fa fa-fw fa-check'></i> Secure Checkout</h2>
