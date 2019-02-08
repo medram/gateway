@@ -37,6 +37,9 @@
 					<li class="nav-item">
 						<a class="nav-link" href="users.php"><i class="fa fa-fw fa-users"></i> Users & Roles</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="settings.php"><i class="fa fa-fw fa-cogs"></i> Settings</a>
+					</li>
 				</ul>
 			</div>
 		</nav>

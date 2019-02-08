@@ -2,6 +2,7 @@ window.onload = function (){
 	delateBtn();
 	resendEmail();
 	applyFilter();
+	editSettings();
 };
 
 function delateBtn()
@@ -73,11 +74,92 @@ function applyFilter()
 	let select = document.querySelector('select[name=filter-time]');
 	let currentValue = window.location.search.slice(1).split('=')[1];
 
-	select.value = currentValue || 'all';
+	if (select !== null)
+	{	
+		select.value = currentValue || 'all';
 
-	select.addEventListener('change', function (){
-		currentValue = select.value;
-		window.location = window.location.origin + window.location.pathname + "?time="+select.value;
+		select.addEventListener('change', function (){
+			currentValue = select.value;
+			window.location = window.location.origin + window.location.pathname + "?time="+select.value;
+		});
+	}
+}
+
+function editSettings()
+{
+	let modalBody = $(".modal-body");
+	let content = $(".modal-body > content");
+	let loading = $(".modal-body #loading");
+	let title = $(".modal #settingName");
+	let form = $(".modal-body form#settingForm");
+	let message = $(".modal #modalMsg");
+
+	$(".settings-table").on('click', function (e){
+		if (e.target.tagName === 'BUTTON')
+		{
+			let id = e.target.getAttribute('id');
+
+			$.ajax({
+				url: './ajax.php?a=editSetting&r='+Math.random(),
+				type: 'POST',
+				data: 'id=' + id,
+				beforeSend: function (xhr){
+					loading.show();
+					content.hide();
+				},
+				success: function (result, status, xhr){
+					//console.log(result);
+					loading.hide();
+					content.show();
+					if(!result.error && result.data)
+					{
+						title.text(result.data.name);
+						form.append("<textarea rows='5' name='setting-name' id='settingValue' class='form-control' >" + result.data.value.toString() + "</textarea>");
+					}
+				},
+				error: function (xhr, status, error){
+					alert(status + ': ' + error);
+				},
+			});
+		}
+	});
+
+	$('#editSetting').on('hidden.bs.modal', function (e) {
+		title.text('');
+		form.text('');
+		message.text('');
+	});
+
+	$('#saveSetting').on('click', function(){
+		let $this = $(this);
+		//console.log(form.find("textarea").val(), title.text());
+		
+		$.ajax({
+			url: './ajax.php?a=saveSetting&r='+Math.random(),
+			type: 'POST',
+			data: 'id=' + title.text() + '&value=' + form.find("textarea").val(),
+			beforeSend: function (xhr){
+				loading.show();
+				$this.text("Saving...");
+			},
+			success: function (result, status, xhr){
+				console.log(result);
+				loading.hide();
+				$this.text("Save changes");
+				
+				if(!result.error && result.saved)
+				{
+					message.html("<span class='text-success'>Saved successfully.</span>");
+				}
+				else
+				{
+					message.html("<span class='text-danger'>Something went wrong!.</span>");
+				}
+			},
+			error: function (xhr, status, error){
+				alert(status + ': ' + error);
+			},
+		});
 	});
 }
 

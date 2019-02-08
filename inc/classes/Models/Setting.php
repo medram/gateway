@@ -47,6 +47,23 @@ class Setting extends PDOModel {
 		}
 		return self::$_settings[$key];
 	}
+
+	public static function change($name, $value)
+	{
+		if ($name == '')
+			return false;
+
+		$table = self::getTableName();
+		$fieldName = self::getFieldName('name');
+		$fieldValue = self::getFieldName('value');
+		
+		$stm = self::getPDO()->prepare("UPDATE {$table} SET {$fieldValue}=:value WHERE {$fieldName}=:name");
+
+		return $stm->execute([
+				':name' 	=> $name,
+				':value'	=> $value
+			]);
+	}
 }
 
 ?>

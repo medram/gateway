@@ -55,6 +55,11 @@ function getAllConfigs()
 	return Setting::getSettings();
 }
 
+function setConfig($name, $value)
+{
+	return Setting::change($name, $value);
+}
+
 function sendEmail($to, $subject, $body, $from = [], $isHTML=true)
 {
 	$mail = new PHPMailer\PHPMailer\PHPMailer(true);

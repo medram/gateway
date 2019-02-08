@@ -22,10 +22,20 @@ class PaypalGateway extends AbstractGateway
 	public function __construct()
 	{
 		// prepare a connection with a paypal app
-		$this->_handle = new ApiContext(new OAuthTokenCredential(
-					getConfig('paypal_secret_key'),
-					getConfig('paypal_public_key')
+		if ((bool)getConfig('sandbox'))
+		{	
+			$this->_handle = new ApiContext(new OAuthTokenCredential(
+					getConfig('paypal_sandbox_public_key'),
+					getConfig('paypal_sandbox_secret_key')
 				));
+		}
+		else
+		{
+			$this->_handle = new ApiContext(new OAuthTokenCredential(
+						getConfig('paypal_public_key'),
+						getConfig('paypal_secret_key')
+					));
+		}
 	}
 
 	public function getHandle()

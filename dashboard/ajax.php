@@ -22,10 +22,10 @@ $action 	= isset($_GET['a'])? $_GET['a'] : '';
 $customerID = isset($_GET['cu'])? intval($_GET['cu']) : 0;
 $customer 	= Customer::get($customerID);
 
-if (!$customer instanceof Customer)
+/*if (!$customer instanceof Customer)
 {
 	exit;
-}
+}*/
 
 // get the invoice to resend licenses to the customer
 if ($action == 'resendEmail')
@@ -50,6 +50,30 @@ if ($action == 'resendEmail')
 		$res['error'] = true;
 		$res['message'] = "Invoice Not Found.";
 	}
+}
+else if ($action == 'editSetting')
+{
+	$name = isset($_POST['id'])? _addslashes(strip_tags($_POST['id'])) : '';
+	
+	if ($name != '')
+	{
+		$res['data']['name'] = $name;
+		$res['data']['value'] = getConfig($name);
+	}
+	else
+	{
+		$res['error'] = true;
+	}
+}
+else if ($action == 'saveSetting')
+{
+	$name = isset($_POST['id'])? trim(_addslashes(strip_tags($_POST['id']))) : '';
+	$value = isset($_POST['value'])? trim(_addslashes($_POST['value'])) : '';
+
+	if (setConfig($name, $value))
+		$res['saved'] = true;
+	else
+		$res['error'] = true;
 }
 
 header("Content-Type: application/json; charset=UTF-8");
