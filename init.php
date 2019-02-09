@@ -2,8 +2,6 @@
 session_start();
 
 define('START_TIME', microtime(true));
-define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http');
-define('BASE_URL', PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/test/gateway/');
 
 define('DEBUG', true);
 define('DEBUG_SHOW_ERRORS', false);
@@ -64,6 +62,10 @@ spl_autoload_register(function ($filename){
 		//echo "<pre>Fatal Error: The Class <b>\"".$filename."\"</b> Not Found on this path <b>".$path."</b></pre>";
 	}
 });
+
+// Make a base url for this project
+define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http');
+define('BASE_URL', PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/'.trim(MR4Web\Configs\Config::get('projectFolder'), '/').'/');
 
 require_once INC.'plugins_inc.php';
 
