@@ -9,7 +9,7 @@
 	<b>- Price:</b> ${{PRICE}}<br>
 	<b>- Transaction time:</b> {{TR_TIME}}.<br><br>
 
-	For more information or support, Please feel free to contact us (emails are below).<br>
+	For more information or support, Please feel free to contact us (the emails are below).<br>
 	<br>
 	and Have a nice day :D<br>
 	{{SITE_NAME}}<br>

@@ -65,7 +65,10 @@ spl_autoload_register(function ($filename){
 
 // Make a base url for this project
 define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http');
-define('BASE_URL', PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/'.trim(MR4Web\Configs\Config::get('projectFolder'), '/').'/');
+$projectFolder = trim(MR4Web\Configs\Config::get('projectFolder'), '/');
+$projectFolder = $projectFolder != '' ? $projectFolder.'/' : $projectFolder;
+
+define('BASE_URL', PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/'.$projectFolder);
 
 require_once INC.'plugins_inc.php';
 
