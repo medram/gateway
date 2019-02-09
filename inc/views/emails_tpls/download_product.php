@@ -2,7 +2,7 @@
 	<div class="text-center"><h1 class="color-blue">Download {{PRODUCT_NAME}}</h1></div>
 	<h2>Hello {{USERNAME}}!</h2>
 	Thank you for purchasing {{PRODUCT_NAME}} ({{PLAN_NAME}}) from {{SITE_NAME}},<br>
-	You could download the product that you purchase from this email.<br>
+	You could download the product which you have purchased from here.<br>
 	<h2>{{PRODUCT_NAME}} Informations:</h2>
 	You could download the "{{PRODUCT_NAME}}" from the link below:<br>
 	<div class="section text-center"><a href="{{DOWNLOAD_LINK}}" target="_blank" title="Download" class="btn btn-primary btn-lg">DOWNLOAD</a></div>
