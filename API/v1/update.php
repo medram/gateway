@@ -26,8 +26,7 @@ use MR4Web\Models\Update;
 		{}
 	],
 	"software": {
-		"updates": {
-
+		"update": {
 			"id": 11,
 			"paid": false,
 			"download_url": "http://...",
@@ -59,6 +58,26 @@ if ($check == 'all')
 	{
 		$product = $license->getProduct();
 
+		// ------ news -------
+		$news = $product->getNews();
+		// set status connection.
+		$res['status'] = 1;
+
+		// set news here
+		foreach ($news as $n)
+		{
+			$res['news'][] = [
+				'id' 			=> $n->id,
+				'title' 		=> $n->title,
+				'description' 	=> $n->description,
+				'image_URL' 	=> $n->image_URL,
+				'news_URL' 		=> $n->news_URL,
+				'created' 		=> $n->created,
+				'products_id' 	=> $n->products_id
+			];
+		}
+
+		// -------- software update -------
 		if (version_compare($product->version, $version, '<='))
 		{
 			header("HTTP/1.1 404 Not Found");
@@ -66,36 +85,19 @@ if ($check == 'all')
 		else
 		{
 			$update = $product->getLastUpdate();
-			$news = $product->getNews();
 
-			// set status connection.
-			$res['status'] = 1;
 
-			// set news here
-			foreach ($news as $n)
+			if ($update != NULL)
 			{
-				$res['news'][] = [
-					'id' 			=> $n->id,
-					'title' 		=> $n->title,
-					'description' 	=> $n->description,
-					'image_URL' 	=> $n->image_URL,
-					'news_URL' 		=> $n->news_URL,
-					'created' 		=> $n->created,
-					'products_id' 	=> $n->products_id
+				$res['software']['product'] = [
+					'id' 			=> $product->id,
+					'name' 			=> $product->name,
+					'version' 		=> $product->version,
+					'small_desc'	=> $product->small_desc,
+					'email_support' => $product->email_support,
+					'created' 		=> $product->created
 				];
-			}
 
-			$res['software']['product'] = [
-				'id' 			=> $product->id,
-				'name' 			=> $product->name,
-				'version' 		=> $product->version,
-				'small_desc'	=> $product->small_desc,
-				'email_support' => $product->email_support,
-				'created' 		=> $product->created
-			];
-
-			if ($update instanceof Update)
-			{
 				// set software.
 				$res['software']['update'] = [
 					'id' 			=> $update->id,
@@ -103,7 +105,7 @@ if ($check == 'all')
 					'download_url' 	=> $update->download_url,
 					'created' 		=> $update->created,
 					'products_id' 	=> $update->products_id,
-					'plans_id' 		=> $update->plans_id,
+					'plans_id' 		=> $update->plans_id
 				];
 		
 				$features = $update->getFeatures();
@@ -116,6 +118,10 @@ if ($check == 'all')
 						//$featuresFormat[]['desc'] = $f->desc; 
 						$res['software']['features'][] = ['desc' => $f->desc];
 					}
+				}
+				else
+				{
+					$res['software']['features'] = [];
 				}
 			}
 		}
