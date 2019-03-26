@@ -55,7 +55,7 @@
 					<strong>$<?php echo $total->getTotalPrice() ?></strong>
 				</li>
 			</ul>
-			
+
 			<?php if (isset($msg['coupon']['err'])) echo "<small class='text-danger'>".$msg['coupon']['err']."</small>";?>
 			<?php if (!isset($_SESSION['coupon'])): ?>
  			<form action='' method='post' class="card p-2">
@@ -69,7 +69,7 @@
 			<?php else: ?>
 				<div><a href='<?php echo $_SERVER['REQUEST_URI'] ?>&redeem=1'>Redeem Coupon (<?php echo $_SESSION['coupon'] ?>)</a></div>
 			<?php endif; ?>
-			
+
 			<div class="row">
 				<div class="col-md-12 text-center mt-3">
 					<img src="assets/images/security-1.png" alt="256bit encription" title="256bit encription" width="100px">
@@ -107,7 +107,7 @@
 
 
 			<div class="mb-3">
-				<label for="email">Email</label>
+				<label for="email">Email <small>(Your product & payment confirmation will be sent here)</small></label>
 				<input type="email" class="form-control" name="email" id="email" placeholder="you@example.com" required>
 				<div class="invalid-feedback">
 					Please enter a valid email.
@@ -129,7 +129,7 @@
 					Your password is not matched.
 				</div>
 			</div> -->
-			
+
 			<!-- <hr class="mb-4">
 			<div class="custom-control custom-checkbox">
 				<input type="checkbox" class="custom-control-input" id="same-address">
@@ -142,7 +142,7 @@
 
 <!-- 			<div class="mb-3">
 				<label for="country">Country</label>
-				
+
 				<?php echo get_country_menu('country', 'form-control custom-select') ?>
 				<div class="invalid-feedback">
 					Choose Your Country.
@@ -152,7 +152,7 @@
 			<div class="mb-3">
 				<label>Gender</label><br>
 				<div class="custom-control custom-radio">
-					<input type="radio" id="male" name="gender" class="custom-control-input" value="1" required> 
+					<input type="radio" id="male" name="gender" class="custom-control-input" value="1" required>
 					<label class="custom-control-label" for="male">Male</label>
 				</div>
 				<div class="custom-control custom-radio">

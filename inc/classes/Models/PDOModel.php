@@ -17,44 +17,47 @@ abstract class PDOModel {
 				Config::PASS
 			);*/
 			self::$pdo = &DB::getInstance();
-			self::$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
+			//self::$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
 		}
 		return self::$pdo;
 	}
-	
+
 	protected static function getModelName($withNamespace = true) {
 		if ($withNamespace)
 			return strtolower(get_called_class());
 		else
-			return strtolower(end(explode('\\',get_called_class())));
+		{
+			$parts = explode('\\',get_called_class());
+			return strtolower(end($parts));
+		}
 	}
-	
+
 	protected static function getTableName() {
 		return '`'.self::getModelName(false) . 's`';
 	}
-	
+
 	protected static function getFieldName($field) {
 		//return self::getModelName() . '_' . $field;
 		return '`'.$field.'`';
 	}
-	
+
 	protected static function getBindName($field) {
 		return ":{$field}";
 	}
-	
+
 	protected static function getPropertyName($prop) {
 		//return substr($prop, strlen(self::getModelName()) + 1);
 		return $prop;
 	}
-	
+
 	public static function getLastInsertId(){
 		return self::$pdo->lastInsertId();
-	} 
+	}
 
 	public static function get($id) {
 		return self::getBy(['id' => $id]);
 	}
-	
+
 	public static function getBy($where = NULL, array $orderBy = [], $start = 0, $limit = 0) {
 		$result = self::getAllBy($where, $orderBy, 0, 1);
 		if (count($result))
@@ -65,9 +68,9 @@ abstract class PDOModel {
 	public static function getAll(array $orderBy = [], $start = 0, $limit = 0) {
 		return self::getAllBy(NULL, $orderBy, $start, $limit);
 	}
-	
+
 	public static function getAllBy($where = NULL, array $orderBy = [], $start = 0, $limit = 0) {
-		
+
 		$tableName = self::getTableName();
 		$q = "SELECT * FROM {$tableName} ";
 
@@ -128,7 +131,7 @@ abstract class PDOModel {
 		}
 		return [];
 	}
-	
+
 	public function __construct($schema, $data = false) {
 		$this->fields['id'] = array('value' => null, 'type' => \PDO::PARAM_INT);
 		foreach ($schema as $name => $type) {
@@ -147,7 +150,7 @@ abstract class PDOModel {
 		if ($this->fields['id']['value'] != null) {
 			foreach ($this->fields as $field => $f) {
 				if ($field != 'id' && $f['value'] != null) {
-					$fieldName = self::getFieldName($field); 
+					$fieldName = self::getFieldName($field);
 					$bindName = self::getBindName($field);
 					$fields[] = "{$fieldName} = {$bindName}";
 				}
@@ -179,7 +182,7 @@ abstract class PDOModel {
 		foreach ($this->fields as $field => $f) {
 			$value = $f['value'];
 			if ($f['value'] != null) {
-				$sth->bindValue(self::getBindName($field), $f['value'], $f['type']); 
+				$sth->bindValue(self::getBindName($field), $f['value'], $f['type']);
 			}
 		}
 		return $sth->execute();
@@ -187,7 +190,7 @@ abstract class PDOModel {
 
 	public function delete() {
 		return self::deleteBy(['id' => $this->fields['id']['value']]);
-		
+
 /*		$tableName = self::getTableName();
 		if ($this->fields['id']['value'] != null) {
 			$fieldName = self::getFieldName('id');
@@ -196,7 +199,7 @@ abstract class PDOModel {
 			$q .= "WHERE {$fieldName} = {$bindName}";
 
 			$sth = self::getPDO()->prepare($q);
-			$sth->bindValue($bindName, $this->fields['id']['value'], $this->fields['id']['type']); 
+			$sth->bindValue($bindName, $this->fields['id']['value'], $this->fields['id']['type']);
 			//echo "{$sth->queryString}\n";
 			return $sth->execute();
 		}
@@ -208,10 +211,10 @@ abstract class PDOModel {
 		$tableName = self::getTableName();
 		$q = "DELETE FROM {$tableName} ";
 		$q .= "WHERE ";
-		
+
 		$i = 0;
 		foreach ($where as $key => $value)
-		{		
+		{
 			$fieldName = self::getFieldName($key);
 			$bindName = self::getBindName($key);
 			$q .= "{$fieldName} = {$bindName} ";
@@ -224,13 +227,13 @@ abstract class PDOModel {
 		foreach ($where as $key => $value)
 		{
 			$bindName = self::getBindName($key);
-			$sth->bindValue($bindName, $value); 
+			$sth->bindValue($bindName, $value);
 		}
 
 		//echo "{$sth->queryString}\n";
 		if ($sth->execute())
 			return true;
-		return false;		
+		return false;
 	}
 
 	public function __set($name, $value) {
@@ -238,7 +241,7 @@ abstract class PDOModel {
 			$this->fields[$name]['value'] = $value;
 		}
 	}
-	
+
 	public function __get($name) {
 		if (array_key_exists($name, $this->fields)) {
 			return stripslashes($this->fields[$name]['value']);

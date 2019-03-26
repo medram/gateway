@@ -23,18 +23,24 @@ class PaypalGateway extends AbstractGateway
 	{
 		// prepare a connection with a paypal app
 		if ((bool)getConfig('sandbox'))
-		{	
+		{
 			$this->_handle = new ApiContext(new OAuthTokenCredential(
 					getConfig('paypal_sandbox_public_key'),
 					getConfig('paypal_sandbox_secret_key')
 				));
-		}
+            $this->_handle->setConfig([
+                'mode' => 'sandbox'
+            ]);
+        }
 		else
 		{
 			$this->_handle = new ApiContext(new OAuthTokenCredential(
 						getConfig('paypal_public_key'),
 						getConfig('paypal_secret_key')
 					));
+            $this->_handle->setConfig([
+                'mode' => 'live'
+            ]);
 		}
 	}
 
@@ -98,9 +104,9 @@ class PaypalGateway extends AbstractGateway
 			->setTransactions(array($Transaction));
 
 		try {
-			$payment->create($this->_handle);
-			$approvalUrl = $payment->getApprovalLink();
-			//exit($approvalUrl);
+            $payment->create($this->_handle);
+            $approvalUrl = $payment->getApprovalLink();
+            //exit($approvalUrl);
 			header("location: ".$approvalUrl);
 			exit();
 		}
