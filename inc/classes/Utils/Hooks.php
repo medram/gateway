@@ -85,7 +85,7 @@ class Hooks
 	 * @param mixed $arguments
 	 * @return mixed
 	 */
-	public static function do_action($name, &$arguments = NULL)
+	public static function do_action($name, $arguments = NULL)
 	{
 		// Oh, no you didn't. Are you trying to run an action hook that doesn't exist?
 		if (!isset(self::$actions[$name])) {

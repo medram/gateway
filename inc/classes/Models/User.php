@@ -73,7 +73,7 @@ class User extends PDOModel {
 			$_SESSION['login']['ip'] = get_client_ip();
 			$_SESSION['login']['agent'] = $_SERVER['HTTP_USER_AGENT'];
 
-			do_action('after_user_logged_in', $this);
+			do_action('after_user_logged_in', $user);
 
 			return true;
 		}
