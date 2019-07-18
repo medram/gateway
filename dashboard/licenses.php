@@ -3,6 +3,7 @@ require_once "dashboard_init.php";
 
 use MR4Web\Models\License;
 use MR4Web\Models\Customer;
+use MR4Web\Models\Invoice;
 use MR4Web\Models\Plan;
 
 use MR4Web\Utils\View;
@@ -62,7 +63,13 @@ if ($page == 'add')
 			$license->plans_id = $plan->id;
 			$license->license_type = $plan->plan_type;
 
-			if ($license->save())
+			$invoice = new Invoice();
+			$invoice->invoice_id = "#".time();
+			$invoice->transactions_id = 0;
+			$invoice->customers_id = $customer_id;
+			$invoice->plans_id = $plan->id;
+
+			if ($license->save() && $invoice->save())
 			{
 				// redirect to products list
 				header("location: licenses.php");

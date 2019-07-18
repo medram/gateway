@@ -28,12 +28,12 @@
 					<li class="nav-item">
 						<a class="nav-link" href="customers.php"><i class="fa fa-fw fa-users"></i> Customers</a>
 					</li>
-					<li class="nav-item">
+<!-- 					<li class="nav-item">
 						<a class="nav-link" href="transactions.php"><i class="fa fa-fw fa-credit-card"></i> Transactions</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="payers.php"><i class="fa fa-fw fa-users"></i> Payers</a>
-					</li>
+					</li> -->
 					<li class="nav-item">
 						<a class="nav-link" href="settings.php"><i class="fa fa-fw fa-cogs"></i> Settings</a>
 					</li>

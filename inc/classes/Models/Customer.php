@@ -39,7 +39,6 @@ class Customer extends PDOModel {
 	{
 		$products = [];
 		$plans = $this->getPlans(false);
-
 		$tmpProduct;
 		foreach ($plans as $plan)
 		{

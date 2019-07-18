@@ -16,10 +16,14 @@ function _addslashes ($str)
 	}
 }
 
-function show2input(&$value)
+function show2input(&$value, $print = true)
 {
 	if (isset($value))
-		echo htmlentities($value, ENT_QUOTES);
+		if ($print)
+			echo htmlentities($value, ENT_QUOTES);
+		else
+			return htmlentities($value, ENT_QUOTES);
+
 }
 
 function checkParams(array $keys)

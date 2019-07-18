@@ -1,3 +1,8 @@
+<div class="row mb-3">
+	<div class="col-sm-12">
+		<a href="?page=add" class="btn btn-success pull-right"><i class="fa fa-fw fa-plus"></i> Add New Customer</a>
+	</div>
+</div>
 <?php
 if (count($customers) == 0)
 {
@@ -12,7 +17,7 @@ if (count($customers) == 0)
 			<th>Email</th>
 			<th>Gender</th>
 			<th>Created</th>
-			<th>All Customer's (Products/Licenses)</th>
+			<th>All Customer's (Products/Licenses...)</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -29,13 +34,25 @@ if (count($customers) == 0)
 			$pDisabled = count($products)? '' : 'disabled' ;
 			
 			$licenses = $customer->getLicenses();
-			$disabled = count($licenses)? '' : 'disabled' ;
+			$lDisabled = count($licenses)? '' : 'disabled' ;
 			?>
 			<td>
-				<a href="products.php?cu=<?php echo $customer->id ?>" title="Products" class="btn btn-primary btn-sm <?php echo $pDisabled ?>"><i class="fa fa-fw fa-cube"></i> Products (<?php echo count($products) ?>)</a>
-				<a href="licenses.php?cu=<?php echo $customer->id ?>" title="licenses" class="btn btn-success btn-sm <?php echo $disabled ?>"><i class="fa fa-key"></i> Licenses (<?php echo count($licenses) ?>)</a>
+				<!-- Products -->
+				<?php if (!$pDisabled) { ?>
+					<a href="products.php?cu=<?php echo $customer->id ?>" title="Products" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-cube"></i> (<?php echo count($products) ?>)</a>
+				<?php } ?>
 				
-				<a href="invoices.php?cu=<?php echo $customer->id ?>" title="invoices" class="btn btn-warning btn-sm <?php echo $pDisabled ?>"><i class="fa fa-file-text-o"></i> Invoices (<?php echo count($customer->getInvoices()) ?>)</a>
+				<!-- Licenses -->
+				<?php if (!$lDisabled) { ?>
+					<a href="licenses.php?cu=<?php echo $customer->id ?>" title="licenses" class="btn btn-success btn-sm"><i class="fa fa-key"></i> (<?php echo count($licenses) ?>)</a>
+				<?php } ?>
+
+				<!-- Invoices -->
+				<?php if (!$pDisabled) { ?>
+					<a href="invoices.php?cu=<?php echo $customer->id ?>" title="invoices" class="btn btn-warning btn-sm"><i class="fa fa-file-text-o"></i> (<?php echo count($customer->getInvoices()) ?>)</a>
+				<?php } ?>
+				<!-- Create License -->
+				<a href="licenses.php?page=add&cu=<?php echo $customer->id ?>" title="Create license" class="btn btn-info btn-sm"><i class="fa fa-key"></i> Create license</a>
 			</td>
 		</tr>
 		<?php endforeach;?>

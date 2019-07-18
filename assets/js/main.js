@@ -5,6 +5,7 @@ window.onload = function (){
 	editSettings();
 };
 
+
 function delateBtn()
 {
 	let btns = document.getElementsByClassName('action-delete');

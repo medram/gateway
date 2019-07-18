@@ -6,7 +6,8 @@ use MR4Web\Models\Product;
 
 $editMode = isset($license)? true : false ;
 $saveBtn = $editMode ? 'Save' : 'Generate';
-
+$cu = isset($_GET['cu']) ? intval($_GET['cu']): 0;
+$customer_id = isset($license)? @show2input($license->customers_id, false) : $cu;
 ?>
 <div class="row">
 	<div class="col-sm-6">
@@ -21,7 +22,7 @@ $saveBtn = $editMode ? 'Save' : 'Generate';
 			<input type="number" min="0" id="max" name="max" class="form-control" value="<?php @show2input($license->activation_max) ?>" required><br>
 			
 			<label for="customer-id">Customer ID :</label>
-			<input type="number" min="1" id="customer-id" name="customer-id" class="form-control" value="<?php @show2input($license->customers_id) ?>" required><br>
+			<input type="number" min="1" id="customer-id" name="customer-id" class="form-control" value="<?php @show2input($customer_id) ?>" required><br>
 				
 			<label for="status">Status :</label>
 			<select name="status" class="form-control" id="status">
