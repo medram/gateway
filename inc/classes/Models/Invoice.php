@@ -37,6 +37,11 @@ class Invoice extends PDOModel {
 	{
 		return Coupon::get($this->coupons_id);
 	}
+
+	public function getCustomer()
+	{
+		return Customer::get($this->customers_id);
+	}
 }
 
 ?>

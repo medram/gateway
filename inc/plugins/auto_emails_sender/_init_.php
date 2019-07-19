@@ -15,8 +15,8 @@ function purchaseNotification(Invoice $invoice)
 {
 	$plan = $invoice->getPlan();
 	$product = $plan->getProduct();
-	$transaction = $invoice->getTransaction();
-	$customer = $transaction->getCustomer();
+	//$transaction = $invoice->getTransaction();
+	$customer = $invoice->getCustomer();
 
 	$coupon = $invoice->getCoupon();
 	$total = new Total();
@@ -53,8 +53,8 @@ function sendProductToCustomer(Invoice $invoice)
 	$plan = $invoice->getPlan();
 	$product = $plan->getProduct();
 	$file = $product->getFiles()[0]; // we just send the first file.
-	$transaction = $invoice->getTransaction();
-	$customer = $transaction->getCustomer();
+	//$transaction = $invoice->getTransaction();
+	$customer = $invoice->getCustomer();
 	$licenses = []; // licenses classes
 	$licenses_codes = [];
 

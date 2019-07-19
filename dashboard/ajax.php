@@ -37,7 +37,7 @@ if ($action == 'resendEmail')
 	{
 		if (function_exists('sendProductToCustomer') && is_callable('sendProductToCustomer'))
 		{
-			purchaseNotification($invoice);
+			//purchaseNotification($invoice);
 			sendProductToCustomer($invoice);
 			
 			header("HTTP/1.1 200 OK");

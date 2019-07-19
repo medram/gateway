@@ -229,7 +229,9 @@ if (count($products))
 				foreach ($plan->getInvoices() as $invoice)
 				{
 					// merge the transaction to the array.
-					$transactions[] = $invoice->getTransaction();
+					$transaction = $invoice->getTransaction();
+					if ($transaction instanceof Transaction)
+						$transactions[] = $transaction;
 				}
 			}
 		}
