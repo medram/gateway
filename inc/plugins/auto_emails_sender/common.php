@@ -18,7 +18,7 @@ function JVZIPN_verification($secretKey) {
     $pop = $pop . $secretKey;
     $calcedVerify = sha1(mb_convert_encoding($pop, "UTF-8"));
     $calcedVerify = strtoupper(substr($calcedVerify,0,8));
-    return true;
+    //return true; // just for test mode
     return $calcedVerify == @$_POST["cverify"];
 }
 
