@@ -20,13 +20,13 @@ if (!$invoice instanceof Invoice)
 
 $plan = $invoice->getPlan();
 $product = $plan->getProduct();
-$transaction = $invoice->getTransaction();
-$customer = $transaction->getCustomer();
+//$transaction = $invoice->getTransaction();
+$customer = $invoice->getCustomer();
 
 $data['invoice'] = $invoice;
 $data['plan'] = $plan;
 $data['product'] = $product;
-$data['transation'] = $transaction;
+//$data['transation'] = $transaction;
 $data['customer'] = $customer;
 
 $data['title'] = 'Thank you page!';

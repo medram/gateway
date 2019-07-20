@@ -17,13 +17,13 @@
 			<input type="email" id="email" name="customer-email" class="form-control" value="<?php @show2input($customer->email) ?>" required><br>
 
 			<label for="gender">Gender:</label>
-			<select name="gender" id="gender" class="form-control" value="<?php show2input($customer->gender) ?>">
+			<select name="gender" id="gender" class="form-control">
 				<option value="">Unknown</option>
-				<option value="M">Male</option>
-				<option value="F">Female</option>
+				<option value="M" <?php if(@show2input($customer->gender, false) == "M") echo 'selected'?>>Male</option>
+				<option value="F" <?php if(@show2input($customer->gender, false) == "F") echo 'selected'?>>Female</option>
 			</select><br>
 
-			<input type="submit" name="saveCustomer" class="btn btn-primary" value="Create">
+			<input type="submit" name="saveCustomer" class="btn btn-primary" value="Save">
 		</form>
 	</div>
 	<div class="col-md-6">

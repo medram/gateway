@@ -1,17 +1,17 @@
-			<footer class="my-5 pt-5 text-muted text-center text-small">
+			<footer class="my-4 text-muted text-center text-small">
 				<p class="mb-1">&copy; <?php echo date('Y')." ".getConfig('site_name') ?> .</p>
 				<ul class="list-inline">
 					<li class="list-inline-item"><a href="terms-privacy.php">Terms & Privacy</a></li>
 					<li class="list-inline-item"><a href="contact-us.php">Contact us</a></li>
 				</ul>
-				<span><?php echo DEBUG? microtime(true) - START_TIME.'s' : '' ;?></span>
+				<!-- <span><?php echo DEBUG? microtime(true) - START_TIME.'s' : '' ;?></span> -->
 			</footer>
 		</div> <!-- / container div -->
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="<?php echo BASE_URL ?>assets/js/jquery.min.js"></script>
+		<script src="<?php echo BASE_URL ?>assets/js/bootstrap.min.js"></script>
 		<script>
 			// Example starter JavaScript for disabling form submissions if there are invalid fields
 			(function() {

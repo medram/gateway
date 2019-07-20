@@ -6,6 +6,7 @@ use MR4Web\Models\PDOModel;
 use MR4Web\Models\Coupon;
 use MR4Web\Models\Transaction;
 use MR4Web\Models\Plan;
+use MR4Web\Models\License;
 
 class Invoice extends PDOModel {
 
@@ -14,7 +15,7 @@ class Invoice extends PDOModel {
 		$schema = [
 			'id'				=> \PDO::PARAM_INT,
 			'invoice_id'		=> \PDO::PARAM_STR,
-			'transactions_id'	=> \PDO::PARAM_INT,
+			'transactions_id'	=> \PDO::PARAM_STR,
 			'customers_id'		=> \PDO::PARAM_INT,
 			'plans_id'			=> \PDO::PARAM_INT,
 			'coupons_id'		=> \PDO::PARAM_INT,
@@ -41,6 +42,11 @@ class Invoice extends PDOModel {
 	public function getCustomer()
 	{
 		return Customer::get($this->customers_id);
+	}
+
+	public function getLicenses()
+	{
+		return License::getAllBy(['invoices_id' => $this->id]);
 	}
 }
 

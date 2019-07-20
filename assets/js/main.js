@@ -3,8 +3,23 @@ window.onload = function (){
 	resendEmail();
 	applyFilter();
 	editSettings();
+	editHover()
 };
 
+function editHover()
+{
+	$("table.table tr .hiddenBox").hide()
+
+	$("table.table tr").on('mouseenter', (e) => {
+		let tr = $(e.target).parent('tr')
+		tr.find('.hiddenBox').show()
+	})
+
+	$("table.table tr").on('mouseleave', (e) => {
+		let tr = $(e.target).parent()
+		tr.find('.hiddenBox').hide()
+	})
+}
 
 function delateBtn()
 {

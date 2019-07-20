@@ -22,7 +22,8 @@ class License extends PDOModel {
 			'created'		=> \PDO::PARAM_STR,
 			'products_id'	=> \PDO::PARAM_INT,
 			'customers_id'	=> \PDO::PARAM_INT,
-			'plans_id'		=> \PDO::PARAM_INT
+			'plans_id'		=> \PDO::PARAM_INT,
+			'invoices_id'	=> \PDO::PARAM_INT
 		];
 		parent::__construct($schema, $data);
 	}
@@ -47,7 +48,7 @@ class License extends PDOModel {
 		return Plan::get($this->plans_id);
 	}
 
-	public static function createLicense(Customer $customer, Plan $plan)
+	public static function createLicense(Customer $customer, Plan $plan, Invoice $invoice=null)
 	{
 		$product = $plan->getProduct();
 
@@ -60,6 +61,9 @@ class License extends PDOModel {
 		$license->products_id = $product->id;
 		$license->customers_id = $customer->id;
 		$license->plans_id = $plan->id;
+
+		if ($invoice instanceof Invoice)
+			$license->invoices_id = $invoice->id;
 
 		$license->save();
 		

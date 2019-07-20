@@ -1,0 +1,27 @@
+<?php
+require_once "init.php";
+
+use MR4Web\Models\plan;
+use MR4Web\Utils\View;
+
+$pl = isset($_GET['pl'])? intval($_GET['pl']): 0;
+$plan = Plan::get($pl);
+
+if (!$plan instanceof Plan)
+{
+	header('HTTP/1.1 404 Not Found');
+	
+	$data['title'] = 'Product Not Found!';
+	$data['message'] = 'This product not found or not available for now!<br>Please check later or contact us.';
+	View::render('header', $data);
+	View::render('errors', $data);
+	View::render('footer', $data);
+	exit;
+}
+
+// hooks for download page
+do_action('downloadPage_before', $plan);
+
+do_action('downloadPage_after', $plan);
+
+?>

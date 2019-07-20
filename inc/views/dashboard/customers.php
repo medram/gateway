@@ -24,7 +24,13 @@ if (count($customers) == 0)
  		<?php foreach ($customers as $customer): ?>
 		<tr>
 			<td><?php echo $customer->id ?></td>
-			<td><?php echo $customer->fname ?></td>
+			<td>
+				<?php echo $customer->fname ?>
+				<!-- Edit customer -->
+				<span class="hiddenBox">
+					<a href="customers.php?page=edit&cu=<?php echo $customer->id ?>" class="btn btn-sm btn-link"><i class="fa fa-pencil fa-fw"></i></a>
+				</span>
+			</td>
 			<td><?php echo $customer->lname ?></td>
 			<td><?php echo $customer->email ?></td>
 			<td><?php echo printGenderGraph($customer->gender) ?></td>
