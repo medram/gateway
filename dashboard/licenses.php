@@ -5,6 +5,7 @@ use MR4Web\Models\License;
 use MR4Web\Models\Customer;
 use MR4Web\Models\Invoice;
 use MR4Web\Models\Plan;
+use MR4Web\Models\PDOModel;
 
 use MR4Web\Utils\View;
 use MR4Web\Utils\Dashboard;
@@ -54,29 +55,40 @@ if ($page == 'add')
 			$max 			= intval($_POST['max']);
 			$customer_id	= intval($_POST['customer-id']);
 
-			$license = new License();
-			$license->license_code = sha1($plan->id.'-'.$customer_id.'-'.time());
-			$license->activation_max = $max;
-			$license->banned = 0;
-			$license->products_id = $plan->getProduct()->id;
-			$license->customers_id = $customer_id;
-			$license->plans_id = $plan->id;
-			$license->license_type = $plan->plan_type;
-
-			$invoice = new Invoice();
-			$invoice->invoice_id = "#".time();
-			$invoice->transactions_id = 0;
-			$invoice->customers_id = $customer_id;
-			$invoice->plans_id = $plan->id;
-
-			if ($license->save() && $invoice->save())
+			PDOModel::getPDO()->beginTransaction();
+			try
 			{
+				$invoice = new Invoice();
+				$invoice->invoice_id = "#".time();
+				$invoice->transactions_id = 0;
+				$invoice->customers_id = $customer_id;
+				$invoice->plans_id = $plan->id;
+				
+				$invoice->save();
+				$invoice = Invoice::get(Invoice::getLastInsertId());
+
+				$license = new License();
+				$license->license_code = sha1($plan->id.'-'.$customer_id.'-'.time());
+				$license->activation_max = $max;
+				$license->banned = 0;
+				$license->products_id = $plan->getProduct()->id;
+				$license->customers_id = $customer_id;
+				$license->plans_id = $plan->id;
+				$license->license_type = $plan->plan_type;
+				$license->invoices_id = $invoice->id;
+
+				$license->save();
+				
+				
+				PDOModel::getPDO()->commit();
 				// redirect to products list
 				header("location: licenses.php");
 				exit;
-			}
-			else
+			} catch (\PDOException $e) {
+				PDOModel::getPDO()->rollBack();
+				//die($e->getMessage());
 				$msg['err'] = 'Something wrong!';
+			}
 		}
 	}
 

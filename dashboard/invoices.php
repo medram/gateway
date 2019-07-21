@@ -19,7 +19,7 @@ if (!$customer instanceof Customer)
 else
 {
 	$data['customer'] = $customer;
-	$invoices = Invoice::getAllBy(['customers_id' => $customer->id]);
+	$invoices = Invoice::getAllBy(['customers_id' => $customer->id], ['id', 'DESC']);
 	$resultNumber = count($invoices);
 
 	if (is_array($invoices))

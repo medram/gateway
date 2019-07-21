@@ -11,7 +11,7 @@
 			<input type="text" id="fname" name="fname" class="form-control" value="<?php @show2input($customer->fname) ?>" required><br>
 			
 			<label for="lname">Last name:</label>
-			<input type="text" id="lname" name="lname" class="form-control" value="<?php @show2input($customer->lname) ?>" required><br>
+			<input type="text" id="lname" name="lname" class="form-control" value="<?php @show2input($customer->lname) ?>"><br>
 
 			<label for="email">Email:</label>
 			<input type="email" id="email" name="customer-email" class="form-control" value="<?php @show2input($customer->email) ?>" required><br>

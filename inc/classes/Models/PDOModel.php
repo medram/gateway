@@ -51,7 +51,7 @@ abstract class PDOModel {
 	}
 
 	public static function getLastInsertId(){
-		return self::$pdo->lastInsertId();
+		return (int)self::$pdo->lastInsertId();
 	}
 
 	public static function get($id) {

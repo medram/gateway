@@ -53,7 +53,7 @@ function purchaseNotification(Invoice $invoice)
 	try
 	{
 		sendEmail($customer->email, $title, $body);
-	} catch (PDOException $e){
+	} catch (\Exception $e){
 		die($e->getMessage());
 	}
 }
@@ -70,16 +70,17 @@ function sendProductToCustomer(Invoice $invoice)
 	$licenses_codes = [];
 
 	// get the licenses if it's found.
-	$licenses = $plan->getLicenses($customer);
+	//$licenses = $plan->getLicenses($customer);
+	$licenses = $invoice->getLicenses();
 
 	// create new licenses for the first time & DON'T RECREATE LICENSES AGAIN.
-	if (!count($licenses))
+	/*if (!count($licenses))
 	{
 		for ($i = 0; $i < $plan->max_licenses; ++$i)
 		{
 			$licenses[] = License::createLicense($customer, $plan);
 		}
-	}
+	}*/
 	
 	// collect licenses code in one array
 	if (count($licenses))
@@ -104,9 +105,12 @@ function sendProductToCustomer(Invoice $invoice)
 	try {
 		//exit($body);
 		sendEmail($customer->email, $title, $body);
-	} catch (PDOException $e){
+	} catch (\Exception $e){
 		die($e->getMessage());
+		//return false;
+		//exit;
 	}
+	return true;
 }
 
 // sending product to JVZoo customer
@@ -126,7 +130,7 @@ function showProductOnDownloadPage($plan)
 		// redirect to somewhere else.
 		header('HTTP/1.1 403 forbidden');
 		//header('location: failed.php');
-		exit;
+		exit('<h1>Access denied to this page!</h1>');
 	}
 	else if ($_POST['ctransaction'] == 'SALE')
 	{
@@ -139,7 +143,7 @@ function showProductOnDownloadPage($plan)
 			$JV_transactionID	= _addslashes(strip_tags($_POST['ctransreceipt']));
 
 			/*
-			Just for testing
+			// Just for testing
 			$JV_customerName 	= 'Jone smeeth';
 			$JV_email 			= 'jone@moakt.ws';
 			$JV_productTitle 	= 'ADLinker v1.2 from JVZoo';

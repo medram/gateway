@@ -6,6 +6,7 @@ use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
 
 use MR4Web\Models\Customer;
+use MR4Web\Models\License;
 use MR4Web\Models\Coupon;
 use MR4Web\Models\Plan;
 use MR4Web\Models\Payer;
@@ -67,7 +68,7 @@ do_action('after_payment');
 
 // Check if the Payment Done.
 if ($payment->getState() === 'approved')
-{	
+{
 	PDOModel::getPDO()->beginTransaction();
 	try {
 
@@ -134,6 +135,15 @@ if ($payment->getState() === 'approved')
 			$invoice->coupons_id = $coupon->id;
 		
 		$invoice->save();
+		$invoice = Invoice::get(Invoice::getLastInsertId());
+
+		$licenses = [];
+
+		// generate licenses
+		for ($i = 0; $i < $plan->max_licenses; ++$i)
+		{
+			$licenses[] = License::createLicense($customer, $plan, $invoice);
+		}
 
 		PDOModel::getPDO()->commit();
 	

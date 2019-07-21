@@ -38,10 +38,16 @@ if ($action == 'resendEmail')
 		if (function_exists('sendProductToCustomer') && is_callable('sendProductToCustomer'))
 		{
 			//purchaseNotification($invoice);
-			sendProductToCustomer($invoice);
-			
-			header("HTTP/1.1 200 OK");
-			$res['message'] = "The email has been sent successfully.";
+			if (sendProductToCustomer($invoice))
+			{
+				header("HTTP/1.1 200 OK");
+				$res['message'] = "The email has been sent successfully.";
+			}
+			else
+			{
+				header("HTTP/1.1 500 Server Error");
+				$res['message'] = 'Something went wrong!';
+			}
 		}
 	}
 	else
