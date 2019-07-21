@@ -14,6 +14,6 @@ if (!User::isLogin())
 do_action('before_dashboard_start', User::getUser());
 
 // Just for testing
-//sendProductToCustomer(Invoice::get(31));
+sendProductToCustomer(Invoice::get(49));
 
 ?>

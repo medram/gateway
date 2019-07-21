@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2019 at 01:47 PM
+-- Generation Time: Jul 21, 2019 at 07:17 PM
 -- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.23
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -37,7 +39,6 @@ CREATE TABLE `coupons` (
   `status` int(1) DEFAULT '1' COMMENT '0 = inactive\n1 = Active\n',
   `created` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 
 -- --------------------------------------------------------
 
@@ -74,22 +75,6 @@ CREATE TABLE `domains` (
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `emails`
---
-
-CREATE TABLE `emails` (
-  `id` int(11) NOT NULL,
-  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `content` mediumtext COLLATE utf8_unicode_ci,
-  `isHTML` int(1) DEFAULT '0',
-  `created` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
 --
 -- Table structure for table `features`
 --
@@ -124,12 +109,14 @@ CREATE TABLE `files` (
 CREATE TABLE `invoices` (
   `id` int(11) NOT NULL,
   `invoice_id` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `transactions_id` int(11) NOT NULL,
+  `transactions_id` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `customers_id` int(11) NOT NULL,
   `plans_id` int(11) NOT NULL,
   `coupons_id` int(11) DEFAULT NULL,
   `created` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 
 -- --------------------------------------------------------
 
@@ -147,7 +134,8 @@ CREATE TABLE `licenses` (
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `products_id` int(11) NOT NULL DEFAULT '0',
   `customers_id` int(11) NOT NULL,
-  `plans_id` int(11) NOT NULL
+  `plans_id` int(11) NOT NULL,
+  `invoices_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -237,7 +225,6 @@ CREATE TABLE `plans_coupons` (
   `coupons_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
 -- --------------------------------------------------------
 
 --
@@ -306,25 +293,26 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`id`, `name`, `value`, `autoload`) VALUES
 (1, 'site_name', 'MR4Web Checkout', 1),
 (2, 'site_desc', 'small description', 1),
-(3, 'email_support', 'support@test.ws', 1),
-(4, 'email_sales_support', 'sales@test.ws', 0),
+(3, 'email_support', '', 1),
+(4, 'email_sales_support', '', 0),
 (5, 'paypal_public_key', '', 0),
 (6, 'paypal_secret_key', '', 0),
 (7, 'email_method', 'smtp', 0),
-(8, 'SMTP_Host', 'vps574737.ovh.net', 0),
+(8, 'SMTP_Host', '', 0),
 (9, 'SMTP_Port', '465', 0),
-(10, 'SMTP_User', 'contact@mr4web.com', 0),
-(11, 'SMTP_Pass', 'medramouchy', 0),
+(10, 'SMTP_User', '', 0),
+(11, 'SMTP_Pass', '', 0),
 (12, 'mail_encription', 'ssl', 0),
 (13, 'allow_SSL_Insecure_mode', '1', 0),
-(14, 'email_from', 'contact@mr4web.com', 0),
+(14, 'email_from', '', 0),
 (15, 'plan_files_allowed_type', 'rar,zip', 0),
 (16, 'plan_files_max_size', '204800', 0),
-(17, 'site_version', '0.6.1 alfa', 1),
-(18, 'thanks_page_analytics_code', '<!-- this is analytics cooooooooode -->\n<script>console.log(\\"general analytics code\\")</script>', 0),
+(17, 'site_version', '0.7.1 alfa', 1),
+(18, 'thanks_page_analytics_code', '', 0),
 (19, 'sandbox', '1', 0),
-(20, 'paypal_sandbox_public_key', 'AcgsfK2G5cFknbH4KUsFjf36OR_TKlZpOKDzk41-GehHNfyVhkRHADzd5UbNo09noCDByXRo1d8Omuj5', 0),
-(21, 'paypal_sandbox_secret_key', 'EP6fGV_QT4l8ZhHpEO2RmUb6SQOHH37OQkXoM9oGJoW31oJqyiOJDvwNs-pGDAz6nYmACAOPRNWkjrsW', 0);
+(20, 'paypal_sandbox_public_key', '', 0),
+(21, 'paypal_sandbox_secret_key', '', 0),
+(22, 'JVZoo_IPN_KEY', '', 0);
 
 -- --------------------------------------------------------
 
@@ -345,6 +333,7 @@ CREATE TABLE `transactions` (
   `state` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 -- --------------------------------------------------------
 
@@ -382,15 +371,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `roles_id`, `username`, `email`, `password`, `token`, `created`) VALUES
-(1, 2, 'admin', 'mramouchy@gmail.com', 'a4a089b5fcb39f80e09732cad6ef38df0f904d1e791aad1805de2395b49a0ff5', 'f0db93efa264a687b221f6133c14285d7e531912e7b9f083bd6cf93b1a4fbf1c', '2018-11-02 14:38:27');
+(1, 2, 'admin', 'admin@test.com', 'a4a089b5fcb39f80e09732cad6ef38df0f904d1e791aad1805de2395b49a0ff5', 'f0db93efa264a687b221f6133c14285d7e531912e7b9f083bd6cf93b1a4fbf1c', '2018-11-02 14:38:27');
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `coupons`
---
 ALTER TABLE `coupons`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `code_UNIQUE` (`code`);
@@ -410,12 +393,6 @@ ALTER TABLE `domains`
   ADD KEY `fk_domains_licenses1_idx` (`licenses_id`);
 
 --
--- Indexes for table `emails`
---
-ALTER TABLE `emails`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `features`
 --
 ALTER TABLE `features`
@@ -433,8 +410,7 @@ ALTER TABLE `files`
 -- Indexes for table `invoices`
 --
 ALTER TABLE `invoices`
-  ADD PRIMARY KEY (`id`,`customers_id`,`plans_id`,`transactions_id`),
-  ADD KEY `fk_invoices_transactions1_idx` (`transactions_id`),
+  ADD PRIMARY KEY (`id`,`customers_id`,`plans_id`),
   ADD KEY `fk_invoices_customers1_idx` (`customers_id`),
   ADD KEY `fk_invoices_plans1_idx` (`plans_id`),
   ADD KEY `fk_invoices_coupons1_idx` (`coupons_id`);
@@ -446,7 +422,8 @@ ALTER TABLE `licenses`
   ADD PRIMARY KEY (`id`,`customers_id`,`products_id`),
   ADD KEY `fk_licenses_products1_idx` (`products_id`),
   ADD KEY `fk_licenses_customers1_idx` (`customers_id`),
-  ADD KEY `fk_licenses_plans1_idx` (`plans_id`);
+  ADD KEY `fk_licenses_plans1_idx` (`plans_id`),
+  ADD KEY `fk_licenses_invoices1_idx` (`invoices_id`);
 
 --
 -- Indexes for table `newss`
@@ -541,102 +518,117 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `emails`
---
-ALTER TABLE `emails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+
 --
 -- AUTO_INCREMENT for table `features`
 --
 ALTER TABLE `features`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `licenses`
 --
 ALTER TABLE `licenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `newss`
 --
 ALTER TABLE `newss`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `payers`
 --
 ALTER TABLE `payers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `payment_methods`
 --
 ALTER TABLE `payment_methods`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `plans`
 --
 ALTER TABLE `plans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `plans_coupons`
 --
 ALTER TABLE `plans_coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `plans_features`
 --
 ALTER TABLE `plans_features`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `updates`
 --
 ALTER TABLE `updates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- Constraints for dumped tables
 --
@@ -665,14 +657,14 @@ ALTER TABLE `files`
 ALTER TABLE `invoices`
   ADD CONSTRAINT `fk_invoices_coupons1` FOREIGN KEY (`coupons_id`) REFERENCES `coupons` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_invoices_customers1` FOREIGN KEY (`customers_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_invoices_plans1` FOREIGN KEY (`plans_id`) REFERENCES `plans` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_invoices_transactions1` FOREIGN KEY (`transactions_id`) REFERENCES `transactions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_invoices_plans1` FOREIGN KEY (`plans_id`) REFERENCES `plans` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `licenses`
 --
 ALTER TABLE `licenses`
   ADD CONSTRAINT `fk_licenses_customers1` FOREIGN KEY (`customers_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_licenses_invoices1` FOREIGN KEY (`invoices_id`) REFERENCES `invoices` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_licenses_plans1` FOREIGN KEY (`plans_id`) REFERENCES `plans` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_licenses_products1` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -727,6 +719,7 @@ ALTER TABLE `updates`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_roles1` FOREIGN KEY (`roles_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

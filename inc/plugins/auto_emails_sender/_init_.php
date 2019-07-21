@@ -74,7 +74,7 @@ function sendProductToCustomer(Invoice $invoice)
 	$licenses = $invoice->getLicenses();
 
 	// create new licenses for the first time & DON'T RECREATE LICENSES AGAIN.
-	/*if (!count($licenses))
+/*	if (!count($licenses))
 	{
 		for ($i = 0; $i < $plan->max_licenses; ++$i)
 		{
@@ -106,9 +106,8 @@ function sendProductToCustomer(Invoice $invoice)
 		//exit($body);
 		sendEmail($customer->email, $title, $body);
 	} catch (\Exception $e){
-		die($e->getMessage());
-		//return false;
-		//exit;
+		//die($e->getMessage());
+		return false;
 	}
 	return true;
 }
