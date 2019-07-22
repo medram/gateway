@@ -5,6 +5,7 @@ use MR4Web\Models\License;
 use MR4Web\Models\Plan;
 use MR4Web\Models\Customer;
 use MR4Web\Models\PDOModel;
+use MR4Web\Models\Transaction;
 
 use MR4Web\Utils\EmailTpl;
 use MR4Web\Utils\Total;
@@ -43,6 +44,8 @@ function purchaseNotification(Invoice $invoice)
 	$data['INVOICE_ID'] = $invoice->invoice_id;
 	if ($transaction instanceof Transaction)
 		$data['TR_TIME'] = substr($transaction->created, 0, strlen($transaction->created)-3);
+	else
+		$data['TR_TIME'] = $invoice->created;
 
 	$body = EmailTpl::render('purchase_notification', $data);
 	
