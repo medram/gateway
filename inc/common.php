@@ -368,7 +368,7 @@ function getHeaders()
 function logFile($data)
 {
 	$file = fopen(INC.'logs/file.txt', 'a+');
-	fwrite($file, "[".microtime(true)."] : ".$data."\r\n");
+	fwrite($file, "[".date('d-m-Y H:i:s', microtime(true))."] : ".$data."\r\n");
 	fclose($file);
 }
 

@@ -6,6 +6,7 @@ use MR4Web\Models\Plan;
 use MR4Web\Models\Customer;
 use MR4Web\Models\PDOModel;
 use MR4Web\Models\Transaction;
+use MR4Web\Models\Product;
 
 use MR4Web\Utils\EmailTpl;
 use MR4Web\Utils\Total;
@@ -116,8 +117,16 @@ function sendProductToCustomer(Invoice $invoice)
 }
 
 // sending product to JVZoo customer
-function showProductOnDownloadPage($plan)
+function JVzooIPN($plan)
 {
+	$req = "";
+	foreach ($_POST as $k => $v)
+		$req .= $k.': '.$v."\n\r";
+	$req .= "-------------------------------------\n";
+	logFile($req);
+
+	//JVZIPN_verification(getConfig('JVZoo_IPN_KEY'));
+
 	$data = [];
 	$product = $plan->getProduct();
 	// check the information
@@ -130,9 +139,14 @@ function showProductOnDownloadPage($plan)
 	if (!isset($_POST['ctransaction']) || !JVZIPN_verification(getConfig('JVZoo_IPN_KEY')))
 	{
 		// redirect to somewhere else.
-		header('HTTP/1.1 403 forbidden');
+		header('HTTP/1.1 401 Unauthorized');
 		//header('location: failed.php');
-		exit('<h1>Access denied to this page!</h1>');
+		exit('
+			<h1>Access denied to this page!</h1>
+			<div>
+				if you think this is just an error, please contact us at: <b>'.$product->email_support.'</b>
+			</div>
+			');
 	}
 	else if ($_POST['ctransaction'] == 'SALE')
 	{
@@ -235,7 +249,7 @@ function showProductOnDownloadPage($plan)
 			PDOModel::getPDO()->rollBack();
 		}
 
-		// get some more extra information.
+		/*// get some more extra information.
 		$data['productName'] = $product->name." v{$product->version}";
 		$file = $product->getFiles()[0];
 		$data['downloadLink'] = $file->getDownloadLink($plan, $customer);
@@ -250,31 +264,102 @@ function showProductOnDownloadPage($plan)
 
 		View::render('header', $data);
 		View::render('download_page', $data);
-		View::render('footer', $data);
+		View::render('footer', $data);*/
 
-		// should be the last to don't inturapt the script
+		// Send an Email.
 		if (!$allReadyPaid)
 		{
-			//do_action('after_payment_done_successfully', $invoice);
+			do_action('after_payment_done_successfully', $invoice);
+		}
+
+		header('HTTP/1.1 200 ok');
+		exit('<h1>Done Successfully!</h1>');
+	}
+
+	header('HTTP/1.1 400 Bad Raquest');
+	//header('location: failed.php');
+	exit;
+}
+
+function showProductOnDownloadPage(Plan $plan)
+{
+	if (isset($_GET['cbreceipt'], $_GET['cemail']))
+	{
+		$trID = _addslashes(strip_tags($_GET['cbreceipt']));
+		$email = _addslashes(strip_tags($_GET['cemail']));
+		$customer = Customer::getBy(['email' => $email]);
+		$invoice = Invoice::getBy(['transactions_id' => $trID]);
+		$product = $plan->getProduct();
+		$licenses_codes = [];
+
+		if ($customer instanceof Customer && $invoice instanceof Invoice && $product instanceof Product)
+		{
+			if ($plan->id == $invoice->getPlan()->id)
+			{
+				// We could register a new transaction here.
+				$licenses = $invoice->getLicenses();
+
+				// collect licenses code in one array
+				if (count($licenses))
+				{
+					foreach ($licenses as $license)
+					{
+						$licenses_codes[] = $license->license_code;
+					}
+				}
+
+				// get some more extra information.
+				$data['productName'] = $product->name." v{$product->version}";
+				$file = $product->getFiles()[0];
+				$data['downloadLink'] = $file->getDownloadLink($plan, $customer);
+				$data['licenses'] = implode('<br><br>', $licenses_codes);
+				$data['product_email_support'] = $product->email_support;
+
+				$data['title'] = 'Download Page';
+				$data['product'] = $product;
+				$data['customer'] = $customer;
+				$data['invoice'] = $invoice;
+				$data['plan'] = $plan;
+
+				View::render('header', $data);
+				//View::render('JVZooIPN_thanksPage', $data);
+				View::render('download_page', $data);
+				View::render('footer', $data);
+				exit;
+			}
 		}
 	}
-	else
-	{
-		header('HTTP/1.1 403 forbidden');
-		//header('location: failed.php');
-		exit;
-	}
+
+	// redirect to somewhere else.
+	header('HTTP/1.1 401 Unauthorized');
+/*	exit('
+		<h1>Access denied to this page!</h1>
+		<div>
+			if you think this is just an error, please contact us at: <b>'.$product->email_support.'</b>
+		</div>
+		');*/
+	$data['title'] = "Access denied to this page!";
+	$data['message'] = '
+		if you have just purchased this item, Please <b class="text-success">wait from 5 to 15 minutes</b> to activate your access permission to this page to download your item (keep refreshing this page), Or <b class="text-success">check out your email inbox</b> to get the all informations about your item.<br>
+		For any issues please contact us at: <b><a href="mailto:'.$product->email_support.'">'.$product->email_support.'</a></b>
+	';
+	View::render('header', $data);
+	View::render('errors', $data);
+	View::render('footer', $data);
+	exit;
 }
 
 
 // send an invoice email.
-add_action('after_payment_done_successfully', 'purchaseNotification');
+//add_action('after_payment_done_successfully', 'purchaseNotification');
 
 // send an product informations email.
 add_action('after_payment_done_successfully', 'sendProductToCustomer');
 
 // show products on downloadpage
+add_action('jvzoo_ipn_before', 'JVzooIPN');
 add_action('downloadPage_before', 'showProductOnDownloadPage');
+
 
 
 /*------ just for test -------*/

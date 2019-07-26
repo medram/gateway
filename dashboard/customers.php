@@ -32,7 +32,7 @@ if ($page == 'add')
 		}
 		else if(Customer::getBy(['email' => $email]) instanceof Customer)
 		{
-			$msg['err'] = 'The Email is all ready in use.';
+			$msg['err'] = 'The Email is already in use.';
 		}
 		else
 		{
@@ -93,7 +93,7 @@ else if ($page == 'edit' && $customerID != 0)
 		}
 		else if($nextCustomer instanceof Customer &&  $nextCustomer->id != $customer->id)
 		{
-			$msg['err'] = 'This Email is all ready in use.';
+			$msg['err'] = 'This Email is already in use.';
 		}
 		else
 		{

@@ -22,4 +22,5 @@ function JVZIPN_verification($secretKey) {
     return $calcedVerify == @$_POST["cverify"];
 }
 
+
 ?>

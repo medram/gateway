@@ -21,7 +21,7 @@
 		    <h6 class="card-title">Hi <?php echo $customer->fname.' '.$customer->lname ?></h6>
 		    <p>Thank you for purchasing <?php echo $productName.' ('.$plan->name.')'?> ,<br>
 	You could download the product which have purchased from here or via an email that we sent to you.</p>
-		    <div class="card-text">
+		    <p class="card-text">
 		    	<h5><?php echo $productName ?> Informations:</h5>
 		    	You could download the "<?php echo $productName ?>" from the link below:<br>
 		    	<div class="text-center mt-3">
@@ -33,9 +33,9 @@
 		    	You could use the license(s) below to activate your <?php echo $productName ?> :
 		    	<div class="lead text-primary text-center mt-3 font-weight-bold"><?php echo $licenses ?></div><br>
 		    	<h5><?php echo $productName ?> Support:</h5>
-		    	<b>Node:</b> if you have any suggestions, issues or problems with product, please feel free to contact us at:<br>
+		    	<b>Node:</b> if you have any suggestions, issues or problems with product, please feel free to contact us at:
 		    	<a href="mailto:<?php echo $product_email_support ?>" ><?php echo $product_email_support ?></a>
-		    </div>
+		    </p>
 		  </div>
 		</div>		
 	</div>

@@ -20,8 +20,8 @@ if (!$plan instanceof Plan)
 }
 
 // hooks for download page
-do_action('downloadPage_before', $plan);
+do_action('jvzoo_ipn_before', $plan);
 
-do_action('downloadPage_after', $plan);
+do_action('jvzoo_ipn_after', $plan);
 
 ?>
