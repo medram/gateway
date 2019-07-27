@@ -1,3 +1,15 @@
+<?php
+use MR4Web\Models\Plan;
+
+echo "<!-- Analytics Code -->";
+echo getConfig('thanks_page_analytics_code');
+
+if (isset($plan) && $plan instanceof Plan)
+{
+	echo $plan->thanks_page_analytics_code;
+}
+?>
+
 <div class="row my-4">
 	<div class="col-md-12">
 		<h1>Download page</h1>
