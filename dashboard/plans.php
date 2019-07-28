@@ -60,6 +60,12 @@ if ($page == 'add')
 			$analytics 	= _addslashes($_POST['analytics-code']);
 			$TP_analytics 	= _addslashes($_POST['tp-analytics-code']);
 
+			if (empty($analytics))
+				$analytics = " ";
+
+			if (empty($TP_analytics))
+				$TP_analytics = " ";
+
 			$plan = new Plan();
 			$plan->products_id = $p_id;
 			$plan->name = $name;
@@ -120,6 +126,12 @@ else if ($page == 'edit')
 			$status 	= intval($_POST['status']);
 			$analytics 	= _addslashes($_POST['analytics-code']);
 			$TP_analytics 	= _addslashes($_POST['tp-analytics-code']);
+
+			if (empty($analytics))
+				$analytics = " ";
+
+			if (empty($TP_analytics))
+				$TP_analytics = " ";
 
 			$plan = Plan::get($plan_id);
 			$plan->products_id = $p_id;
