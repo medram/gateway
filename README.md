@@ -5,7 +5,7 @@ This is my payment gateway which I use to sell my digital products online, I did
 The features of Checkout gateway are as follow:
 - Deliver your digital products to your customers instantly after purchases.
 - Supports Paypal as and option for paying (Strip is coming soon).
-- Collect customers' information (eg. Email, first name, last name, gender).
+- Collects customers' information (eg. Email, first name, last name, gender).
 - Supports Coupons codes (Add/Edit/Delete) for each product/plan.
 - Generate Licenses for your digital product to activate it.
 - Supports Google Analitics & Pixel codes.
