@@ -14,3 +14,13 @@ The features of Checkout gateway are as follow:
 
 And A Lot Coming Soon.
 ![](https://github.com/medram/gateway/blob/master/wiki_stuff/1.PNG?raw=true)
+
+![](https://github.com/medram/gateway/blob/master/wiki_stuff/2.PNG?raw=true)
+
+![](https://github.com/medram/gateway/blob/master/wiki_stuff/3.PNG?raw=true)
+
+![](https://github.com/medram/gateway/blob/master/wiki_stuff/4.PNG?raw=true)
+
+![](https://github.com/medram/gateway/blob/master/wiki_stuff/5.PNG?raw=true)
+
+![](https://github.com/medram/gateway/blob/master/wiki_stuff/6.PNG?raw=true)
