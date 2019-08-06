@@ -13,14 +13,15 @@ The features of Checkout gateway are as follow:
 - Support JVZoo integration, via JVZooIPN
 
 And A Lot Coming Soon.
-![](https://github.com/medram/gateway/blob/master/wiki_stuff/1.PNG?raw=true)
 
-![](https://github.com/medram/gateway/blob/master/wiki_stuff/2.PNG?raw=true)
+![](https://raw.githubusercontent.com/medram/gateway/master/wiki_stuff/1.PNG)
 
-![](https://github.com/medram/gateway/blob/master/wiki_stuff/3.PNG?raw=true)
+![](https://raw.githubusercontent.com/medram/gateway/master/wiki_stuff/2.PNG)
 
-![](https://github.com/medram/gateway/blob/master/wiki_stuff/4.PNG?raw=true)
+![](https://raw.githubusercontent.com/medram/gateway/master/wiki_stuff/3.PNG)
 
-![](https://github.com/medram/gateway/blob/master/wiki_stuff/5.PNG?raw=true)
+![](https://raw.githubusercontent.com/medram/gateway/master/wiki_stuff/4.PNG)
 
-![](https://github.com/medram/gateway/blob/master/wiki_stuff/6.PNG?raw=true)
+![](https://raw.githubusercontent.com/medram/gateway/master/wiki_stuff/5.PNG)
+
+![](https://raw.githubusercontent.com/medram/gateway/master/wiki_stuff/6.PNG)
