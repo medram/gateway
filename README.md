@@ -1,6 +1,6 @@
-# Checkout gateway (alfa version)!
+# Checkout gateway (alpha version)!
 Hi there!
-This is my Checkout gateway which I use to sell my digital products online, I didn't name it yet as It's in ALFA version as well, And it has some useful features
+This is my Checkout gateway which I use to sell my digital products online, I didn't name it yet as It's in ALPHA version as well, And it has some useful features
 # Features:
 The features of Checkout gateway are as follow:
 - Delivers your digital products to your customers instantly after purchases via Emails.
