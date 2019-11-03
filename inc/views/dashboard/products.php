@@ -47,10 +47,6 @@ if (count($products) == 0)
 
 				<a href="plans.php?cu=<?php echo $customer->id ?>&p_id=<?php echo $product->id ?>" class="btn btn-info btn-sm"><i class="fa fa-flag"></i> Plans (<?php echo count(Plan::getPlans($customer, $product)) ?>)</a>
 
-				<a href="licenses.php?cu=<?php echo $customer->id ?>&pr=<?php echo $product->id ?>" class="btn btn-success btn-sm"><i class="fa fa-key"></i> Licenses (<?php echo count($product->getLicenses($customer)) ?>)</a>
-
-				
-
 				<?php endif; ?>
 			</td>
 		</tr>

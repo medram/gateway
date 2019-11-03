@@ -6,7 +6,7 @@ use MR4Web\Models\PDOModel;
 use MR4Web\Models\Coupon;
 use MR4Web\Models\Transaction;
 use MR4Web\Models\Plan;
-use MR4Web\Models\License;
+use MR4Web\Models\Item;
 
 class Invoice extends PDOModel {
 
@@ -44,9 +44,9 @@ class Invoice extends PDOModel {
 		return Customer::get($this->customers_id);
 	}
 
-	public function getLicenses()
+	public function getItems()
 	{
-		return License::getAllBy(['invoices_id' => $this->id]);
+		return Item::getAllBy(['invoices_id' => $this->id]);
 	}
 }
 

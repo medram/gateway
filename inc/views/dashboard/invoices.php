@@ -21,7 +21,6 @@ else if (isset($msg['ok']))
 			<th>Invoice Code</th>
 			<th>Transaction ID</th>
 			<th>Plan ID</th>
-			<th>Licenses</th>
 			<th>Coupon ID</th>
 			<th>Created</th>
 			<th>Actions</th>
@@ -38,7 +37,6 @@ else if (isset($msg['ok']))
 			<td><?php echo '<code class="text-primary">'.$invoice->invoice_id.'</code>' ?></td>
 			<td><?php echo $invoice->transactions_id ?></td>
 			<td><?php echo $plan->id.' <small>('.$plan->name.')</small>' ?></td>
-			<td><?php echo count($plan->getLicenses($customer)).'/'.$plan->max_licenses ?></td>
 			<td><?php echo $coupon instanceof Coupon? $coupon->id." (".$coupon->code.")" : '---' ?></td>
 			<td><?php echo $invoice->created ?></td>
 			<td>

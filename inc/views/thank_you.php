@@ -18,10 +18,12 @@ if (isset($plan) && $plan instanceof Plan)
 <div class="row">
 	<div class="container text-center">
 		<span>The payment has been successfully done, And your invoice ID is :</span><br>
-		<h2><code class="text-primary" style="border: 2px dashed #007bff; padding: 4px 9px; border-radius: 5px;"><?php echo $invoice->invoice_id ?></code></h2>
-		<span>Please check your email inbox, if you received your product.</span><br>
+		<h2><code class="text-primary" style="border: 2px dashed #007bff; padding: 4px 9px; border-radius: 5px;"><?php echo $invoice->invoice_id ?></code></h2><br>
+		
+		<a href="customer/" class="btn btn-primary"><i class="fa fa-share"></i> Get My Item Now!</a><br><br>
+		<span>Or please check your email inbox, if you received your product via an email (please check spam area as well).</span><br>
 		<span>For more information about the product, you could contact the product owner using this email :<br> <a href="mailto:<?php echo $product->email_support ?>"><?php echo $product->email_support ?></a></span><br>
-		<span>If you get any issue like about receiving your product or payment, please feel free to contact us at:<br>
+		<span>If you get any issue about receiving your product or confirming payments, please feel free to contact us at:<br>
 		<a href="mailto:<?php echo getConfig('email_sales_support'); ?>"><?php echo getConfig('email_sales_support'); ?></a></span>
 	</div>
 </div>

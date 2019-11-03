@@ -3,7 +3,6 @@
 namespace MR4Web\Models;
 
 use MR4Web\Models\PDOModel;
-use MR4Web\Models\License;
 use MR4Web\Models\Customer;
 use MR4Web\Models\Plan;
 use MR4Web\Models\User;
@@ -34,21 +33,6 @@ class Product extends PDOModel {
 	{
 		if (is_string($where))
 			return Plan::getAllBy($where." AND `products_id`={$this->id}");
-		return [];
-	}
-
-	public function getLicenses(Customer $customer = NULL)
-	{
-		if ($customer != NULL)
-			return License::getAllBy(['products_id' => $this->id, 'customers_id' => $customer->id]);
-		return License::getAllBy(['products_id' => $this->id]);
-	}
-
-	public function getLicensesWhere($where)
-	{
-		if (is_string($where))
-			return License::getAllBy($where." AND `products_id`={$this->id}");
-		
 		return [];
 	}
 

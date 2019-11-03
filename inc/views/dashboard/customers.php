@@ -17,7 +17,7 @@ if (count($customers) == 0)
 			<th>Email</th>
 			<th>Gender</th>
 			<th>Created</th>
-			<th>All Customer's (Products/Licenses...)</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -39,26 +39,17 @@ if (count($customers) == 0)
 			$products = $customer->getProducts();
 			$pDisabled = count($products)? '' : 'disabled' ;
 			
-			$licenses = $customer->getLicenses();
-			$lDisabled = count($licenses)? '' : 'disabled' ;
 			?>
 			<td>
 				<!-- Products -->
 				<?php if (!$pDisabled) { ?>
 					<a href="products.php?cu=<?php echo $customer->id ?>" title="Products" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-cube"></i> (<?php echo count($products) ?>)</a>
 				<?php } ?>
-				
-				<!-- Licenses -->
-				<?php if (!$lDisabled) { ?>
-					<a href="licenses.php?cu=<?php echo $customer->id ?>" title="licenses" class="btn btn-success btn-sm"><i class="fa fa-key"></i> (<?php echo count($licenses) ?>)</a>
-				<?php } ?>
 
 				<!-- Invoices -->
 				<?php if (!$pDisabled) { ?>
 					<a href="invoices.php?cu=<?php echo $customer->id ?>" title="invoices" class="btn btn-warning btn-sm"><i class="fa fa-file-text-o"></i> (<?php echo count($customer->getInvoices()) ?>)</a>
 				<?php } ?>
-				<!-- Create License -->
-				<a href="licenses.php?page=add&cu=<?php echo $customer->id ?>" title="Create license" class="btn btn-info btn-sm"><i class="fa fa-key"></i> Create license</a>
 			</td>
 		</tr>
 		<?php endforeach;?>

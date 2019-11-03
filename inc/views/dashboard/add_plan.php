@@ -25,9 +25,6 @@ use MR4Web\Models\Plan;
 			<label for="old-price">Old Price (in USD) :</label>
 			<input type="number" min="0" step=".01" id="old-price" name="old-price" class="form-control" value="<?php @show2input($plan->old_price) ?>" required><br>
 			
-			<label for="max-licenses">Max Licenses :</label>
-			<input type="number" min="0" id="max-licenses" name="max-licenses" class="form-control" value="<?php @show2input($plan->max_licenses) ?>" required><br>
-
 			<label for="planStatus">Plan Status :</label>
 			<select id="planStatus" name="status" class="form-control">
 				<option value="1" <?php echo (@$plan->status == 1)? 'selected' : '' ?> >active</option>

@@ -7,7 +7,6 @@ use MR4Web\Utils\Dashboard;
 use MR4Web\Models\Transaction;
 use MR4Web\Models\Customer;
 use MR4Web\Models\Coupon;
-use MR4Web\Models\License;
 use MR4Web\Models\Product;
 
 /*
@@ -69,37 +68,7 @@ if (count($customers))
 	$totalCustomers = count($customers);
 
 $data['customers_total'] = $totalCustomers;
-
-// --------- Licenses ---------
-if ($time == "today")
-	$licenses = License::getAllBy(" WHERE `created` > \"".date('Y-m-d H:i:s', time()-86400)."\"");
-else if ($time == "last-week")
-	$licenses = License::getAllBy(" WHERE `created` > \"".date('Y-m-d H:i:s', time()-604800)."\"");
-else if ($time == "last-month")
-	$licenses = License::getAllBy(" WHERE `created` > \"".date('Y-m-d H:i:s', time()-2592000)."\"");
-else
-	$licenses = License::getAll();
-
-$used = 0;
-$max = 0;
-$totalLicenses = 0;
-$banned = 0;
-
-if (count($licenses))
-{
-	$totalLicenses = count($licenses);
-	foreach ($licenses as $license)
-	{
-		$used += $license->activation_num;
-		$max += $license->activation_max;
-		$banned += $license->banned;
-	}
-
-	$data['licenses_used'] = $used;
-	$data['licenses_max'] = $max;
-	$data['licenses_banned'] = $banned;
-}
-$data['licenses_total'] = $totalLicenses;
+$data['licenses_total'] = 00000001;
 
 // --------- Coupons ---------
 if ($time == "today")
@@ -175,7 +144,7 @@ if (count($products))
 			'created' => $product->created,
 			);
 
-		// calculate licenses
+		/*// calculate licenses
 		if ($time == "today")
 			$licenses = $product->getLicensesWhere(" WHERE `created` > \"".date('Y-m-d H:i:s', time()-86400)."\"");
 		else if ($time == "last-week")
@@ -205,7 +174,7 @@ if (count($products))
 			'total' => count($licenses),
 			'used' => $used,
 			'banned' => $banned,
-		);
+		);*/
 
 		// calculate profit/product 
 		if ($time == "today")
@@ -246,7 +215,7 @@ if (count($products))
 			}
 		}
 
-		$data['products_rows'][] = ['product' => $pr,'licenses' => $l, 'gross' => $gross, 'profit' => $profit];
+		$data['products_rows'][] = ['product' => $pr, 'gross' => $gross, 'profit' => $profit];
 	}
 
 

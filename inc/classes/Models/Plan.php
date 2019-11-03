@@ -6,7 +6,6 @@ use MR4Web\Models\PDOModel;
 use MR4Web\Models\Transaction;
 use MR4Web\Models\Product;
 use MR4Web\Models\Customer;
-use MR4Web\Models\License;
 use MR4Web\Models\Update;
 use MR4Web\Models\Plans_Coupon;
 
@@ -31,7 +30,6 @@ class Plan extends PDOModel {
 			'status'		=> \PDO::PARAM_INT,
 			'analytics_code'=> \PDO::PARAM_STR,
 			'thanks_page_analytics_code'=> \PDO::PARAM_STR,
-			'max_licenses'	=> \PDO::PARAM_INT,
 			'created'		=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
@@ -50,13 +48,6 @@ class Plan extends PDOModel {
 	public function getInvoices()
 	{
 		return Invoice::getAllBy(['plans_id' => $this->id]);
-	}
-
-	public function getLicenses(Customer $customer = NULL)
-	{
-		if ($customer != NULL && $customer instanceof Customer)
-			return License::getAllBy(['customers_id' => $customer->id, 'plans_id' => $this->id]);
-		return License::getAllBy(['plans_id' => $this->id]);
 	}
 
 	public function supportCoupon(Coupon &$coupon)

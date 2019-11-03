@@ -20,9 +20,6 @@
 						<a class="nav-link" href="products.php"><i class="fa fa-fw fa-cube"></i> Products</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="licenses.php"><i class="fa fa-fw fa-key"></i> Licenses</a>
-					</li>
-					<li class="nav-item">
 						<a class="nav-link" href="coupons.php"><i class="fa fa-fw fa-ticket"></i> Coupons</a>
 					</li>
 					<li class="nav-item">

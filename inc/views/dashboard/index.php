@@ -30,28 +30,6 @@
 			</tbody>
 		</table>
 		
-		<h2 class="text-primary"><i class="fa fa-w fa-key"></i> Licenses:</h2>
-		<table class="table table-sm table-striped table-hover">
-			<thead>
-				<tr>
-					<th>Used/Max</th>
-					<th>Banned</th>
-					<th>Total Licenses</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if ($licenses_total): ?>
-				<tr>
-					<td><?php echo $licenses_used.'/'.$licenses_max ?></td>
-					<td><span class="text-danger"><?php echo $licenses_banned ?> <i class="fa fa-key"></i></span></td>
-					<td><b class="text-primary"><?php echo $licenses_total ?> <i class="fa fa-key"></i></b></td>
-				</tr>
-
-				<?php else: ?>
-					<tr><td class="text-center" colspan="3">No available data for now!</td></tr>
-				<?php endif; ?>
-			</tbody>
-		</table>
 		
 		<h2 class="text-danger"><i class="fa fa-w fa-ticket"></i> Coupons:</h2>
 		<table class="table table-sm table-striped table-hover">
@@ -83,7 +61,6 @@
 			<thead>
 				<tr>
 					<th>Product</th>
-					<th>Licenses (used/total)</th>
 					<th>Revenue (profit/gross)</th>
 				</tr>
 			</thead>
@@ -92,7 +69,6 @@
 					<?php foreach ($products_rows as $row): ?>
 					<tr>
 						<td><?php echo $row['product']['name']." <small>v".$row['product']['version']."</small>"; ?></td>
-						<td class="text-primary"><?php echo $row['licenses']['used'].'/'.$row['licenses']['total'] ?> <i class="fa fa-key"></i></td>
 						<td class="text-success"><?php echo $row['profit'].'<b>/</b>'.$row['gross'] ?> $</td>
 					</tr>
 					<?php endforeach; ?>

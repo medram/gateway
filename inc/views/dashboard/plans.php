@@ -20,7 +20,6 @@ if (count($plans) == 0)
 			<th>Price</th>
 			<th>Old Price</th>
 			<th>Plan Type</th>
-			<th>Max Licenses</th>
 			<th>Status</th>
 			<th>Created</th>
 			<th>Actions</th>
@@ -40,7 +39,6 @@ if (count($plans) == 0)
 			<td><?php echo '$'.$plan->price ?></td>
 			<td><?php echo '<del>$'.$plan->old_price.'</del>' ?></td>
 			<td><?php echo $plan->planType() ?></td>
-			<td><?php echo $plan->max_licenses ?></td>
 			<td>
 				<?php
 				if ($plan->status == 1)
@@ -56,6 +54,10 @@ if (count($plans) == 0)
 				<a href="<?php echo '?a=delete&plan_id='.$plan->id.'&p_id='.$p_id ?>" class="btn btn-danger btn-sm action-delete"><i class="fa fa-trash-o"></i></a>
 					<?php if ($plan->status): ?>
 						<a href="<?php echo BASE_URL.'checkout.php?pl='.$plan->id; ?>" target="_blank" class="btn btn-info btn-sm"><i class="fa fa-link"></i></a>
+					<?php endif; ?>
+
+					<?php if ($plan->status): ?>
+						<a href="<?php echo BASE_URL.'jvzoo_ipn.php?pl='.$plan->id; ?>" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-link"></i> JVZoo IPN</a>
 					<?php endif; ?>
 				<?php elseif ($mode == 1): ?>
 				---

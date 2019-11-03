@@ -55,7 +55,6 @@ if ($page == 'add')
 			$price 		= (float)($_POST['price']);
 			$oldPrice 	= (float)($_POST['old-price']);
 			$planType	= _addslashes(strip_tags($_POST['plan-type']));
-			$maxLicenses= intval($_POST['max-licenses']);
 			$status 	= intval($_POST['status']);
 			$analytics 	= _addslashes($_POST['analytics-code']);
 			$TP_analytics 	= _addslashes($_POST['tp-analytics-code']);
@@ -73,7 +72,6 @@ if ($page == 'add')
 			$plan->price = $price;
 			$plan->old_price = $oldPrice;
 			$plan->plan_type = $planType;
-			$plan->max_licenses = $maxLicenses;
 			$plan->status = (string)$status;
 			$plan->analytics_code = (string)$analytics;
 			$plan->thanks_page_analytics_code = (string)$TP_analytics;
@@ -122,7 +120,6 @@ else if ($page == 'edit')
 			$price 		= (float)($_POST['price']);
 			$oldPrice 	= (float)($_POST['old-price']);
 			$planType	= _addslashes(strip_tags($_POST['plan-type']));
-			$maxLicenses= intval($_POST['max-licenses']);
 			$status 	= intval($_POST['status']);
 			$analytics 	= _addslashes($_POST['analytics-code']);
 			$TP_analytics 	= _addslashes($_POST['tp-analytics-code']);
@@ -140,7 +137,6 @@ else if ($page == 'edit')
 			$plan->price = $price;
 			$plan->old_price = $oldPrice;
 			$plan->plan_type = $planType;
-			$plan->max_licenses = $maxLicenses;
 			$plan->status = (string)$status;
 			$plan->analytics_code = (string)$analytics;
 			$plan->thanks_page_analytics_code = (string)$TP_analytics;

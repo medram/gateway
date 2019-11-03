@@ -3,7 +3,6 @@
 namespace MR4Web\Models;
 
 use MR4Web\Models\PDOModel;
-use MR4Web\Models\License;
 
 class Domain extends PDOModel {
 
@@ -21,11 +20,6 @@ class Domain extends PDOModel {
 			'modified'		=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
-	}
-
-	public function getLicense()
-	{
-		return License::get($this->licenses_id);
 	}
 
 	public function isActive()

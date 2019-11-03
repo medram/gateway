@@ -1,8 +1,8 @@
 <?php
 
 use MR4Web\Models\Invoice;
-use MR4Web\Models\License;
 use MR4Web\Models\Plan;
+use MR4Web\Models\Item;
 use MR4Web\Models\Customer;
 use MR4Web\Models\PDOModel;
 use MR4Web\Models\Transaction;
@@ -57,9 +57,11 @@ function purchaseNotification(Invoice $invoice)
 	try
 	{
 		sendEmail($customer->email, $title, $body);
+		return true;
 	} catch (\Exception $e){
 		die($e->getMessage());
 	}
+	return false;
 }
 
 // send an product informations email.
@@ -70,30 +72,6 @@ function sendProductToCustomer(Invoice $invoice)
 	$file = $product->getFiles()[0]; // we just send the first file.
 	//$transaction = $invoice->getTransaction();
 	$customer = $invoice->getCustomer();
-	$licenses = []; // licenses classes
-	$licenses_codes = [];
-
-	// get the licenses if it's found.
-	//$licenses = $plan->getLicenses($customer);
-	$licenses = $invoice->getLicenses();
-
-	// create new licenses for the first time & DON'T RECREATE LICENSES AGAIN.
-/*	if (!count($licenses))
-	{
-		for ($i = 0; $i < $plan->max_licenses; ++$i)
-		{
-			$licenses[] = License::createLicense($customer, $plan);
-		}
-	}*/
-	
-	// collect licenses code in one array
-	if (count($licenses))
-	{
-		foreach ($licenses as $license)
-		{
-			$licenses_codes[] = $license->license_code;
-		}
-	}
 
 	$title = getConfig('site_name').": [Download] {$product->name} v{$product->version}.";
 	$data['TITLE'] = $title;
@@ -101,7 +79,6 @@ function sendProductToCustomer(Invoice $invoice)
 	$data['PRODUCT_NAME'] = $product->name . " v{$product->version}";
 	$data['PLAN_NAME'] = $plan->name;
 	$data['DOWNLOAD_LINK'] = $file->getDownloadLink($plan, $customer);
-	$data['LICENSES'] = implode('<br><br>', $licenses_codes); //sdf57df54gdf5g65df4g6sdf7g6d5f4gdf
 	$data['PRODUCT_EMAIL_SUPPORT'] = $product->email_support;
 
 	$body = EmailTpl::render('download_product', $data);
@@ -109,11 +86,11 @@ function sendProductToCustomer(Invoice $invoice)
 	try {
 		//exit($body);
 		sendEmail($customer->email, $title, $body);
+		return true;
 	} catch (\Exception $e){
 		//die($e->getMessage());
-		return false;
 	}
-	return true;
+	return false;
 }
 
 // sending product to JVZoo customer
@@ -132,7 +109,6 @@ function JVzooIPN($plan)
 	// check the information
 	
 	// create new customer
-	// generate new licenses
 	// create new invoice
 	// send an email to the customer
 	
@@ -167,8 +143,6 @@ function JVzooIPN($plan)
 			*/
 
 			$customer = Customer::getBy(['email' => $JV_email]);
-			$licenses = [];
-			$licenses_codes = [];
 			$invoice = null;
 			$isOurCustomer = true;
 			$allReadyPaid = false; // true: just show the product info
@@ -219,27 +193,19 @@ function JVzooIPN($plan)
 	*/			
 				$invoice->save();
 				$invoice = Invoice::get(Invoice::getLastInsertId());
-				// create new licenses for the first time & DON'T RECREATE LICENSES AGAIN.
-				for ($i = 0; $i < $plan->max_licenses; ++$i)
-				{
-					$licenses[] = License::createLicense($customer, $plan, $invoice);
-				}
+
+				# create items for this invoice
+				$item = new Item();
+				$item->title 		= $product->name.' v'.$product->version.' ('.$plan->name.')';
+				$item->quantity 	= 1; // the deafult
+				$item->price 		= $plan->price;
+				$item->invoices_id 	= $invoice->id;
+
+				$item->save();
 			}
 			else
 			{
 				$invoice = Invoice::getBy(['transactions_id' => $JV_transactionID]);
-			}
-
-			// We could register a new transaction here.
-			$licenses = $invoice->getLicenses();
-
-			// collect licenses code in one array
-			if (count($licenses))
-			{
-				foreach ($licenses as $license)
-				{
-					$licenses_codes[] = $license->license_code;
-				}
 			}
 
 			PDOModel::getPDO()->commit();
@@ -253,7 +219,6 @@ function JVzooIPN($plan)
 		$data['productName'] = $product->name." v{$product->version}";
 		$file = $product->getFiles()[0];
 		$data['downloadLink'] = $file->getDownloadLink($plan, $customer);
-		$data['licenses'] = implode('<br><br>', $licenses_codes);
 		$data['product_email_support'] = $product->email_support;
 
 		$data['title'] = 'Download Page';
@@ -290,29 +255,15 @@ function showProductOnDownloadPage(Plan $plan)
 		$customer = Customer::getBy(['email' => $email]);
 		$invoice = Invoice::getBy(['transactions_id' => $trID]);
 		$product = $plan->getProduct();
-		$licenses_codes = [];
 
 		if ($customer instanceof Customer && $invoice instanceof Invoice && $product instanceof Product)
 		{
 			if ($plan->id == $invoice->getPlan()->id)
 			{
-				// We could register a new transaction here.
-				$licenses = $invoice->getLicenses();
-
-				// collect licenses code in one array
-				if (count($licenses))
-				{
-					foreach ($licenses as $license)
-					{
-						$licenses_codes[] = $license->license_code;
-					}
-				}
-
 				// get some more extra information.
 				$data['productName'] = $product->name." v{$product->version}";
 				$file = $product->getFiles()[0];
 				$data['downloadLink'] = $file->getDownloadLink($plan, $customer);
-				$data['licenses'] = implode('<br><br>', $licenses_codes);
 				$data['product_email_support'] = $product->email_support;
 
 				$data['title'] = 'Download Page';
