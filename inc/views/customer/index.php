@@ -6,8 +6,12 @@
 	?>
 		<div class="card mb-3">
 		  	<h5 class="card-header"><i class="fa fa-fw fa-cube"></i> <?php echo $product->name.' v'.$product->version.' ('.$plan->name.')' ?>
-		      <?php if ($downloadLink){ ?>
-		  	    <a href="<?php echo $downloadLink ?>" class="btn btn-primary btn-sm pull-right"><i class="fa fa-download"></i> Download Now</a>
+		      	<?php if ($plan->status == 1){ ?>
+		  	    	<a href="<?php echo BASE_URL.'checkout.php?pl='.$plan->id ?>" target="_blank" class="btn btn-success btn-sm pull-right ml-2"><i class="fa fa-shopping-cart"></i> BUY MORE !</a>
+		    	<?php } ?>
+
+		      	<?php if ($downloadLink){ ?>
+		  	    	<a href="<?php echo $downloadLink ?>" class="btn btn-primary btn-sm pull-right"><i class="fa fa-download"></i> Download Now</a>
 		    	<?php } ?>
 			</h5>
 		  <div class="card-body">
