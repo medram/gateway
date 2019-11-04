@@ -16,6 +16,7 @@ if (count($customers) == 0)
 			<th>Last name</th>
 			<th>Email</th>
 			<th>Gender</th>
+			<th>Status</th>
 			<th>Created</th>
 			<th>Actions</th>
 		</tr>
@@ -23,18 +24,26 @@ if (count($customers) == 0)
 	<tbody>
  		<?php foreach ($customers as $customer): ?>
 		<tr>
-			<td><?php echo $customer->id ?></td>
+			<td><small><?php echo $customer->id ?></small></td>
 			<td>
-				<?php echo $customer->fname ?>
+				<small><?php echo $customer->fname ?></small>
 				<!-- Edit customer -->
 				<span class="hiddenBox">
 					<a href="customers.php?page=edit&cu=<?php echo $customer->id ?>" class="btn btn-sm btn-link"><i class="fa fa-pencil fa-fw"></i></a>
 				</span>
 			</td>
-			<td><?php echo $customer->lname ?></td>
-			<td><?php echo $customer->email ?></td>
+			<td><small><?php echo $customer->lname ?></small></td>
+			<td><small><?php echo $customer->email ?></small></td>
 			<td><?php echo printGenderGraph($customer->gender) ?></td>
-			<td><?php echo $customer->created ?></td>
+			<td>
+				<?php
+				if ($customer->active)
+					echo "<span class='badge badge-success'>Active</span>";
+				else
+					echo "<span class='badge badge-danger'>Inactive</span>";
+				?>		
+			</td>
+			<td><small><?php echo $customer->created ?></small></td>
 			<?php
 			$products = $customer->getProducts();
 			$pDisabled = count($products)? '' : 'disabled' ;
