@@ -84,9 +84,18 @@ else if (isset($_POST['submitPassword']))
 
 	if (Customer::login($email, $password))
 	{
-		// redirect to dashboard
-		header('location: index.php');
-		exit();
+		$customer = Customer::getBy(['email' => $email]);
+		
+		if (!$customer->isBanned())
+		{
+			// redirect to dashboard
+			header('location: index.php');
+			exit();
+		}
+		else
+		{
+			$msg['err'] = 'Oops! This Account has been deactivated!';
+		}
 	}
 	else
 		$msg['err'] = 'Oops! Email Address or Password is not correct!';
