@@ -335,7 +335,8 @@ class FileStream
 
 	private function getContentType()
 	{
-		$ext = strtolower(end(explode('.', $this->_name)));
+		$list = explode('.', $this->_name);
+		$ext = strtolower(end($list));
 		
 		if (array_key_exists($ext, $this->_mimeTypes))
 			return $this->_mimeTypes[$ext];
