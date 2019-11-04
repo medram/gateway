@@ -23,6 +23,13 @@
 				<option value="F" <?php if(@show2input($customer->gender, false) == "F") echo 'selected'?>>Female</option>
 			</select><br>
 
+			<label for="active">Active :</label>
+			<select name="active" id="active" class="form-control">
+				<option value="1" <?php if(@show2input($customer->active, false) == 1) echo 'selected'?>>Yes</option>
+				<option value="0" <?php if(@show2input($customer->active, false) == 0) echo 'selected'?>>No</option>
+			</select><br>
+
+
 			<input type="submit" name="saveCustomer" class="btn btn-primary" value="Save">
 		</form>
 	</div>

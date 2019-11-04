@@ -21,6 +21,7 @@ if ($page == 'add')
 		$lname = _addslashes(strip_tags($_POST['lname']));
 		$email = _addslashes(strip_tags($_POST['customer-email']));
 		$gender = _addslashes(strip_tags($_POST['gender']));
+		$active = intval($_POST['active']);
 
 		if (empty($fname)  || empty($email))
 		{
@@ -42,6 +43,7 @@ if ($page == 'add')
 			$customer->email = $email;
 			$customer->gender = $gender;
 			$customer->token = hash('sha256', $email.'-'.time());
+			$customer->active = (string)$active;
 
 			try {
 
@@ -80,6 +82,7 @@ else if ($page == 'edit' && $customerID != 0)
 		$lname = _addslashes(strip_tags($_POST['lname']));
 		$email = _addslashes(strip_tags($_POST['customer-email']));
 		$gender = _addslashes(strip_tags($_POST['gender']));
+		$active = intval($_POST['active']);
 
 		$nextCustomer = Customer::getBy(['email' => $email]);
 
@@ -101,6 +104,7 @@ else if ($page == 'edit' && $customerID != 0)
 			$customer->lname = $lname;
 			$customer->email = $email;
 			$customer->gender = $gender;
+			$customer->active = (string)$active;
 
 			if ($customer->save())
 			{

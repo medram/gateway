@@ -11,6 +11,15 @@ if (!Customer::isLogin())
 	exit();
 }
 
+$customer = Customer::currentCustomer();
+
+if ($customer->isBanned())
+{
+	$customer->logout();
+	header('location: login.php');
+	exit();	
+}
+
 //do_action('before_customer_area_start', User::getUser());
 
 // Just for testing

@@ -21,7 +21,7 @@ class Customer extends PDOModel {
 			'gender'	=> \PDO::PARAM_STR,
 			'password'	=> \PDO::PARAM_STR,
 			'token'		=> \PDO::PARAM_STR,
-			'banned'	=> \PDO::PARAM_INT,
+			'active'	=> \PDO::PARAM_INT,
 			'created'	=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
@@ -178,7 +178,7 @@ class Customer extends PDOModel {
 
 	public function isBanned()
 	{
-		return (bool)$this->banned;
+		return !(bool)$this->active;
 	}
 }
 
