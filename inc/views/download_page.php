@@ -41,9 +41,7 @@ if (isset($plan) && $plan instanceof Plan)
 		    	</div>
 		    	Or from here:<br>
 		    	<a href="<?php echo $downloadLink ?>" target="_blank" title="Download"><?php echo $downloadLink ?></a><br><br>
-		    	<h5><?php echo $productName ?> License(s):</h5>
-		    	You could use the license(s) below to activate your <?php echo $productName ?> :
-		    	<div class="lead text-primary text-center mt-3 font-weight-bold"><?php echo $licenses ?></div><br>
+		    	
 		    	<h5><?php echo $productName ?> Support:</h5>
 		    	<b>Node:</b> if you have any suggestions, issues or problems with product, please feel free to contact us at:<br>
 		    	<a href="mailto:<?php echo $product_email_support ?>" ><?php echo $product_email_support ?></a>
