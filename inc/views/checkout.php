@@ -164,7 +164,7 @@
 			</div>
 
 			<!-- <hr class="mb-4"> -->
-			<h4 class="mb-3"><i class='fa fa-fw fa-credit-card'></i> Payment Method</h4>
+			<h4 class="mb-3"><i class='fa fa-fw fa-credit-card'></i> Payment Methods</h4>
 			<div class="d-block my-3">
 				<?php foreach($paymentMethods as $key => $method): ?>
 				<div class="custom-control custom-radio">

@@ -1,22 +1,4 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="favicon.ico">
-
-		<title>Customer's Area</title>
-
-		<!-- Bootstrap core CSS -->
-		<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-
-		<!-- Custom styles for this template -->
-		<link href="../assets/css/style.css" rel="stylesheet">
-	</head>
-
-	<body class="text-center">
+<div class="d-flex text-center" style="height: 60vh;">
 	<?php if (isset($_GET['step']) && $_GET['step'] == 2){ ?>
 		<form action="" method="POST" class="form-signin">
 			<!-- <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
@@ -65,6 +47,5 @@
 			<input class="btn btn-lg btn-primary btn-block" type="submit" name="submitEmail" value="Sign in">
 		</form>
 	<?php } ?>
-		<p class="mt-5 mb-3 text-muted">&copy; <?php echo date('Y') ?> Powred by MR4web</p>
-	</body>
-</html>
+</div>
+

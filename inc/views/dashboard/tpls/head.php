@@ -7,7 +7,7 @@
 		<meta name="author" content="ADLinker">
 		<link rel="icon" href="../assets/favicon.ico">
 
-		<title>MR4Web Checkout :: <?php echo $dash_title ?>!</title>
+		<title>MR4Web Checkout :: <?php echo strip_tags($dash_title) ?>!</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="../assets/css/bootstrap.css" rel="stylesheet">

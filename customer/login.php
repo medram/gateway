@@ -133,6 +133,8 @@ else if (isset($_POST['submitNewPassword']))
 }
 
 $data['msg'] = $msg;
+view::render('customer/tpls/head', $data);
 view::render('customer/login', $data);
+view::render('customer/tpls/footer', $data);
 
 ?>

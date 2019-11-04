@@ -16,7 +16,7 @@
 		<link href="../assets/css/style.css" rel="stylesheet">
 	</head>
 
-	<body class="text-center">
+	<body class="d-flex text-center">
 		<form action="" method="POST" class="form-signin">
 			<!-- <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
 			<h1 class="h3 mb-3 font-weight-normal">MR4Web <small class="text-muted">checkout.</small></h1>
