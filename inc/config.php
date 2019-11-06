@@ -3,7 +3,7 @@
 return [
 	'DB' => [
 		'HOSTNAME' 	=> 'localhost',
-		'DB_NAME' 	=> 'api_test',
+		'DB_NAME' 	=> 'checkout',
 		'DB_USER'	=> 'root',
 		'DB_PASS'	=> 'root'
 	],

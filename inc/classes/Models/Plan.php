@@ -113,6 +113,26 @@ class Plan extends PDOModel {
 	{
 		return Update::getAllBy(['plans_id' => $this->id]);
 	}
+
+	public static function removeDuplicatePlans($plans)
+	{
+		$newPlans = [];
+		foreach ($plans as $plan)
+		{
+			$found = false;
+			foreach ($newPlans as $p)
+			{
+				if ($plan->id == $p->id)
+				{
+					$found = true;
+					break;
+				}
+			}
+			if (!$found)
+				$newPlans[] = $plan;
+		}
+		return $newPlans;
+	}
 }
 
 ?>

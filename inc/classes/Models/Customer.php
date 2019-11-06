@@ -10,6 +10,8 @@ use MR4Web\Models\plan;
 
 class Customer extends PDOModel {
 
+	public static $_currentCustomer = null;
+
 	public function __construct($data = NULL)
 	{
 		$schema = [
@@ -20,6 +22,7 @@ class Customer extends PDOModel {
 			'gender'	=> \PDO::PARAM_STR,
 			'password'	=> \PDO::PARAM_STR,
 			'token'		=> \PDO::PARAM_STR,
+			'active'	=> \PDO::PARAM_INT,
 			'created'	=> \PDO::PARAM_STR
 		];
 		parent::__construct($schema, $data);
@@ -29,7 +32,7 @@ class Customer extends PDOModel {
 	{
 		return Transaction::getAllBy(['customers_id' => $this->id]);
 	}
-	
+
 	public function getLicenses()
 	{
 		return License::getAllBy(['customers_id' => $this->id]);
@@ -72,19 +75,15 @@ class Customer extends PDOModel {
 
 	public function getInvoices()
 	{
-		return Invoice::getAllBy(['customers_id' => $this->id]);
+		return Invoice::getAllBy(['customers_id' => $this->id], ['id', 'DESC']);
 	}
 
-	/*public function getInvoice(Plan $plan)
+	public static function currentCustomer()
 	{
-		foreach ($this->getInvoices() as $invoice)
-		{
-			if ($plan->id == $invoice->getPlan()->id)
-				return $invoice;
-		}
-
+		if (self::$_currentCustomer instanceof Customer)
+			return self::$_currentCustomer;
 		return NULL;
-	}*/
+	}
 
 	public function getPlans($repetation = true)
 	{
@@ -119,6 +118,73 @@ class Customer extends PDOModel {
 			}
 		}
 		return $plans;
+	}
+
+
+	public function saveNewPassword($password)
+	{
+		$pass = hash('sha256', ENCRYPTION_KEY.$password);
+
+		$customer = self::getBy([
+			'email' => $this->email
+		]);
+
+		if ($customer instanceof Customer)
+		{
+			$customer->password = $pass;
+			$customer->save();
+		}
+	} 
+
+	public static function login($email, $password)
+	{
+		$pass = hash('sha256', ENCRYPTION_KEY.$password);
+		
+		$customer = self::getBy([
+			'email' => $email,
+			'password' => $pass
+		]);
+
+		if ($customer instanceof Customer)
+		{
+			self::$_currentCustomer = $customer;
+			// make a session.
+			$_SESSION['customer_login']['status'] = true;
+			$_SESSION['customer_login']['token'] = $customer->token;
+			$_SESSION['customer_login']['ip'] = get_client_ip();
+			$_SESSION['customer_login']['agent'] = $_SERVER['HTTP_USER_AGENT'];
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static function logout()
+	{
+		unset($_SESSION['customer_login']);
+	}
+
+	public static function isLogin()
+	{
+		$browser = isset($_SESSION['customer_login'])? $_SESSION['customer_login'] : [];
+		
+		if (count($browser) && $browser['status'] == true && $browser['ip'] == get_client_ip() && $browser['agent'] == $_SERVER['HTTP_USER_AGENT'])
+		{
+			$customer = Customer::getBy(['token' => $browser['token']]);
+			if ($customer instanceof Customer)
+			{
+				self::$_currentCustomer = $customer;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function isBanned()
+	{
+		return !(bool)$this->active;
 	}
 }
 
