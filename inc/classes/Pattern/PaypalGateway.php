@@ -15,9 +15,17 @@ use PayPal\Api\Transaction;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Payment;
 
+use PayPal\Api\Presentation;
+use PayPal\Api\WebProfile;
+use PayPal\Api\InputFields;
+
+use PayPal\Exception\PayPalConnectionException;
+
+
 class PaypalGateway extends AbstractGateway
 {
 	private $_handle;
+	private $profileID;
 
 	public function __construct()
 	{
@@ -49,8 +57,41 @@ class PaypalGateway extends AbstractGateway
 		return $this->_handle;
 	}
 
+	public function createWebProfile()
+	{
+		// Create the WebProfile
+		$presentation = new Presentation();
+		$presentation->setBrandName(getConfig('site_name'))
+			#->setLogoImage("http://www.yeowza.com/favico.ico")
+		    ->setLocaleCode("US");
+		$inputFields = new InputFields();
+		$inputFields->setAllowNote(true)
+		    ->setNoShipping(1)
+		    ->setAddressOverride(0);
+		$webProfile = new WebProfile();
+		$webProfile->setName(getConfig('site_name') .'_'. uniqid())
+		    ->setPresentation($presentation)
+		    ->setInputFields($inputFields);
+		try {
+		    $createdProfile = $webProfile->create($this->_handle);
+		    $createdProfileID = json_decode($createdProfile);
+		    $profileid = $createdProfileID->id;
+		    $this->profileID = $profileid;
+		    return $profileid;
+		} catch(PayPalConnectionException $pce) {
+		    if (DEBUG)
+		    {
+		    	echo '<pre>',print_r(json_decode($pce->getData())),"</pre>";
+		    	exit;
+		    }
+		}
+	}
+
 	public function createPayment()
 	{
+		# create a custom profile id.
+		$this->createWebProfile();
+
 		// prepere & execute the payment
 		$payer = new Payer();
 		$payer->setPaymentMethod('paypal');
@@ -90,7 +131,7 @@ class PaypalGateway extends AbstractGateway
 		$Transaction = new Transaction();
 		$Transaction->setAmount($amount)
 			->setItemList($itemList)
-			->setDescription('Take Action NOW!')
+			->setDescription('Your Items:')
 			->setInvoiceNumber($this->_product->getInvoiceId());
 
 		$RedirectUrls = new RedirectUrls();
@@ -98,7 +139,8 @@ class PaypalGateway extends AbstractGateway
 			->setCancelUrl($this->_cancelUrl);
 
 		$payment = new Payment();
-		$payment->setIntent('sale')
+		$payment->setExperienceProfileId($this->profileID)
+			->setIntent('sale')
 			->setPayer($payer)
 			->setRedirectUrls($RedirectUrls)
 			->setTransactions(array($Transaction));
@@ -110,12 +152,13 @@ class PaypalGateway extends AbstractGateway
 			header("location: ".$approvalUrl);
 			exit();
 		}
-		catch (\Exception $e)
+		catch (PayPalConnectionException $e)
 		{
-			echo '<pre>';
-			echo $e->getMessage().'<br>';
-			print_r($e->getData());
-			echo '</pre>';
+			if (DEBUG)
+			{
+		    	echo '<pre>',print_r(json_decode($pce->getData())),"</pre>";
+		    	exit;
+			}
 		}
 	}
 }

@@ -11,7 +11,7 @@ if (!isset($_SESSION['invoiceId']))
 }
 
 $invoice_id = _addslashes(strip_tags($_SESSION['invoiceId']));
-##unset($_SESSION['invoiceId']);
+//unset($_SESSION['invoiceId']);
 //echo $_SESSION['invoiceId'];
 $invoice = Invoice::getBy(['invoice_id' => $invoice_id]);
 
