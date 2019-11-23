@@ -12,7 +12,7 @@
 			<thead>
 				<tr>
 					<th>Gross</th>
-					<th>Fee</th>
+					<th>Fees</th>
 					<th>Profit</th>
 				</tr>
 			</thead>
