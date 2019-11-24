@@ -35,7 +35,7 @@ function purchaseNotification(Invoice $invoice)
 	}
 	$total->calculate();
 
-	$title = getConfig('site_name').": Payment Has Been Successfully Done.";
+	$title = "Payment Has Been Successfully Done.";
 	
 	$data['TITLE'] = $title;
 	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
@@ -73,7 +73,7 @@ function sendProductToCustomer(Invoice $invoice)
 	//$transaction = $invoice->getTransaction();
 	$customer = $invoice->getCustomer();
 
-	$title = getConfig('site_name').": [Download] {$product->name} v{$product->version}.";
+	$title = "[Download] {$product->name} v{$product->version}.";
 	$data['TITLE'] = $title;
 	$data['USERNAME'] = $customer->fname .' '. $customer->lname;
 	$data['PRODUCT_NAME'] = $product->name . " v{$product->version}";

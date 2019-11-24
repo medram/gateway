@@ -64,7 +64,7 @@ function setConfig($name, $value)
 	return Setting::change($name, $value);
 }
 
-function sendEmail($to, $subject, $body, $from = [], $isHTML=true)
+function sendEmail($to, $subject, $body, $from = [], $isHTML=true, $priority=1)
 {
 	$mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
@@ -93,6 +93,16 @@ function sendEmail($to, $subject, $body, $from = [], $isHTML=true)
 			$mail->SMTPSecure = getConfig('mail_encription'); // ssl or tls
 			//$mail->SMTPSecure = 'none';
 			$mail->SMTPAutoTLS = false;
+
+			$mail->Priority = $priority;
+			if ($priority == 1)
+			{
+				// MS Outlook custom header
+				// May set to "Urgent" or "Highest" rather than "High"
+				$mail->AddCustomHeader("X-MSMail-Priority: High");
+				// Not sure if Priority will also set the Importance header:
+				$mail->AddCustomHeader("Importance: High");
+			}
 
 			if (getConfig('allow_SSL_Insecure_mode') == 1)
 			{
