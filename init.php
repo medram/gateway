@@ -30,23 +30,6 @@ useSSL(true);
 */
 spl_autoload_register(function ($filename){
 
-	/*
-	$aliases = [
-		'MR4Web\\API\\' => API_DIR,
-		'MR4Web\\'	=> CLASS_DIR,
-	];
-
-	$path = '';
-
-	foreach ($aliases as $key => $value)
-	{
-		print_r($path);
-		if ($path != '')
-			break;
-	}
-	$path = preg_replace("/^MR4Web/", CLASS_DIR, $filename);
-	*/
-	
 	$path = str_ireplace('MR4Web\\', CLASS_DIR, $filename);
 	$path = $path.'.php';
 	$path = str_ireplace(['\\', '//'], '/', $path);
@@ -54,7 +37,6 @@ spl_autoload_register(function ($filename){
 	//echo $path."<br>";
 	if (file_exists($path))
 	{
-		//echo '<pre><b>Loading ...</b> '.$path.'</pre>';
 		require $path;
 	}	
 	else
@@ -68,6 +50,7 @@ define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $_SE
 $projectFolder = trim(MR4Web\Configs\Config::get('projectFolder'), '/');
 $projectFolder = $projectFolder != '' ? $projectFolder.'/' : $projectFolder;
 
+define('DOMAIN', PROTOCOL.'://'.$_SERVER['HTTP_HOST']);
 define('BASE_URL', PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/'.$projectFolder);
 
 require_once INC.'plugins_inc.php';
