@@ -104,7 +104,7 @@ class License extends PDOModel {
 
 	public function deactivate(Domain& $domain)
 	{
-		if ($this->activation_num > 0)
+		if ((int)$this->activation_num > 0)
 		{
 			$this->activation_num = (string)((int)$this->activation_num - 1);
 			return ($domain->deactivate() && $this->save());
