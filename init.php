@@ -20,10 +20,10 @@ define('PLUGINS_DIR', INC.'plugins/');
 date_default_timezone_set("Etc/GMT+0");
 
 require_once "vendor/autoload.php";
-require_once INC.'common.php';
 
-// force to use https.
-useSSL(true);
+// loading .env file.
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
 
 /*
 * autoload classes.
@@ -38,7 +38,7 @@ spl_autoload_register(function ($filename){
 	if (file_exists($path))
 	{
 		require $path;
-	}	
+	}
 	else
 	{
 		//echo "<pre>Fatal Error: The Class <b>\"".$filename."\"</b> Not Found on this path <b>".$path."</b></pre>";
@@ -52,6 +52,13 @@ $projectFolder = $projectFolder != '' ? $projectFolder.'/' : $projectFolder;
 
 define('DOMAIN', PROTOCOL.'://'.$_SERVER['HTTP_HOST']);
 define('BASE_URL', PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/'.$projectFolder);
+define('DASHBOARD_URL', BASE_URL.'dashboard/');
+
+require_once INC.'common.php';
+
+// force to use https.
+$force_https = getenv('FORCE_HTTPS') === 'true' ? true : false ;
+useSSL($force_https);
 
 require_once INC.'plugins_inc.php';
 

@@ -126,13 +126,13 @@ function sendEmail($to, $subject, $body, $from = [], $isHTML=true, $priority=1)
 			$mail->SetFrom($from[0], $from[1]);
 		else
 			$mail->SetFrom(getConfig('email_from'), getConfig('site_name'));
-		
-		
-		if ($isHTML)        
+
+
+		if ($isHTML)
 		{
 			$mail->IsHTML(TRUE);
 			$mail->Body = $body;
-		}   
+		}
 		else
 		{
 			$mail->IsHTML(FALSE);
@@ -143,7 +143,7 @@ function sendEmail($to, $subject, $body, $from = [], $isHTML=true, $priority=1)
 			$mail->AddAddress($to);
 		else if (count($to) == 2)
 			$mail->AddAddress($to[0], $to[1]);
-		
+
 		//$mail->addReplyTo("test@moaks.ws");
 
 		$mail->Subject = $subject;
@@ -188,7 +188,7 @@ function MyCURL($URL, array $fields = array())
 
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	//curl_setopt($ch, CURLOPT_NOBODY, true);
-	
+
 	if ($userAgent != '')
 		curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 
@@ -200,7 +200,7 @@ function MyCURL($URL, array $fields = array())
 
 	$res = json_decode(curl_exec($ch), true);
 	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	
+
 	if ($res == false)
 		$res = $httpCode;
 	curl_close($ch);
@@ -343,14 +343,14 @@ function isHttpsOn()
 	return isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on';
 }
 
-function useSSL($turnOn = TRUE)
+function useSSL($turnOn = TRUE, $httpCode=307)
 {
-	$url = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+	$URL = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	if ($turnOn)
 	{
 		if (!isHttpsOn() && $_SERVER['HTTP_HOST'] != 'localhost')
 		{
-			header('location: https://'.$url, true, 301);
+			header("location: $URL", true, $httpCode);
 			exit;
 		}
 	}
@@ -358,7 +358,7 @@ function useSSL($turnOn = TRUE)
 	{
 		if (isHttpsOn())
 		{
-			header("location: http://".$url, true, 301);
+			header("location: $URL", true, $httpCode);
 			exit;
 		}
 	}
@@ -386,24 +386,24 @@ function logFile($data)
 * @param filePath (string): file path which a client will receive.
 * @param bufferSize (int): usaged memory amount in bytes.
 * @param sleep (int): in milliseconds.
-* @param returnFileSize (int): return function.  
+* @param returnFileSize (int): return function.
 */
 function streamFile($filePath, array $config = [])
 {
 	// just for debug
 	//logFile("----------------------------------\n\r");
 	//logFile(getHeaders());
-	
+
 	$stream = new MR4Web\Utils\FileStream($filePath, $config);
 	$stream->start();
 }
 
 function setNoCacheHeader()
 {
-	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' ); 
-	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' ); 
-	header( 'Cache-Control: no-store, no-cache, must-revalidate' ); 
-	header( 'Cache-Control: post-check=0, pre-check=0', false ); 
+	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+	header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+	header( 'Cache-Control: post-check=0, pre-check=0', false );
 	header( 'Pragma: no-cache' );
 }
 
@@ -802,22 +802,22 @@ function get_country_menu ($name='',$class='',$select=0,$l='')
 		"Zimbabwe"
 	);
 
-	$lang = (isset($country[$lang]))? $lang : 'en' ; 
+	$lang = (isset($country[$lang]))? $lang : 'en' ;
 
 	$select = ($select == '')? 0 : $select ;
 	$dir = ($lang == 'en')? 'ltr' : 'rtl' ;
 	$s = "<div dir='".$dir."'><select ";
-	
+
 	if ($name != '')
 	{
 		$s .= "name='".$name."' ";
 	}
-	
+
 	if ($class != '')
 	{
 		$s .= "class='".$class."' required>";
 	}
-	
+
 	foreach ($country[$lang] as $k => $v)
 	{
 		if ($select == $k)

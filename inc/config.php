@@ -2,12 +2,13 @@
 
 return [
 	'DB' => [
-		'HOSTNAME' 	=> 'localhost',
-		'DB_NAME' 	=> 'checkout2',
-		'DB_USER'	=> 'root',
-		'DB_PASS'	=> 'root'
+		'HOSTNAME' 	=> getenv('DATABASE_HOST'),
+		'DB_NAME' 	=> getenv('MYSQL_DATABASE'),
+		'DB_USER'	=> getenv('MYSQL_USER'),
+		'DB_PASS'	=> getenv('MYSQL_PASSWORD')
 	],
-	'projectFolder'	=> '/test/gateway2/', // if the project is at the root, just use "/"
+	// if the project is at the root, just use "/"
+	'projectFolder'	=> (getenv('SUB_DIRECTORY') === '' ? '/' : getenv('SUB_DIRECTORY')),
 ];
 
 ?>

@@ -1,6 +1,7 @@
 {
 	"require":{
 		"paypal/rest-api-sdk-php": "*",
-		"phpmailer/phpmailer": "^6.0"
+		"phpmailer/phpmailer": "*",
+		"vlucas/phpdotenv": "*"
 	}
 }

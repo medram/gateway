@@ -1,0 +1,30 @@
+version: '3.5'
+
+services:
+  web:
+    image: checkout
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - web:/var/www/html
+      - ./.php.ini:/usr/local/etc/php/conf.d/uploads.ini
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:latest
+    env_file:
+      - .env
+    volumes:
+      - db:/var/lib/mysql
+      - ./inc/db_backup_2.sql:/docker-entrypoint-initdb.d/db.sql
+    restart: always
+
+
+volumes:
+  web:
+  db:

@@ -6,22 +6,47 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit2b9d24d7e65dcc7249653e3fce41f1bb
 {
+    public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'PhpOption\\' => 10,
             'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'D' => 
+        array (
+            'Dotenv\\' => 7,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'PhpOption\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
     );
 
@@ -35,12 +60,17 @@ class ComposerStaticInit2b9d24d7e65dcc7249653e3fce41f1bb
         ),
     );
 
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit2b9d24d7e65dcc7249653e3fce41f1bb::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit2b9d24d7e65dcc7249653e3fce41f1bb::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit2b9d24d7e65dcc7249653e3fce41f1bb::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit2b9d24d7e65dcc7249653e3fce41f1bb::$classMap;
 
         }, null, ClassLoader::class);
     }
